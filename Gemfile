@@ -6,6 +6,8 @@ group :development do
   gem 'rake'
   gem 'rubygems-tasks', '~> 0.2'
 
+  gem 'csv'
+
   gem 'nokogiri'
   gem 'rspec', '~> 3.0'
 

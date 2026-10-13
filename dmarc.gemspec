@@ -13,11 +13,10 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{DMARC Record Parser}
   gem.homepage      = "https://github.com/trailofbits/dmarc#readme"
 
-  gem.files         = `git ls-files`.split($/)
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.files         = Dir['lib/**/*.rb'] + %w[README.md ChangeLog.md LICENSE.txt]
+  gem.test_files    = Dir['spec/**/*']
   gem.require_paths = ["lib"]
-  gem.required_ruby_version = '>= 4.0.0'
+  gem.required_ruby_version = '>= 3.0.0'
 
   gem.add_dependency 'parslet', '>= 1.0.0', '< 3.0.0'
-  gem.add_dependency 'csv', '>= 3.3.6', '< 4.0.0'
 end
