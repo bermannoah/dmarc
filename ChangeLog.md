@@ -1,3 +1,8 @@
+### 0.2.0 / 2026-10-13
+
+* Added DMARC XML report parsing, ported from the `dmarc_parser` gem by D Salko.
+* Added `nokogiri` and `bigdecimal` runtime dependencies.
+
 ### 0.1.0 / 2026-10-13
 
 * Forked from the Trail of Bits `dmarc` gem and published as `dmarcator`.

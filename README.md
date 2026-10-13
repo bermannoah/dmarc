@@ -11,8 +11,9 @@ DMARCator is a Ruby library for parsing and querying [DMARC] records.
 > a stricter parser. See [Acknowledgments](#acknowledgments) below.
 
 [DMARC] policies are published as DNS TXT records at `_dmarc.<domain>`. This
-library parses those records into a structured `DMARCator::Record` and can query
-them directly through Ruby's `Resolv` DNS client.
+library parses those records into a structured `DMARCator::Record`, queries them
+directly through Ruby's `Resolv` DNS client, and parses the XML aggregate
+reports those policies generate.
 
 ## Installation
 
@@ -92,10 +93,32 @@ record = DMARCator::Record.query("twitter.com")
 # => #<DMARCator::Record ... @p=:reject, @rua=[...], ...>
 ```
 
+## Parsing XML reports
+
+Parse a DMARC aggregate/forensic report:
+
+```ruby
+report = DMARCator::Report.new(xml_string)
+
+report.version
+# => 0.1e0
+
+report.metadata.org_name
+# => "google.com"
+
+report.policy.domain
+# => "opserv.io"
+
+report.records.first.source_ip
+# => "209.85.220.69"
+```
+
 ## Requirements
 
 * [Ruby] >= 3.0.0
 * [parslet] >= 1.0.0, < 3.0.0
+* [nokogiri] >= 1.10
+* [bigdecimal] >= 1.0
 
 ## Testing
 
@@ -129,9 +152,15 @@ This fork renames the `DMARC` module to `DMARCator` (loaded via
 * a DNS query path that selects the `v=DMARC1` TXT record per RFC 7489,
 * hardened packaging and test fixtures.
 
+The DMARC XML report parser is ported from [`dmarc_parser`][dmarc-parser-gem],
+created by D Salko and released under the MIT License.
+
 [DMARC]: https://www.rfc-editor.org/rfc/rfc7489
 [dmarc-gem]: https://rubygems.org/gems/dmarc
+[dmarc-parser-gem]: https://rubygems.org/gems/dmarc_parser
 [Trail of Bits]: https://www.trailofbits.com
 [Ruby]: https://www.ruby-lang.org
 [parslet]: https://kschiess.github.io/parslet/
+[nokogiri]: https://nokogiri.org
+[bigdecimal]: https://github.com/ruby/bigdecimal
 [LICENSE.txt]: LICENSE.txt

@@ -25,4 +25,6 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '>= 3.0.0'
 
   gem.add_dependency 'parslet', '>= 1.0.0', '< 3.0.0'
+  gem.add_dependency 'nokogiri', '>= 1.10'
+  gem.add_dependency 'bigdecimal', '>= 1.0'
 end
