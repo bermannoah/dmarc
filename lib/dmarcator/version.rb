@@ -1,4 +1,4 @@
 module DMARCator
-  # dmarcator-gem version
+  # dmarcator version
   VERSION = '0.1.0'
 end

@@ -1,7 +1,7 @@
 # DMARCator
 
-[![Gem Version](https://badge.fury.io/rb/dmarcator-gem.svg)](https://badge.fury.io/rb/dmarcator-gem)
-[![YARD Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/gems/dmarcator-gem)
+[![Gem Version](https://badge.fury.io/rb/dmarcator.svg)](https://badge.fury.io/rb/dmarcator)
+[![YARD Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/gems/dmarcator)
 
 DMARCator is a Ruby library for parsing and querying [DMARC] records.
 
@@ -19,7 +19,7 @@ them directly through Ruby's `Resolv` DNS client.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "dmarcator-gem"
+gem "dmarcator"
 ```
 
 And then execute:
@@ -31,7 +31,7 @@ bundle install
 Or install it yourself:
 
 ```sh
-gem install dmarcator-gem
+gem install dmarcator
 ```
 
 The gem is loaded via:

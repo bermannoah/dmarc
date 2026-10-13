@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'dmarcator/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "dmarcator-gem"
+  gem.name          = "dmarcator"
   gem.version       = DMARCator::VERSION
   gem.license       = 'MIT'
   gem.authors       = ["Noah Berman", "Davis Gallinghouse"]

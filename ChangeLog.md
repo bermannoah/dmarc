@@ -1,6 +1,6 @@
 ### 0.1.0 / 2026-10-13
 
-* Forked from the Trail of Bits `dmarc` gem and published as `dmarcator-gem`.
+* Forked from the Trail of Bits `dmarc` gem and published as `dmarcator`.
 * Renamed the `DMARC` module to `DMARCator` (`require "dmarcator"`).
 * Hardened parsing and DNS querying; see the README for details.
 
