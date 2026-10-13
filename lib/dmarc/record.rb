@@ -3,6 +3,7 @@ require 'dmarc/parser'
 require 'dmarc/exceptions'
 
 require 'resolv'
+require 'uri'
 
 module DMARC
   class Record
@@ -271,9 +272,17 @@ module DMARC
     # @api public
     #
     def self.parse(record)
-      new(Parser.parse(record))
+      attributes = Parser.parse(record)
+
+      unless attributes[:p]
+        raise InvalidRecord, "DMARC record is missing the required 'p' tag"
+      end
+
+      new(attributes)
     rescue Parslet::ParseFailed => error
-      raise(InvalidRecord.new(error.message,error.cause))
+      raise InvalidRecord.new(truncate_error_message(error.message), error.cause)
+    rescue URI::Error => error
+      raise InvalidRecord.new(truncate_error_message(error.message), error)
     end
 
     #
@@ -281,6 +290,29 @@ module DMARC
     #
     def self.from_txt(rec)
       parse(rec)
+    end
+
+    # Maximum length of error messages echoed from parsing untrusted input.
+    MAX_ERROR_MESSAGE_LENGTH = 500
+
+    #
+    # Truncates error messages to avoid echoing large amounts of untrusted
+    # input in exceptions.
+    #
+    # @param [String] message
+    #   The error message to truncate.
+    #
+    # @return [String]
+    #   The truncated error message.
+    #
+    def self.truncate_error_message(message)
+      message = message.to_s
+
+      if message.length > MAX_ERROR_MESSAGE_LENGTH
+        message[0, MAX_ERROR_MESSAGE_LENGTH] + "..."
+      else
+        message
+      end
     end
 
     #

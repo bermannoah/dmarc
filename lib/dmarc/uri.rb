@@ -101,5 +101,14 @@ module DMARC
       @uri.send(name,*arguments,&block)
     end
 
+    #
+    # Indicates whether a missing method can be handled by {#uri}.
+    #
+    # @return [Boolean]
+    #
+    def respond_to_missing?(name, include_private = false)
+      @uri.respond_to?(name, include_private) || super
+    end
+
   end
 end

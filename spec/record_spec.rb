@@ -82,25 +82,58 @@ describe Record do
           subject.parse('v=XXXXXXXXXX')
         }.to raise_error(InvalidRecord)
       end
+
+      it 'raises when the p tag is missing' do
+        expect {
+          subject.parse('v=DMARC1')
+        }.to raise_error(InvalidRecord)
+      end
+
+      it 'raises when pct is out of range' do
+        expect {
+          subject.parse('v=DMARC1; p=none; pct=999')
+        }.to raise_error(InvalidRecord)
+      end
+
+      it 'raises when tags are duplicated' do
+        expect {
+          subject.parse('v=DMARC1; p=none; p=reject')
+        }.to raise_error(InvalidRecord)
+      end
+    end
+
+    context 'with a non-mailto rua URI' do
+      it 'ignores the invalid rua tag' do
+        rec = subject.parse('v=DMARC1; p=none; rua=http://169.254.169.254/?x=1')
+
+        expect(rec).to be_a Record
+        expect(rec.rua).to be_nil
+      end
     end
   end
 
   describe ".query" do
     subject { described_class }
 
-    context "when given a domain" do
-      let(:domain) { 'google.com' }
+    context "when the domain has a DMARC record" do
+      it "queries and parses the DMARC record" do
+        expect(DMARC).to receive(:query)
+          .with("google.com", anything)
+          .and_return("v=DMARC1; p=reject")
 
-      it "should query and parse the DMARC record" do
-        record = subject.query(domain)
+        record = subject.query("google.com")
 
         expect(record).to be_kind_of(Record)
         expect(record.v).to be == :DMARC1
       end
     end
 
-    context "when given a bad domain" do
-      it "should raise a DNS error" do
+    context "when the domain has no DMARC record" do
+      it "returns nil" do
+        expect(DMARC).to receive(:query)
+          .with("foobar.heythere", anything)
+          .and_return(nil)
+
         expect(subject.query('foobar.heythere')).to be_nil
       end
     end

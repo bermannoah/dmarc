@@ -1,3 +1,4 @@
+require 'dmarc/exceptions'
 require 'dmarc/uri'
 
 require 'parslet'
@@ -61,7 +62,7 @@ module DMARC
       dmarc_uri >> (wsp? >> str(',') >> wsp? >> dmarc_uri).repeat
     end
 
-    tag_rule(:ainterval,'ri') { digit.repeat(1) }
+    tag_rule(:ainterval,'ri') { digit.repeat(1, 10) >> digit.absent? }
 
     tag_rule(:furi,'ruf') do
       dmarc_uri >> (wsp? >> str(',') >> wsp? >> dmarc_uri).repeat
@@ -75,97 +76,34 @@ module DMARC
 
     tag_rule(:rfmt,'rf') { str('afrf') | str('iodef') }
 
-    tag_rule(:percent,'pct') { digit.repeat(1,3) }
+    tag_rule(:percent,'pct') { digit.repeat(1,3) >> digit.absent? }
 
     tag_rule(:adkim, 'adkim') { match['rs'] }
     tag_rule(:aspf, 'aspf')   { match['rs'] }
 
     rule(:unknown_tag) { match["^; \t"].repeat(1) }
-    rule(:unknown_value) { match["^=; \t"].repeat(1) }
+    rule(:unknown_value) { match["^; \t"].repeat(1) }
 
     rule(:dmarc_uri) do
-      uri.as(:uri) >> (
-        str('!') >> digit.repeat(1).as(:size) >> (
+      mailto_uri.as(:uri) >> (
+        str('!') >> digit.repeat(1, 10).as(:size) >> digit.absent? >> (
           match['kmgt']
         ).as(:unit).maybe
-      ).maybe
+      ).maybe >> str('!').absent?
     end
 
-    rule(:uri) do
-      ( absoluteURI | relativeURI ).maybe >>
-      ( str('#') >> fragment ).maybe
-    end
-    rule(:absoluteURI) { scheme >> str(':') >> ( hier_part | opaque_part ) }
-    rule(:relativeURI) do
-      ( net_path | abs_path | rel_path ) >> ( str('?') >> query ).maybe
+    rule(:mailto_uri) do
+      str('mailto:') >> mailto_address
     end
 
-    rule(:hier_part) do
-      ( net_path | abs_path ) >> ( str('?') >> query )
-    end
-    rule(:opaque_part) do
-      uric_no_slash >> uric.repeat
+    rule(:mailto_address) do
+      mailto_local >> str('@') >> mailto_domain
     end
 
-    rule(:uric_no_slash) do
-      unreserved | escaped | match('[?:@&=+$]')
-    end
+    rule(:mailto_local)  { mailto_char.repeat(1) }
+    rule(:mailto_domain) { mailto_char.repeat(1) }
+    rule(:mailto_char)   { match["^;,! \t@"] }
 
-    rule(:net_path) { str('//') >> authority >> abs_path.maybe }
-    rule(:abs_path) { str('/') >> path_segments }
-    rule(:rel_path) { rel_segment >> abs_path.maybe }
-
-    rule(:rel_segment) { ( unreserved | escaped | match('[@&=+$]') ).repeat(1) }
-
-    rule(:scheme) { alpha >> ( alpha | digit | match('[+-.]') ).repeat }
-
-    rule(:authority) { server | reg_name }
-
-    rule(:reg_name) { ( unreserved | escaped | match('[$:@&=+]') ).repeat(1) }
-
-    rule(:server) { ( ( userinfo >> str('@') ).maybe >> hostport ).maybe }
-    rule(:userinfo) { ( unreserved | escaped | match('[:&=+$]') ).repeat }
-
-    rule(:hostport) { host >> ( str(':') >> port ).maybe }
-    rule(:host) { hostname | ipv4address }
-    rule(:hostname) do
-      ( domainlabel >> str('.') ).repeat >> toplabel >> str('.').maybe
-    end
-    rule(:domainlabel) do
-      alphanum | (
-        alphanum >> ( alphanum | str('-') ).repeat >> alphanum
-      )
-    end
-    rule(:toplabel) do
-      alpha | (
-        alpha >> ( alphanum | str('-') ).repeat >> alphanum
-      )
-    end
-    rule(:ipv4address) do
-      digit.repeat(1) >> str('.') >>
-      digit.repeat(1) >> str('.') >>
-      digit.repeat(1) >> str('.') >>
-      digit.repeat(1)
-    end
-    rule(:port) { digit.repeat }
-
-    rule(:path) { ( abs_path | opaque_part ).maybe }
-    rule(:path_segments) { segment >> ( str('/') >> segment ).repeat }
-    rule(:segment) { pchar.repeat >> ( str(';') >> param ).repeat }
-    rule(:param) { pchar }
-    rule(:pchar) { unreserved | escaped | match('[:@&=+$]') }
-
-    rule(:query) { uric.repeat }
-    rule(:fragment) { uric.repeat }
-
-    rule(:uric) { reserved | unreserved | escaped }
-    rule(:reserved) { match('[/?:@&=+$]') }
-    rule(:unreserved) { alphanum | mark }
-    rule(:mark) { match("[-_.~*'()]") }
-    rule(:escaped) { str('%') >> hex >> hex }
-    rule(:hex) { digit | match('[a-fA-F]') }
-    rule(:alphanum) { alpha | digit }
-    rule(:alpha) { match('[a-zA-Z]') }
     rule(:digit) { match('[0-9]') }
     rule(:wsp) { str(' ') | str("\t") }
     rule(:wsp?) { wsp.repeat }
@@ -187,20 +125,48 @@ module DMARC
 
       rule(uri: simple(:uri), size: simple(:size), unit: simple(:unit)) do
         Uri.new(
-          URI.parse(uri),
+          Transform.parse_uri(uri),
           size.to_i,
           unit.to_sym
         )
       end
       rule(uri: simple(:uri), size: simple(:size)) do
         Uri.new(
-          URI.parse(uri),
+          Transform.parse_uri(uri),
           size.to_i
         )
       end
-      rule(uri: simple(:uri)) { Uri.new(URI.parse(uri)) }
+      rule(uri: simple(:uri)) { Uri.new(Transform.parse_uri(uri)) }
       rule(rua: subtree(:uris)) { {rua: Array(uris)} }
       rule(ruf: subtree(:uris)) { {ruf: Array(uris)} }
+
+      MAX_ERROR_MESSAGE_LENGTH = 300
+
+      def self.parse_uri(value)
+        uri = value.to_s
+
+        begin
+          parsed = URI.parse(uri)
+        rescue URI::Error => error
+          raise InvalidRecord, truncate(error.message)
+        end
+
+        unless parsed.is_a?(URI::MailTo)
+          raise InvalidRecord, "invalid DMARC report URI (expected mailto): #{truncate(uri)}"
+        end
+
+        parsed
+      end
+
+      def self.truncate(message)
+        message = message.to_s
+
+        if message.length > MAX_ERROR_MESSAGE_LENGTH
+          message[0, MAX_ERROR_MESSAGE_LENGTH] + "..."
+        else
+          message
+        end
+      end
 
     end
 
@@ -217,9 +183,38 @@ module DMARC
       tags = Transform.new.apply(new.parse(record))
       hash = {}
 
-      tags.each { |tag| hash.merge!(tag) }
+      tags.each do |tag|
+        tag.each_key do |key|
+          if hash.key?(key)
+            raise InvalidRecord, "duplicate DMARC tag: #{key}"
+          end
+        end
+
+        hash.merge!(tag)
+      end
+
+      validate!(hash)
 
       return hash
+    end
+
+    #
+    # Validates the parsed tags.
+    #
+    # @param [Hash{Symbol => Object}] tags
+    #   The parsed tags.
+    #
+    # @raise [InvalidRecord]
+    #   One of the tags has an invalid value.
+    #
+    def self.validate!(tags)
+      if tags[:pct] && !(tags[:pct].is_a?(Integer) && tags[:pct].between?(0, 100))
+        raise InvalidRecord, "pct must be an integer between 0 and 100"
+      end
+
+      if tags[:ri] && !(tags[:ri].is_a?(Integer) && tags[:ri].between?(0, 2**32 - 1))
+        raise InvalidRecord, "ri must be an integer between 0 and 4294967295"
+      end
     end
 
   end
