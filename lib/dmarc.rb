@@ -1,5 +1,0 @@
-require 'dmarc/exceptions'
-require 'dmarc/dmarc'
-require 'dmarc/record'
-require 'dmarc/parser'
-require 'dmarc/version'

@@ -1,11 +1,11 @@
-require 'dmarc/dmarc'
-require 'dmarc/parser'
-require 'dmarc/exceptions'
+require 'dmarcator/query'
+require 'dmarcator/parser'
+require 'dmarcator/exceptions'
 
 require 'resolv'
 require 'uri'
 
-module DMARC
+module DMARCator
   class Record
 
     # `p` field.
@@ -336,7 +336,7 @@ module DMARC
     # @api public
     #
     def self.query(domain,resolver=Resolv::DNS.new)
-      if (dmarc = DMARC.query(domain,resolver))
+      if (dmarc = DMARCator.query(domain,resolver))
         parse(dmarc)
       end
     end

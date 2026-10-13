@@ -1,4 +1,13 @@
+### 0.1.0 / 2026-10-13
+
+* Forked from the Trail of Bits `dmarc` gem and published as `dmarcator-gem`.
+* Renamed the `DMARC` module to `DMARCator` (`require "dmarcator"`).
+* Hardened parsing and DNS querying; see the README for details.
+
 ### 0.6.0 / 2024-01-24
+
+Entries below this point refer to the original `dmarc` gem.
+
 
 * {DMARC::Record.parse} now allows trailing whitespace, per DMARC spec.
 

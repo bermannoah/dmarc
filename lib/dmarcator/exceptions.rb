@@ -1,6 +1,6 @@
 require 'parslet'
 
-module DMARC
+module DMARCator
   class InvalidRecord < Parslet::ParseFailed
   end
 end

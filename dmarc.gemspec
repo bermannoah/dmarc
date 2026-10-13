@@ -1,17 +1,23 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'dmarc/version'
+require 'dmarcator/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "dmarc"
-  gem.version       = DMARC::VERSION
+  gem.name          = "dmarcator-gem"
+  gem.version       = DMARCator::VERSION
   gem.license       = 'MIT'
-  gem.authors       = ["Davis Gallinghouse"]
-  gem.email         = ["davis@trailofbits.com"]
-  gem.description   = %q{DMARC Record Parser}
-  gem.summary       = %q{DMARC Record Parser}
-  gem.homepage      = "https://github.com/trailofbits/dmarc#readme"
+  gem.authors       = ["Noah Berman", "Davis Gallinghouse"]
+  gem.email         = ["noah@noahberman.org", "davis@trailofbits.com"]
+  gem.description   = "A hardened DMARC record parser and query client, forked from the Trail of Bits 'dmarc' gem."
+  gem.summary       = "DMARC record parser and query client"
+  gem.homepage      = "https://github.com/bermannoah/dmarc"
+
+  gem.metadata = {
+    "source_code_uri"   => "https://github.com/bermannoah/dmarc",
+    "bug_tracker_uri"   => "https://github.com/bermannoah/dmarc/issues",
+    "rubygems_mfa_required" => "true"
+  }
 
   gem.files         = Dir['lib/**/*.rb'] + %w[README.md ChangeLog.md LICENSE.txt]
   gem.test_files    = Dir['spec/**/*']

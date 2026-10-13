@@ -1,4 +1,4 @@
-module DMARC
+module DMARCator
   #
   # Represents a DMARC URI.
   #

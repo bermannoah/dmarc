@@ -1,0 +1,5 @@
+require 'dmarcator/exceptions'
+require 'dmarcator/query'
+require 'dmarcator/record'
+require 'dmarcator/parser'
+require 'dmarcator/version'

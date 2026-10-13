@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'dmarc/record'
+require 'dmarcator/record'
 
 describe Record do
   describe '#initialize' do
@@ -117,7 +117,7 @@ describe Record do
 
     context "when the domain has a DMARC record" do
       it "queries and parses the DMARC record" do
-        expect(DMARC).to receive(:query)
+        expect(DMARCator).to receive(:query)
           .with("google.com", anything)
           .and_return("v=DMARC1; p=reject")
 
@@ -130,7 +130,7 @@ describe Record do
 
     context "when the domain has no DMARC record" do
       it "returns nil" do
-        expect(DMARC).to receive(:query)
+        expect(DMARCator).to receive(:query)
           .with("foobar.heythere", anything)
           .and_return(nil)
 

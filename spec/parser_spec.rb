@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'dmarc/parser'
+require 'dmarcator/parser'
 
 describe Parser do
   describe "rules" do

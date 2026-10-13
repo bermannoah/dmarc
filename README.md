@@ -1,81 +1,137 @@
-# DMARC
+# DMARCator
 
-[![CI](https://github.com/trailofbits/dmarc/actions/workflows/ci.yml/badge.svg)](https://github.com/trailofbits/dmarc/actions/workflows/ci.yml)
-[![Gem Version](https://badge.fury.io/rb/dmarc.svg)](http://badge.fury.io/rb/dmarc)
-[![YARD Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://rubydoc.info/gems/dmarc)
+[![Gem Version](https://badge.fury.io/rb/dmarcator-gem.svg)](https://badge.fury.io/rb/dmarcator-gem)
+[![YARD Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/gems/dmarcator-gem)
 
-[DMARC] is a technical specification intended to solve a couple of long-standing
-email authentication problems. DMARC policies are described in DMARC "records,"
-which are stored as DNS TXT records on a subdomain. This library contains a
-parser for DMARC records.
+DMARCator is a Ruby library for parsing and querying [DMARC] records.
+
+> **DMARCator is a fork of the [`dmarc`][dmarc-gem] gem, originally created by
+> Davis Gallinghouse at [Trail of Bits].** It keeps the original MIT license and
+> credits its authors, but ships under a new name with additional hardening and
+> a stricter parser. See [Acknowledgments](#acknowledgments) below.
+
+[DMARC] policies are published as DNS TXT records at `_dmarc.<domain>`. This
+library parses those records into a structured `DMARCator::Record` and can query
+them directly through Ruby's `Resolv` DNS client.
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem "dmarcator-gem"
+```
+
+And then execute:
+
+```sh
+bundle install
+```
+
+Or install it yourself:
+
+```sh
+gem install dmarcator-gem
+```
+
+The gem is loaded via:
+
+```ruby
+require "dmarcator"
+```
 
 ## Example
 
 Parse a DMARC record:
 
-    require 'dmarc'
+```ruby
+require "dmarcator"
 
-    record = DMARC::Record.parse("v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1")
+record = DMARCator::Record.parse(
+  "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1"
+)
 
-    record.v
-    # => :DMARC1
+record.v
+# => :DMARC1
 
-    record.adkim
-    # => :r
+record.p
+# => :reject
 
-    record.aspf
-    # => :r
+record.adkim
+# => :r
 
-    record.fo
-    # => ["0"]
+record.aspf
+# => :r
 
-    record.p
-    # => :reject
+record.fo
+# => ["0"]
 
-    record.pct
-    # => 100
+record.pct
+# => 100
 
-    record.rf
-    # => :afrf
+record.rf
+# => :afrf
 
-    record.ri
-    # => 86400
+record.ri
+# => 86400
 
-    record.rua
-    # => [#<DMARC::Uri:0x0055ede60711e0 @uri=#<URI::MailTo mailto:d@rua.agari.com>, @size=nil, @unit=nil>]
+record.rua
+# => [#<DMARCator::Uri ... @uri=#<URI::MailTo mailto:d@rua.agari.com>, @size=nil, @unit=nil>]
 
-    record.ruf
-    # => [#<DMARC::Uri:0x0055ede606f138 @uri=#<URI::MailTo mailto:d@ruf.agari.com>, @size=nil, @unit=nil>]
+record.ruf
+# => [#<DMARCator::Uri ... @uri=#<URI::MailTo mailto:d@ruf.agari.com>, @size=nil, @unit=nil>]
 
-    record.sp
-    # => :reject
+record.sp
+# => :reject
+```
 
 Query the DMARC record for a domain:
 
-    record = DMARC::Record.query('twitter.com')
-    # => #<DMARC::Record:0x0055ede6b808b0 @v=:DMARC1, @adkim=nil, @aspf=nil, @fo=["1"@79], @p=:reject, @pct=nil, @rf=nil, @ri=nil, @rua=[#<DMARC::Uri:0x0055ede6ba1c40 @uri=#<URI::MailTo mailto:d@rua.agari.com>, @size=nil, @unit=nil>], @ruf=[#<DMARC::Uri:0x0055ede6b8b760 @uri=#<URI::MailTo mailto:d@ruf.agari.com>, @size=nil, @unit=nil>], @sp=nil>
+```ruby
+record = DMARCator::Record.query("twitter.com")
+# => #<DMARCator::Record ... @p=:reject, @rua=[...], ...>
+```
 
 ## Requirements
 
-* [parslet] ~> 1.5
-
-## Install
-
-    $ gem install dmarc
+* [Ruby] >= 3.0.0
+* [parslet] >= 1.0.0, < 3.0.0
 
 ## Testing
 
 To run the RSpec tests:
 
-    $ rake spec
+```sh
+rake spec
+```
 
-To test the parser against the Alexa Top 500:
+To test the parser against the bundled Alexa Top 500 fixture:
 
-    $ rake spec:gauntlet
+```sh
+rake spec:gauntlet
+```
 
 ## License
 
-See the {file:LICENSE.txt} file.
+This project is released under the MIT License. See the [LICENSE.txt] file for
+details.
 
-[DMARC]: https://tools.ietf.org/html/rfc7489
-[parslet]: http://kschiess.github.io/parslet/
+## Acknowledgments
+
+DMARCator is a fork of [`dmarc`][dmarc-gem], a DMARC record parser created by
+Davis Gallinghouse at [Trail of Bits] and released under the MIT License.
+
+This fork renames the `DMARC` module to `DMARCator` (loaded via
+`require "dmarcator"`) while keeping the original API shape, and adds:
+
+* strict `mailto:`-only handling for `rua`/`ruf` report URIs,
+* validation for required and ranged tags (`p`, `pct`, `ri`) and duplicate tags,
+* a DNS query path that selects the `v=DMARC1` TXT record per RFC 7489,
+* hardened packaging and test fixtures.
+
+[DMARC]: https://www.rfc-editor.org/rfc/rfc7489
+[dmarc-gem]: https://rubygems.org/gems/dmarc
+[Trail of Bits]: https://www.trailofbits.com
+[Ruby]: https://www.ruby-lang.org
+[parslet]: https://kschiess.github.io/parslet/
+[LICENSE.txt]: LICENSE.txt

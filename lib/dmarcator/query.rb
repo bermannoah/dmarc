@@ -1,6 +1,6 @@
 require 'resolv'
 
-module DMARC
+module DMARCator
   #
   # Validates a domain before using it in a DNS query.
   #

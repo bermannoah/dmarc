@@ -1,10 +1,10 @@
-require 'dmarc/exceptions'
-require 'dmarc/uri'
+require 'dmarcator/exceptions'
+require 'dmarcator/uri'
 
 require 'parslet'
 require 'uri'
 
-module DMARC
+module DMARCator
   #
   # DMARC parser.
   #

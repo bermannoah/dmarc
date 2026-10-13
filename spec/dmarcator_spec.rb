@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'dmarc'
+require 'dmarcator'
 
-describe DMARC do
+describe DMARCator do
   subject { described_class }
 
   describe ".query" do

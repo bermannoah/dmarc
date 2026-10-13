@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'dmarc/uri'
+require 'dmarcator/uri'
 
-describe DMARC::Uri do
+describe DMARCator::Uri do
   let(:uri)  { URI("mailto:d@ruf.agari.com") }
   let(:size) { 10 }
   let(:unit) { :m }

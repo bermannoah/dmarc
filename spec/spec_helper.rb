@@ -2,9 +2,9 @@ require 'simplecov'
 SimpleCov.start
 
 require 'rspec'
-require 'dmarc'
+require 'dmarcator'
 
-include DMARC
+include DMARCator
 
 RSpec.configure do |specs|
   specs.filter_run_excluding :gauntlet
