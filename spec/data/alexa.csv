@@ -36,7 +36,7 @@
 36,Google.com.br,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
 37,Ask.com,
 38,Tumblr.com,
-39,Xvideos.com,v=spf1 mx ptr ip4:69.55.53.149/32 ip4:69.55.53.150/32 ip:69.55.53.77/32 include:_spf.google.com include:sendgrid.net include:spf.dynect.net ~all
+39,Xvideos.com,
 40,Mail.ru,"v=DMARC1;p=none;rua=mailto:d@rua.agari.com,mailto:dmarc_rua@corp.mail.ru;ruf=mailto:d@ruf.agari.com;fo=1;"
 41,Microsoft.com,v=DMARC1; p=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
 42,Google.ru,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
@@ -59,7 +59,7 @@
 59,Xhamster.com,
 60,Fc2.com,
 61,Google.ca,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
-62,Wordpress.org,v=spf1 ip4:66.155.40.0/24 mx ?all
+62,Wordpress.org,
 63,Go.com,
 64,Cnn.com,
 65,Gmw.cn,
@@ -144,7 +144,7 @@
 144,Forbes.com,
 145,Theguardian.com,
 146,Hootsuite.com,
-147,Wikia.com,v=spf1 ip4:38.127.199.0/26 ip4:74.120.184.0/21 ip4:208.68.167.128/28 include:spf.postini.com include:aspmx.googlemail.com include:sendgrid.net include:support.zendesk.com ~all
+147,Wikia.com,
 148,Bbc.com,
 149,Gmail.com,v=DMARC1; p=none; rua=mailto:mailauth-reports@google.com
 150,Adf.ly,
@@ -245,8 +245,8 @@
 245,Dmm.co.jp,
 246,Huanqiu.com,
 247,Rev2pub.com,
-248,Avito.ru,v=spf1 +mx +ip4:81.177.35.160/27 +ip4:80.76.156.64/27 +ip4:80.76.154.168/29 include:_spf.google.com include:support.zendesk.com include:sendgrid.net ~all
-249,Bleacherreport.com,google-site-verification=sWdxbnTbM86daTXbotb9HbKZChDfYrx6AbVvVROxbco
+248,Avito.ru,
+249,Bleacherreport.com,
 250,Tube8.com,
 251,Php.net,
 252,Snapdeal.com,
@@ -306,7 +306,7 @@
 306,Rambler.ru,
 307,Tmz.com,
 308,Ndtv.com,
-309,Bongacams.com,=DMARC1; p=quarantine; rua=mailto:newsletter@bongacams.com; ruf=mailto:newsletter@bongacams.com; adkim=s; aspf=s; pct=100; rf=afrf; ri=14400; sp=quarantine
+309,Bongacams.com,v=DMARC1; p=quarantine; rua=mailto:newsletter@bongacams.com; ruf=mailto:newsletter@bongacams.com; adkim=s; aspf=s; pct=100; rf=afrf; ri=14400; sp=quarantine
 310,Usps.com,v=DMARC1; p=none; fo=1; rua=mailto:u-s-postal-service@rua.agari.com; ruf=mailto:u-s-postal-service@ruf.agari.com
 311,Google.pt,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
 312,Media.tumblr.com,
@@ -328,7 +328,7 @@
 328,Rutracker.org,
 329,Histats.com,
 330,Hp.com,
-331,Rbc.ru,v=spf1 ip4:80.68.240.0/20 include:_spfmain.rbc.ru -all
+331,Rbc.ru,
 332,Bluehost.com,
 333,Fedex.com,"v=DMARC1; p=reject; pct=100; rua=mailto:dmarc_agg@auth.returnpath.net,mailto:dmarc@fedex.com; ruf=mailto:dmarc_afrf@auth.returnpath.net,mailto:dmarc@fedex.com; fo=1"
 334,Goodgamestudios.com,
@@ -353,7 +353,7 @@
 353,Gameforge.com,
 354,Cnzz.com,
 355,17ok.com,
-356,Taringa.net,v=spf1 a mx ip4:209.160.0.0/16 ip4:69.63.149.149 ip4:200.127.149.90 include:support.zendesk.com include:aspmx.googlemail.com -all
+356,Taringa.net,
 357,Quikr.com,
 358,Tianya.cn,
 359,Target.com,v=DMARC1; p=none; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
@@ -361,7 +361,7 @@
 361,Gfycat.com,
 362,Groupon.com,"v=DMARC1; p=none; fo=1; rua=mailto:dmarc_rua@groupon.com,mailto:d@rua.agari.com; ruf=mailto:dmarc_ruf@groupon.com,mailto:d@ruf.agari.com; rf=afrf; pct=100"
 363,Constantcontact.com,v=DMARC1; p=none; rua=mailto:dmarcreports@constantcontact.com; ruf=mailto:dmarcreports@constantcontact.com; rf=afrf; pct=100;
-364,Xuite.net,v=spf1 a:sender.epost.hinet.net ip4:210.242.18.0/24 ip4:210.242.41.0/24 ip4:210.242.46.0/24 ip4:202.39.77.125/32 ip4:202.39.77.125/32
+364,Xuite.net,
 365,Uploaded.net,
 366,Ci123.com,
 367,Nih.gov,
@@ -377,13 +377,13 @@
 377,Free.fr,
 378,Kakaku.com,
 379,Probux.com,
-380,Zippyshare.com,v=spf1 mx a
-381,Elance.com,t=y; p=MHwwDQYJKoZIhvcNAQEBBQADawAwaAJhALh2+0Y0E9a8pXtNbpDaajCBU3d19diD+U8KoT+IexG/tBxSSk/l45maaEGL2E34+8TOkEv1alBvx/gkgDvnoTJwv+s3QShm8cqZE65FM7GXD5+W8S8f7TzfoaLpKLRmKQIDAQAB; o=~
+380,Zippyshare.com,
+381,Elance.com,
 382,Kompas.com,
-383,Lifehacker.com,v=spf1 mx include:gawker.drhinternet.net ~all
+383,Lifehacker.com,
 384,Cj.com,
 385,Zeroredirect1.com,
-386,Getresponse.com,v=spf1 mx a ip4:207.8.198.0/24 ip4:207.8.203.0/25 ip4:89.206.36.195/32 ptr:getresponse.com ptr:getresponse.net -all
+386,Getresponse.com,
 387,Google.no,
 388,Google.az,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
 389,Thefreedictionary.com,
@@ -392,14 +392,14 @@
 392,Google.ie,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
 393,Fbcdn.net,
 394,Sahibinden.com,
-395,Bloomberg.com,spf2.0/pra -all
+395,Bloomberg.com,
 396,B5m.com,
 397,Ebay.it,v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net; rf=afrf; pct=100
 398,Voc.com.cn,
 399,Motherless.com,
 400,Youm7.com,
 401,Trello.com,
-402,Likes.com,v=spf1 a mx include:aspmx.googlemail.com include:amazonses.com include:sendgrid.net -all
+402,Likes.com,
 403,Turboloves.net,
 404,Google.ae,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
 405,Youjizz.com,
@@ -410,7 +410,7 @@
 410,Capitalone.com,v=DMARC1; p=none; sp=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;
 411,Elpais.com,
 412,Amazon.cn,v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarc-reports@bounces.amazon.com; ruf=mailto:dmarc-reports@bounces.amazon.com
-413,List-manage.com,google-site-verification=bhk0S-lNR3KBZsEpKRjlNxnyEnt3sVG4tD9sqAanEJ4
+413,List-manage.com,
 414,Iqiyi.com,
 415,Taboola.com,v=DMARC1; p=quarantine
 416,Youth.cn,
@@ -446,11 +446,11 @@
 446,Privatehomeclips.com,
 447,Seznam.cz,
 448,Ria.ru,
-449,Gizmodo.com,v=spf1 mx include:gawker.drhinternet.net ~all
+449,Gizmodo.com,
 450,Yandex.ua,
 451,Avira.com,
 452,Okcupid.com,
-453,Habrahabr.ru,v=spf1 include:spf.habramail.net include:aspmx.googlemail.com ~all
+453,Habrahabr.ru,
 454,Liveleak.com,
 455,Youboy.com,
 456,Google.co.il,v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
