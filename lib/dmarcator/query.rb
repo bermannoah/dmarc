@@ -1,6 +1,43 @@
 require 'resolv'
+require 'rubygems'
 
 module DMARCator
+  #
+  # Resolv gem versions affected by CVE-2026-80212 and CVE-2026-80213.
+  #
+  VULNERABLE_RESOLV = [
+    Gem::Requirement.new('< 0.3.2'),
+    Gem::Requirement.new('>= 0.4.0', '< 0.7.2')
+  ].freeze
+
+  #
+  # Determines the version of the loaded `resolv` gem, if available.
+  #
+  # @return [String, nil]
+  #
+  def self.resolv_version
+    if defined?(Resolv::VERSION)
+      Resolv::VERSION
+    elsif (spec = Gem.loaded_specs['resolv'])
+      spec.version.to_s
+    end
+  end
+
+  #
+  # Determines whether the loaded `resolv` gem is affected by
+  # CVE-2026-80212 or CVE-2026-80213.
+  #
+  # @return [Boolean]
+  #
+  def self.vulnerable_resolv?
+    version = resolv_version
+    return false unless version
+
+    VULNERABLE_RESOLV.any? do |requirement|
+      requirement.satisfied_by?(Gem::Version.new(version))
+    end
+  end
+
   #
   # Validates a domain before using it in a DNS query.
   #
@@ -61,4 +98,10 @@ module DMARCator
     return dmarc_records.first if dmarc_records.one?
     nil
   end
+end
+
+if DMARCator.vulnerable_resolv?
+  warn "dmarcator: resolv #{DMARCator.resolv_version} is affected by " \
+       "CVE-2026-80212 and CVE-2026-80213; upgrade to resolv >= 0.7.2 " \
+       "(or >= 0.3.2 on Ruby 3.3)"
 end

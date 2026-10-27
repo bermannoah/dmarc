@@ -93,4 +93,36 @@ describe DMARCator do
       expect { subject.validate_domain(123) }.to raise_error(ArgumentError)
     end
   end
+
+  describe ".vulnerable_resolv?" do
+    it "is true for resolv 0.3.1 and earlier" do
+      allow(subject).to receive(:resolv_version).and_return("0.3.1")
+
+      expect(subject.vulnerable_resolv?).to be(true)
+    end
+
+    it "is false for resolv 0.3.2" do
+      allow(subject).to receive(:resolv_version).and_return("0.3.2")
+
+      expect(subject.vulnerable_resolv?).to be(false)
+    end
+
+    it "is true for resolv 0.4.0 through 0.7.1" do
+      allow(subject).to receive(:resolv_version).and_return("0.7.1")
+
+      expect(subject.vulnerable_resolv?).to be(true)
+    end
+
+    it "is false for resolv 0.7.2 and later" do
+      allow(subject).to receive(:resolv_version).and_return("0.7.2")
+
+      expect(subject.vulnerable_resolv?).to be(false)
+    end
+
+    it "is false when the version is unknown" do
+      allow(subject).to receive(:resolv_version).and_return(nil)
+
+      expect(subject.vulnerable_resolv?).to be(false)
+    end
+  end
 end
