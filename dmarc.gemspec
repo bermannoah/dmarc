@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.name          = "dmarcator"
   gem.version       = DMARCator::VERSION
   gem.license       = 'MIT'
-  gem.authors       = ["Noah Berman", "Davis Gallinghouse"]
-  gem.email         = ["noah@noahberman.org", "davis@trailofbits.com"]
+  gem.authors       = ["Noah Berman"]
+  gem.email         = ["noah@noahberman.org"]
   gem.description   = "A hardened DMARC record parser and query client, forked from the Trail of Bits 'dmarc' gem."
   gem.summary       = "DMARC record parser and query client"
   gem.homepage      = "https://github.com/bermannoah/dmarc"
