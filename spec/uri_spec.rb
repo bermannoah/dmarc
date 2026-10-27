@@ -109,6 +109,52 @@ describe DMARCator::Uri do
     end
   end
 
+  describe "#eql?" do
+    it "is true when all fields match" do
+      other = described_class.new(uri.dup, size, unit)
+
+      expect(subject.eql?(other)).to be(true)
+    end
+
+    it "is false when the uri differs" do
+      other = described_class.new(URI("mailto:other@example.com"), size, unit)
+
+      expect(subject.eql?(other)).to be(false)
+    end
+
+    it "is false for a different class" do
+      expect(subject.eql?(Object.new)).to be(false)
+    end
+  end
+
+  describe "#hash" do
+    it "is equal for equivalent URIs" do
+      other = described_class.new(uri.dup, size, unit)
+
+      expect(subject.hash).to eq(other.hash)
+    end
+
+    it "differs for non-equivalent URIs" do
+      other = described_class.new(URI("mailto:other@example.com"), size, unit)
+
+      expect(subject.hash).not_to eq(other.hash)
+    end
+  end
+
+  describe "Hash/Set semantics" do
+    it "deduplicates equivalent URIs" do
+      other = described_class.new(uri.dup, size, unit)
+
+      expect([subject, other].uniq.size).to eq(1)
+    end
+
+    it "treats equivalent URIs as the same Hash key" do
+      other = described_class.new(uri.dup, size, unit)
+
+      expect({ subject => 1 }.key?(other)).to be(true)
+    end
+  end
+
   describe "#to_s" do
     context "when only the uri is set" do
       subject { described_class.new(uri) }

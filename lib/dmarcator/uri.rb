@@ -76,6 +76,27 @@ module DMARCator
     end
 
     #
+    # Determines if the DMARC URI is equivalent to the other.
+    #
+    # @param [Object] other
+    #   the other DMARC URI to compare against.
+    #
+    # @return [Boolean]
+    #
+    def eql?(other)
+      self == other
+    end
+
+    #
+    # Computes a hash value consistent with {#eql?}.
+    #
+    # @return [Integer]
+    #
+    def hash
+      [self.class, @uri, @size, @unit].hash
+    end
+
+    #
     # Converts the DMARC URI back into a String.
     #
     # @return [String]
