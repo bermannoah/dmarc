@@ -35,6 +35,22 @@ RSpec.describe DMARCator::Report do
     }.to raise_error(DMARCator::InvalidReport)
   end
 
+  it 'does not resolve external entities' do
+    xml = <<~XML
+      <?xml version="1.0"?>
+      <!DOCTYPE feedback [<!ENTITY xxe SYSTEM "file:///etc/hostname">]>
+      <feedback>
+        <report_metadata>
+          <org_name>&xxe;</org_name>
+        </report_metadata>
+      </feedback>
+    XML
+
+    report = described_class.new(xml)
+
+    expect(report.metadata.org_name).to eq('')
+  end
+
   it 'returns nil for a non-numeric timestamp' do
     report = described_class.new(
       '<feedback><report_metadata><date_range><begin>notanumber</begin></date_range></report_metadata></feedback>'

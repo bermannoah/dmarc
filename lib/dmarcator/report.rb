@@ -14,8 +14,8 @@ module DMARCator
   #
   # Represents a parsed DMARC aggregate/forensic XML report.
   #
-  # Nokogiri's default parse options are used, which do not resolve external
-  # entities or fetch network resources; treat report XML as untrusted input.
+  # Parsing disables network access (NONET) so external entities are never
+  # resolved or fetched; treat report XML as untrusted input.
   #
   class Report
     include XmlHelper
@@ -28,7 +28,7 @@ module DMARCator
     #
     def initialize(xml)
       @xml = xml
-      @node = Nokogiri::XML(xml)
+      @node = Nokogiri::XML(xml) { |config| config.nonet }
 
       unless @node.errors.empty?
         raise InvalidReport, "invalid DMARC XML report: #{@node.errors.first}"
