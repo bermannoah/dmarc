@@ -110,6 +110,26 @@ describe Record do
         expect(rec.rua).to be_nil
       end
     end
+
+    context 'in strict mode' do
+      it 'parses a valid record' do
+        rec = subject.parse('v=DMARC1; p=none; pct=50; rua=mailto:a@b.com', strict: true)
+
+        expect(rec.pct).to eq(50)
+      end
+
+      it 'raises on unknown tags' do
+        expect {
+          subject.parse('v=DMARC1; p=none; foo=bar', strict: true)
+        }.to raise_error(InvalidRecord, /unknown DMARC tag/)
+      end
+
+      it 'raises on invalid tag values' do
+        expect {
+          subject.parse('v=DMARC1; p=none; pct=abc', strict: true)
+        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+      end
+    end
   end
 
   describe ".query" do

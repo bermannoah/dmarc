@@ -261,6 +261,10 @@ module DMARCator
     # @param [String] record
     #   The raw DMARC record.
     #
+    # @param [Boolean] strict (false)
+    #   When `true`, raise on unknown tags or invalid tag values instead of
+    #   silently ignoring them.
+    #
     # @return [Record]
     #   The parsed DMARC record.
     #
@@ -271,8 +275,8 @@ module DMARCator
     #
     # @api public
     #
-    def self.parse(record)
-      attributes = Parser.parse(record)
+    def self.parse(record, strict: false)
+      attributes = Parser.parse(record, strict: strict)
 
       unless attributes[:p]
         raise InvalidRecord, "DMARC record is missing the required 'p' tag"

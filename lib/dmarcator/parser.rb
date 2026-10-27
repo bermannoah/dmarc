@@ -45,8 +45,14 @@ module DMARCator
 
     def self.tag_rule(name,tag,&block)
       rule(:"dmarc_#{name}") do
-        str(tag) >> wsp? >> str('=') >> wsp? >>
-        (instance_eval(&block).as(tag.to_sym) | unknown_value)
+        (
+          str(tag) >> wsp? >> str('=') >> wsp? >>
+          instance_eval(&block).as(tag.to_sym)
+        ) |
+        (
+          str(tag) >> wsp? >> str('=') >> wsp? >>
+          match["^; \t"].repeat(1)
+        ).as(:invalid_tag)
       end
     end
 
@@ -81,8 +87,7 @@ module DMARCator
     tag_rule(:adkim, 'adkim') { match['rs'] }
     tag_rule(:aspf, 'aspf')   { match['rs'] }
 
-    rule(:unknown_tag) { match["^; \t"].repeat(1) }
-    rule(:unknown_value) { match["^; \t"].repeat(1) }
+    rule(:unknown_tag) { match["^; \t"].repeat(1).as(:unknown_tag) }
 
     rule(:dmarc_uri) do
       mailto_uri.as(:uri) >> (
@@ -176,11 +181,33 @@ module DMARCator
     # @param [String] record
     #   The raw DMARC record to parse.
     #
+    # @param [Boolean] strict (false)
+    #   When `true`, raise on unknown tags or invalid tag values instead of
+    #   silently ignoring them.
+    #
     # @return [Hash{Symbol => Object}]
     #   The Hash of tags within the record.
     #
-    def self.parse(record)
-      tags = Transform.new.apply(new.parse(record))
+    # @raise [InvalidRecord]
+    #   The record is malformed, or (in strict mode) contains an unknown tag
+    #   or invalid tag value.
+    #
+    def self.parse(record, strict: false)
+      tree = new.parse(record)
+
+      if strict
+        tree.each do |node|
+          next unless ignored?(node)
+
+          if node.key?(:unknown_tag)
+            raise InvalidRecord, "unknown DMARC tag: #{Transform.truncate(node[:unknown_tag].to_s).inspect}"
+          else
+            raise InvalidRecord, "invalid DMARC tag value: #{Transform.truncate(node[:invalid_tag].to_s).inspect}"
+          end
+        end
+      end
+
+      tags = Transform.new.apply(tree.reject { |node| ignored?(node) })
       hash = {}
 
       tags.each do |tag|
@@ -196,6 +223,19 @@ module DMARCator
       validate!(hash)
 
       return hash
+    end
+
+    #
+    # Determines whether a parse-tree node represents a tag that the lenient
+    # parser dropped because it was unknown or had an invalid value.
+    #
+    # @param [Object] node
+    #   The parse-tree node.
+    #
+    # @return [Boolean]
+    #
+    def self.ignored?(node)
+      node.is_a?(Hash) && (node.key?(:unknown_tag) || node.key?(:invalid_tag))
     end
 
     #

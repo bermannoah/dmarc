@@ -89,22 +89,27 @@ describe Parser do
         ])
       end
 
-      it "ignores unknown tags" do
+      it "captures unknown tags" do
         record = 'v=DMARC1;p=none;foo=xxx;sp=reject;bar=xxx;adkim=r;aspf=r'
         expect(subject.parse(record)).to eq([
           {v: 'DMARC1'},
           {p: 'none'},
+          {unknown_tag: 'foo=xxx'},
           {sp: 'reject'},
+          {unknown_tag: 'bar=xxx'},
           {adkim: 'r'},
           {aspf: 'r'}
         ])
       end
 
-      it "ignores syntax errors" do
+      it "captures syntax errors" do
         record = 'v=DMARC1;p=none;sp;adkim=X;aspf='
         expect(subject.parse(record)).to eq([
           {v: 'DMARC1'},
-          {p: 'none'}
+          {p: 'none'},
+          {unknown_tag: 'sp'},
+          {invalid_tag: 'adkim=X'},
+          {unknown_tag: 'aspf='}
         ])
       end
     end
@@ -391,6 +396,25 @@ describe Parser do
         pct: 100,
         fo: ['0', '1', 'd', 's']
       )
+    end
+
+    it "ignores unknown tags and invalid values by default" do
+      expect(subject.parse("v=DMARC1;p=none;foo=xxx;pct=abc")).to eq(
+        v: :DMARC1,
+        p: :none
+      )
+    end
+
+    it "raises on unknown tags when strict" do
+      expect {
+        subject.parse("v=DMARC1;p=none;foo=xxx", strict: true)
+      }.to raise_error(InvalidRecord, /unknown DMARC tag/)
+    end
+
+    it "raises on invalid tag values when strict" do
+      expect {
+        subject.parse("v=DMARC1;p=none;pct=abc", strict: true)
+      }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
     end
 
     context "Alexa Top 500", :gauntlet do
