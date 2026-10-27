@@ -23,6 +23,12 @@ RSpec.describe DMARCator::Report do
     expect(google.version).to be_nil
   end
 
+  it 'returns nil for a non-numeric report version' do
+    report = described_class.new('<feedback><version>abc</version></feedback>')
+
+    expect(report.version).to be_nil
+  end
+
   it 'reads report metadata' do
     report = described_class.new(xml_report)
 

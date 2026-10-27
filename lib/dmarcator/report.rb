@@ -39,7 +39,14 @@ module DMARCator
     def version
       @version ||= begin
         value = get_text('feedback/version')
-        BigDecimal(value) if value && !value.empty?
+
+        if value && !value.empty?
+          begin
+            BigDecimal(value)
+          rescue ArgumentError
+            nil
+          end
+        end
       end
     end
 
