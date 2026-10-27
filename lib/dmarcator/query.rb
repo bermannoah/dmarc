@@ -15,10 +15,11 @@ module DMARCator
   #
   def self.validate_domain(domain)
     unless domain.is_a?(String) && !domain.empty? &&
-           domain.length <= 253 &&
+           domain.length <= 248 &&
            !domain.start_with?('.') &&
            !domain.include?('..') &&
-           !domain.match?(/[^A-Za-z0-9._-]/)
+           !domain.match?(/[^A-Za-z0-9._-]/) &&
+           domain.split('.').all? { |label| label.length <= 63 }
       raise ArgumentError, "invalid domain: #{domain.inspect}"
     end
 

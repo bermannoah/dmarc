@@ -59,4 +59,38 @@ describe DMARCator do
       expect { subject.query("foo bar") }.to raise_error(ArgumentError)
     end
   end
+
+  describe ".validate_domain" do
+    it "accepts a valid domain" do
+      expect(subject.validate_domain("example.com")).to eq("example.com")
+    end
+
+    it "rejects a label longer than 63 octets" do
+      expect {
+        subject.validate_domain("#{'a' * 64}.com")
+      }.to raise_error(ArgumentError)
+    end
+
+    it "accepts a 63-octet label" do
+      domain = "#{'a' * 63}.com"
+
+      expect(subject.validate_domain(domain)).to eq(domain)
+    end
+
+    it "rejects a domain longer than 248 octets" do
+      domain = "#{'a' * 62}.#{'a' * 62}.#{'a' * 62}.#{'a' * 60}"
+
+      expect { subject.validate_domain(domain) }.to raise_error(ArgumentError)
+    end
+
+    it "accepts a domain at the 248-octet limit" do
+      domain = "#{'a' * 62}.#{'a' * 62}.#{'a' * 62}.#{'a' * 59}"
+
+      expect(subject.validate_domain(domain)).to eq(domain)
+    end
+
+    it "rejects a non-string domain" do
+      expect { subject.validate_domain(123) }.to raise_error(ArgumentError)
+    end
+  end
 end
