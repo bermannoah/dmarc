@@ -1,3 +1,7 @@
+### 0.3.1 / 2026-10-26
+
+* Update the gemspec maintainer metadata to list only the fork's author.
+
 ### 0.3.0 / 2026-10-26
 
 * Raise `DMARCator::InvalidReport` for malformed XML reports instead of returning an empty report.
