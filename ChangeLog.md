@@ -1,3 +1,13 @@
+### 0.3.0 / 2026-10-26
+
+* Raise `DMARCator::InvalidReport` for malformed XML reports instead of returning an empty report.
+* Return `nil` for a non-numeric report `version` instead of raising `ArgumentError`.
+* Return `nil` for a non-numeric report timestamp instead of coercing it to the Unix epoch.
+* Add `DMARCator::Uri#eql?` and `#hash` for correct Hash/Set semantics.
+* Harden `DMARCator.validate_domain` against CVE-2026-80213 (63-octet label limit and 248-octet total limit).
+* Warn at load time when the `resolv` gem is affected by CVE-2026-80212/CVE-2026-80213.
+* Require Ruby >= 3.3.13 to pick up the Regexp compilation fixes behind GitLab's CVE-2026-89078, CVE-2026-93577, CVE-2026-97229 and CVE-2026-110264.
+
 ### 0.2.0 / 2026-10-13
 
 * Added DMARC XML report parsing, ported from the `dmarc_parser` gem by D Salko.
