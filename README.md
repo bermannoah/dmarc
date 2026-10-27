@@ -115,7 +115,7 @@ report.records.first.source_ip
 
 ## Requirements
 
-* [Ruby] >= 3.0.0
+* [Ruby] >= 3.3.13
 * [parslet] >= 1.0.0, < 3.0.0
 * [nokogiri] >= 1.10
 * [bigdecimal] >= 1.0
