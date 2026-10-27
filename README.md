@@ -65,7 +65,7 @@ record.aspf
 # => :r
 
 record.fo
-# => ["0"]
+# => ["1"]
 
 record.pct
 # => 100
@@ -93,6 +93,16 @@ record = DMARCator::Record.query("twitter.com")
 # => #<DMARCator::Record ... @p=:reject, @rua=[...], ...>
 ```
 
+## Strict parsing
+
+By default, unknown tags and tags with invalid values are ignored. Pass
+`strict: true` to reject them instead:
+
+```ruby
+DMARCator::Record.parse("v=DMARC1; p=none; pct=abc", strict: true)
+# => DMARCator::InvalidRecord: invalid DMARC tag value: "pct=abc"
+```
+
 ## Parsing XML reports
 
 Parse a DMARC aggregate/forensic report:
@@ -112,6 +122,18 @@ report.policy.domain
 report.records.first.source_ip
 # => "209.85.220.69"
 ```
+
+## Security
+
+DMARC records and XML reports are treated as untrusted input:
+
+* XML reports are parsed with network access disabled (`NONET`), so external
+  entities are never resolved or fetched.
+* Reports larger than 25 MiB are rejected before parsing.
+* A warning is emitted at load time if the bundled `resolv` gem is affected by
+  CVE-2026-80212/CVE-2026-80213.
+* Domain names are validated before resolution (labels ≤ 63 octets, total ≤
+  248 octets, no leading/trailing hyphens).
 
 ## Requirements
 

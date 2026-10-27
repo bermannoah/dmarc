@@ -1,3 +1,12 @@
+### 0.4.0 / 2026-10-26
+
+* Add `strict: true` parsing mode to reject unknown tags and invalid tag values.
+* Return `nil` for non-numeric report integers (`count`, `pct`) instead of coercing them to `0`.
+* Disable network access (`NONET`) explicitly when parsing XML reports.
+* Reject DNS labels with leading or trailing hyphens.
+* Set explicit DNS query timeouts.
+* Reject XML reports larger than 25 MiB.
+
 ### 0.3.1 / 2026-10-26
 
 * Update the gemspec maintainer metadata to list only the fork's author.
