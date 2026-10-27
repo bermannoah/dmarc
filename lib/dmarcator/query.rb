@@ -11,6 +11,11 @@ module DMARCator
   ].freeze
 
   #
+  # DNS query timeouts in seconds, tried in order.
+  #
+  DNS_TIMEOUTS = [2, 4, 8].freeze
+
+  #
   # Determines the version of the loaded `resolv` gem, if available.
   #
   # @return [String, nil]
@@ -56,7 +61,7 @@ module DMARCator
            !domain.start_with?('.') &&
            !domain.include?('..') &&
            !domain.match?(/[^A-Za-z0-9._-]/) &&
-           domain.split('.').all? { |label| label.length <= 63 }
+           domain.split('.').all? { |label| label.length <= 63 && !label.start_with?('-') && !label.end_with?('-') }
       raise ArgumentError, "invalid domain: #{domain.inspect}"
     end
 
@@ -70,7 +75,7 @@ module DMARCator
   #   The domain to query DMARC for.
   #
   # @param [Resolv::DNS] resolver
-  #   The resolver to use.
+  #   The resolver to use. Its timeouts are set to {DNS_TIMEOUTS}.
   #
   # @return [String, nil]
   #   The domain's DMARC record or `nil` if none exists.
@@ -81,6 +86,8 @@ module DMARCator
   #
   def self.query(domain,resolver=Resolv::DNS.new)
     validate_domain(domain)
+
+    resolver.timeouts = DNS_TIMEOUTS
 
     host = "_dmarc.#{domain}"
 

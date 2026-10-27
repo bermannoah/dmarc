@@ -8,6 +8,8 @@ describe DMARCator do
     let(:txt_class) { Resolv::DNS::Resource::IN::TXT }
     let(:resolver)  { double("resolver") }
 
+    before { allow(resolver).to receive(:timeouts=) }
+
     def txt(strings)
       instance_double(txt_class, strings: strings)
     end
@@ -20,6 +22,15 @@ describe DMARCator do
       expect(subject.query("google.com", resolver)).to eq(
         "v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com"
       )
+    end
+
+    it "sets explicit timeouts on the resolver" do
+      expect(resolver).to receive(:timeouts=).with(DMARCator::DNS_TIMEOUTS)
+      expect(resolver).to receive(:getresources)
+        .with("_dmarc.google.com", txt_class)
+        .and_return([txt(["v=DMARC1; p=reject"])])
+
+      subject.query("google.com", resolver)
     end
 
     it "ignores non-DMARC TXT records" do
@@ -91,6 +102,18 @@ describe DMARCator do
 
     it "rejects a non-string domain" do
       expect { subject.validate_domain(123) }.to raise_error(ArgumentError)
+    end
+
+    it "rejects a label with a leading hyphen" do
+      expect { subject.validate_domain("-foo.com") }.to raise_error(ArgumentError)
+    end
+
+    it "rejects a label with a trailing hyphen" do
+      expect { subject.validate_domain("foo-.com") }.to raise_error(ArgumentError)
+    end
+
+    it "accepts a hyphen within a label" do
+      expect(subject.validate_domain("foo-bar.com")).to eq("foo-bar.com")
     end
   end
 
