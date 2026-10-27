@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dmarcator/exceptions'
 require 'dmarcator/uri'
 
@@ -98,7 +100,8 @@ module DMARCator
     end
 
     rule(:mailto_uri) do
-      str('mailto:') >> mailto_address
+      match['mM'] >> match['aA'] >> match['iI'] >> match['lL'] >> match['tT'] >> match['oO'] >>
+      str(':') >> mailto_address
     end
 
     rule(:mailto_address) do

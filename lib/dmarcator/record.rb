@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'dmarcator/query'
 require 'dmarcator/parser'
 require 'dmarcator/exceptions'
 
 require 'resolv'
-require 'uri'
 
 module DMARCator
   class Record
@@ -18,7 +19,7 @@ module DMARCator
     # @return [Array<Uri>]
     attr_reader :rua
 
-    # `rua` field.
+    # `ruf` field.
     #
     # @return [Array<Uri>]
     attr_reader :ruf
@@ -76,7 +77,7 @@ module DMARCator
     end
 
     #
-    # Determines if the `sp=` field was specified?
+    # Determines if the `sp=` field was specified.
     #
     # @return [Boolean]
     #
@@ -160,7 +161,7 @@ module DMARCator
     end
 
     #
-    # Determines if the `p=` field was specified?
+    # Determines if the `p=` field was specified.
     #
     # @return [Boolean]
     #
@@ -234,7 +235,7 @@ module DMARCator
     end
 
     #
-    # Determines if the `rua=` field was specified?
+    # Determines if the `rua=` field was specified.
     #
     # @return [Boolean]
     #
@@ -245,7 +246,7 @@ module DMARCator
     end
 
     #
-    # Determines if the `ruf=` field was specified?
+    # Determines if the `ruf=` field was specified.
     #
     # @return [Boolean]
     #
@@ -285,8 +286,6 @@ module DMARCator
       new(attributes)
     rescue Parslet::ParseFailed => error
       raise InvalidRecord.new(truncate_error_message(error.message), error.cause)
-    rescue URI::Error => error
-      raise InvalidRecord.new(truncate_error_message(error.message), error)
     end
 
     #

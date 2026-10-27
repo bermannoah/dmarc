@@ -12,6 +12,10 @@ describe Parser do
         expect(subject.parse(uri)).to eq(uri: uri)
       end
 
+      it 'parses case-insensitive mailto URIs' do
+        expect(subject.parse('MAILTO:user@example.org')).to eq(uri: 'MAILTO:user@example.org')
+      end
+
       it 'parses mailto URIs with size' do
         expect(subject.parse(uri + '!20')).to eq(uri: uri, size: '20')
       end

@@ -74,6 +74,12 @@ describe Record do
         expect(rec).to be_a Record
         expect(rec.p).to eq :quarantine
       end
+
+      it 'parses case-insensitive mailto URIs' do
+        rec = subject.parse('v=DMARC1; p=none; rua=MAILTO:a@b.com')
+
+        expect(rec.rua).to eq([Uri.new(URI('mailto:a@b.com'))])
+      end
     end
 
     context 'with an invalid record' do

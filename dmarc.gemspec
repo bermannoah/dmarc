@@ -20,7 +20,6 @@ Gem::Specification.new do |gem|
   }
 
   gem.files         = Dir['lib/**/*.rb'] + %w[README.md ChangeLog.md LICENSE.txt]
-  gem.test_files    = Dir['spec/**/*']
   gem.require_paths = ["lib"]
   gem.required_ruby_version = '>= 3.3.13'
 

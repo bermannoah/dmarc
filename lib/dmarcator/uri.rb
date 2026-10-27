@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DMARCator
   #
   # Represents a DMARC URI.
@@ -113,7 +115,7 @@ module DMARCator
       return str
     end
 
-    protected
+    private
 
     #
     # Pass all missing methods to {#uri}.
