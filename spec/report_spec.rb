@@ -29,6 +29,12 @@ RSpec.describe DMARCator::Report do
     expect(report.version).to be_nil
   end
 
+  it 'raises InvalidReport for malformed XML' do
+    expect {
+      described_class.new('this is not xml')
+    }.to raise_error(DMARCator::InvalidReport)
+  end
+
   it 'reads report metadata' do
     report = described_class.new(xml_report)
 

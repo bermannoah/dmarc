@@ -5,6 +5,7 @@ require 'bigdecimal'
 require 'bigdecimal/util'
 
 require_relative 'xml_helper'
+require_relative 'exceptions'
 require_relative 'report/metadata'
 require_relative 'report/policy'
 require_relative 'report/record'
@@ -28,6 +29,11 @@ module DMARCator
     def initialize(xml)
       @xml = xml
       @node = Nokogiri::XML(xml)
+
+      unless @node.errors.empty?
+        raise InvalidReport, "invalid DMARC XML report: #{@node.errors.first}"
+      end
+
       @node.remove_namespaces!
     end
 
