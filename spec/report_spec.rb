@@ -67,6 +67,24 @@ RSpec.describe DMARCator::Report do
     expect(report.metadata.begin_at).to eq(Time.at(1_593_648_000))
   end
 
+  it 'returns nil for a non-numeric count' do
+    report = described_class.new('<feedback><record><row><count>abc</count></row></record></feedback>')
+
+    expect(report.records.first.count).to be_nil
+  end
+
+  it 'returns nil for a non-numeric policy pct' do
+    report = described_class.new('<feedback><policy_published><pct>abc</pct></policy_published></feedback>')
+
+    expect(report.policy.pct).to be_nil
+  end
+
+  it 'parses integers with surrounding whitespace' do
+    report = described_class.new('<feedback><record><row><count> 96 </count></row></record></feedback>')
+
+    expect(report.records.first.count).to eq(96)
+  end
+
   it 'reads report metadata' do
     report = described_class.new(xml_report)
 

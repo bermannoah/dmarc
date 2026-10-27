@@ -21,7 +21,7 @@ module DMARCator
           self.public_send("#{attr}=", get_text("feedback/policy_published/#{attr}"))
         end
 
-        self.pct = self.pct && !self.pct.empty? ? self.pct.to_i : nil
+        self.pct = get_int('feedback/policy_published/pct')
       end
     end
   end

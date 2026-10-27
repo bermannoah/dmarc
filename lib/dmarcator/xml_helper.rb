@@ -48,7 +48,12 @@ module DMARCator
     #
     def get_int(xpath)
       value = get_text(xpath)
-      value && !value.empty? ? value.to_i : nil
+      return nil if value.nil? || value.empty?
+
+      digits = value.strip
+      return nil unless digits.match?(/\A\d+\z/)
+
+      digits.to_i
     end
   end
 end
