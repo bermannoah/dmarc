@@ -67,13 +67,13 @@ module DMARCator
     end
 
     tag_rule(:auri, 'rua') do
-      dmarc_uri >> (wsp? >> str(',') >> wsp? >> dmarc_uri).repeat
+      dmarc_uri >> (uri_list_sep.present? >> uri_list_sep).repeat >> (wsp? >> str(',')).absent?
     end
 
     tag_rule(:ainterval,'ri') { digit.repeat(1, 10) >> digit.absent? }
 
     tag_rule(:furi,'ruf') do
-      dmarc_uri >> (wsp? >> str(',') >> wsp? >> dmarc_uri).repeat
+      dmarc_uri >> (uri_list_sep.present? >> uri_list_sep).repeat >> (wsp? >> str(',')).absent?
     end
 
     tag_rule(:fo,'fo') do
@@ -98,6 +98,8 @@ module DMARCator
         ).as(:unit).maybe
       ).maybe >> str('!').absent?
     end
+
+    rule(:uri_list_sep) { wsp? >> str(',') >> wsp? >> dmarc_uri }
 
     rule(:mailto_uri) do
       match['mM'] >> match['aA'] >> match['iI'] >> match['lL'] >> match['tT'] >> match['oO'] >>

@@ -201,6 +201,12 @@ describe Parser do
           }
         )
       end
+
+      it 'flags a list containing an invalid URI' do
+        expect(subject.parse('rua=mailto:user@example.org,http://evil')).to eq(
+          invalid_tag: 'rua=mailto:user@example.org,http://evil'
+        )
+      end
     end
 
     describe 'dmarc_ainterval' do

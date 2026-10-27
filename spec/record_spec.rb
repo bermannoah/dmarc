@@ -115,6 +115,13 @@ describe Record do
         expect(rec).to be_a Record
         expect(rec.rua).to be_nil
       end
+
+      it 'ignores a list containing an invalid rua URI' do
+        rec = subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com,http://evil')
+
+        expect(rec).to be_a Record
+        expect(rec.rua).to be_nil
+      end
     end
 
     context 'in strict mode' do
@@ -133,6 +140,12 @@ describe Record do
       it 'raises on invalid tag values' do
         expect {
           subject.parse('v=DMARC1; p=none; pct=abc', strict: true)
+        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+      end
+
+      it 'raises on a rua list containing an invalid URI' do
+        expect {
+          subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com,http://evil', strict: true)
         }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
       end
     end
