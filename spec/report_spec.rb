@@ -51,6 +51,14 @@ RSpec.describe DMARCator::Report do
     expect(report.metadata.org_name).to eq('')
   end
 
+  it 'raises InvalidReport for oversized reports' do
+    stub_const('DMARCator::Report::MAX_REPORT_BYTES', 10)
+
+    expect {
+      described_class.new("<feedback>#{'a' * 100}</feedback>")
+    }.to raise_error(DMARCator::InvalidReport, /maximum size/)
+  end
+
   it 'returns nil for a non-numeric timestamp' do
     report = described_class.new(
       '<feedback><report_metadata><date_range><begin>notanumber</begin></date_range></report_metadata></feedback>'
