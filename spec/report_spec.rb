@@ -35,6 +35,22 @@ RSpec.describe DMARCator::Report do
     }.to raise_error(DMARCator::InvalidReport)
   end
 
+  it 'returns nil for a non-numeric timestamp' do
+    report = described_class.new(
+      '<feedback><report_metadata><date_range><begin>notanumber</begin></date_range></report_metadata></feedback>'
+    )
+
+    expect(report.metadata.begin_at).to be_nil
+  end
+
+  it 'parses timestamps with surrounding whitespace' do
+    report = described_class.new(
+      '<feedback><report_metadata><date_range><begin> 1593648000 </begin></date_range></report_metadata></feedback>'
+    )
+
+    expect(report.metadata.begin_at).to eq(Time.at(1_593_648_000))
+  end
+
   it 'reads report metadata' do
     report = described_class.new(xml_report)
 

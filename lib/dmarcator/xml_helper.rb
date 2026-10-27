@@ -30,7 +30,12 @@ module DMARCator
     #
     def get_timestamp(xpath)
       value = get_text(xpath)
-      value && !value.empty? ? Time.at(value.to_i) : nil
+      return nil if value.nil? || value.empty?
+
+      digits = value.strip
+      return nil unless digits.match?(/\A\d+\z/)
+
+      Time.at(digits.to_i)
     end
 
     #
