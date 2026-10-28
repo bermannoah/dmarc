@@ -22,19 +22,67 @@ module DMARCator
 
       def initialize(node)
         @node = node
-        self.source_ip = get_text('row/source_ip')
-        self.count = get_int('row/count')
-        self.disposition = get_text('row/policy_evaluated/disposition')
-        self.dkim = get_text('row/policy_evaluated/dkim')
-        self.spf = get_text('row/policy_evaluated/spf')
-        self.reasons = node.xpath('row/policy_evaluated/reason').map do |reason_node|
-          Reason.new(reason_node)
+        self.reasons = []
+        self.auth_results = []
+
+        node.element_children.each do |section|
+          case section.name
+          when 'row'
+            parse_row(section)
+          when 'identifiers'
+            parse_identifiers(section)
+          when 'auth_results'
+            parse_auth_results(section)
+          end
         end
-        self.envelope_to = get_text('identifiers/envelope_to')
-        self.envelope_from = get_text('identifiers/envelope_from')
-        self.header_from = get_text('identifiers/header_from')
-        self.auth_results = node.xpath('auth_results/*').map do |auth_results_node|
-          AuthResult.new(auth_results_node)
+      end
+
+      private
+
+      def parse_row(row)
+        row.element_children.each do |element|
+          case element.name
+          when 'source_ip'
+            self.source_ip ||= element.text
+          when 'count'
+            self.count ||= parse_integer(element.text)
+          when 'policy_evaluated'
+            parse_policy_evaluated(element)
+          end
+        end
+      end
+
+      def parse_policy_evaluated(policy_evaluated)
+        policy_evaluated.element_children.each do |element|
+          case element.name
+          when 'disposition'
+            self.disposition ||= element.text
+          when 'dkim'
+            self.dkim ||= element.text
+          when 'spf'
+            self.spf ||= element.text
+          when 'reason'
+            reasons << Reason.new(element)
+          end
+        end
+      end
+
+      def parse_identifiers(identifiers)
+        identifiers.element_children.each do |element|
+          case element.name
+          when 'envelope_to'
+            self.envelope_to ||= element.text
+          when 'envelope_from'
+            self.envelope_from ||= element.text
+          when 'header_from'
+            self.header_from ||= element.text
+          end
+        end
+      end
+
+      def parse_auth_results(auth_results)
+        auth_results.element_children.each do |element|
+          self.auth_results << AuthResult.new(element)
         end
       end
     end

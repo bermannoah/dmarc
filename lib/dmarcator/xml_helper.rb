@@ -29,13 +29,7 @@ module DMARCator
     # @return [Time, nil]
     #
     def get_timestamp(xpath)
-      value = get_text(xpath)
-      return nil if value.nil? || value.empty?
-
-      digits = value.strip
-      return nil unless digits.match?(/\A\d+\z/)
-
-      Time.at(digits.to_i)
+      parse_timestamp(get_text(xpath))
     end
 
     #
@@ -47,7 +41,37 @@ module DMARCator
     # @return [Integer, nil]
     #
     def get_int(xpath)
-      value = get_text(xpath)
+      parse_integer(get_text(xpath))
+    end
+
+    #
+    # Parses a Unix timestamp from raw element text.
+    #
+    # @param [String, nil] value
+    #   The element text.
+    #
+    # @return [Time, nil]
+    #
+    # @api private
+    #
+    def parse_timestamp(value)
+      seconds = parse_integer(value)
+
+      Time.at(seconds) if seconds
+    end
+
+    #
+    # Parses an integer from raw element text, returning `nil` for values that
+    # are not plain decimal digits.
+    #
+    # @param [String, nil] value
+    #   The element text.
+    #
+    # @return [Integer, nil]
+    #
+    # @api private
+    #
+    def parse_integer(value)
       return nil if value.nil? || value.empty?
 
       digits = value.strip

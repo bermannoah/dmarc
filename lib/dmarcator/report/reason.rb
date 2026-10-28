@@ -16,8 +16,15 @@ module DMARCator
 
       def initialize(node)
         @node = node
-        self.type = get_text('type')
-        self.comment = get_text('comment')
+
+        node.element_children.each do |element|
+          case element.name
+          when 'type'
+            self.type ||= element.text
+          when 'comment'
+            self.comment ||= element.text
+          end
+        end
       end
     end
   end
