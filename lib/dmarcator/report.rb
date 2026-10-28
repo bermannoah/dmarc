@@ -30,13 +30,20 @@ module DMARCator
     #   The raw DMARC XML report.
     #
     # @raise [InvalidReport]
-    #   The report is not a String, is empty, exceeds {MAX_REPORT_BYTES}, or is
-    #   not well-formed XML.
+    #   The report is not a String, exceeds {MAX_REPORT_BYTES}, or is not
+    #   well-formed XML.
     #
     def initialize(xml)
-      self.class.validate_xml!(xml)
+      unless xml.is_a?(String)
+        raise InvalidReport, "DMARC XML report must be a String, got #{xml.class}"
+      end
 
       @xml = xml
+
+      if xml.bytesize > MAX_REPORT_BYTES
+        raise InvalidReport, "DMARC XML report exceeds maximum size of #{MAX_REPORT_BYTES} bytes"
+      end
+
       @node = Nokogiri::XML(xml) { |config| config.nonet }
 
       unless @node.errors.empty?
@@ -44,107 +51,6 @@ module DMARCator
       end
 
       @node.remove_namespaces!
-    end
-
-    #
-    # Streams the records of a DMARC XML report without building a DOM for the
-    # whole document.
-    #
-    # Memory use stays proportional to a single record, at the cost of
-    # re-parsing each `record` subtree. Prefer {Report#records} for reports
-    # that fit comfortably in memory, and this method for very large ones.
-    #
-    # @param [String] xml
-    #   The raw DMARC XML report.
-    #
-    # @yieldparam [Record] record
-    #   Each record in document order.
-    #
-    # @return [Enumerator, nil]
-    #
-    # @raise [InvalidReport]
-    #   The report is not a String, is empty, exceeds {MAX_REPORT_BYTES}, or is
-    #   not well-formed XML. Well-formedness is only known once the whole
-    #   report has been streamed, so records yielded before a malformed tail
-    #   are not retracted. libxml2 may emit a diagnostic to stderr for
-    #   malformed input; it is not echoed into the exception message.
-    #
-    def self.each_record(xml, &block)
-      return enum_for(:each_record, xml) unless block_given?
-
-      validate_xml!(xml)
-
-      reader = Nokogiri::XML::Reader(xml, nil, nil, Nokogiri::XML::ParseOptions::NONET)
-
-      begin
-        reader.each do |node|
-          next unless node.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
-          next unless node.name == 'record' && node.depth == 1
-
-          fragment = node.outer_xml
-
-          if fragment.nil?
-            raise InvalidReport, "invalid DMARC XML report: truncated record"
-          end
-
-          document = parse_fragment(fragment)
-          block.call(Record.new(document.root))
-        end
-      rescue Nokogiri::XML::SyntaxError => error
-        raise InvalidReport, "invalid DMARC XML report: #{error.message}"
-      end
-
-      unless reader.errors.empty?
-        raise InvalidReport, "invalid DMARC XML report: #{reader.errors.first}"
-      end
-
-      nil
-    end
-
-    #
-    # Parses a single record fragment produced while streaming.
-    #
-    # @param [String] fragment
-    #   The record XML.
-    #
-    # @return [Nokogiri::XML::Document]
-    #
-    # @raise [InvalidReport]
-    #   The fragment is not well-formed XML.
-    #
-    # @api private
-    #
-    def self.parse_fragment(fragment)
-      Nokogiri::XML(fragment, nil, nil, Nokogiri::XML::ParseOptions::NONET)
-    rescue Nokogiri::XML::SyntaxError => error
-      raise InvalidReport, "invalid DMARC XML report: #{error.message}"
-    end
-
-    #
-    # Validates raw report input before parsing.
-    #
-    # @param [String] xml
-    #   The raw DMARC XML report.
-    #
-    # @raise [InvalidReport]
-    #   The report is not a String, is empty, or exceeds {MAX_REPORT_BYTES}.
-    #
-    # @api private
-    #
-    def self.validate_xml!(xml)
-      unless xml.is_a?(String)
-        raise InvalidReport, "DMARC XML report must be a String, got #{xml.class}"
-      end
-
-      if xml.empty?
-        raise InvalidReport, "invalid DMARC XML report: empty input"
-      end
-
-      if xml.bytesize > MAX_REPORT_BYTES
-        raise InvalidReport, "DMARC XML report exceeds maximum size of #{MAX_REPORT_BYTES} bytes"
-      end
-
-      nil
     end
 
     #
