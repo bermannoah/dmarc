@@ -40,8 +40,15 @@ module DMARCator
     version = resolv_version
     return false unless version
 
+    begin
+      parsed = Gem::Version.new(version)
+    rescue ArgumentError
+      # A non-semver version string means we cannot tell; do not warn.
+      return false
+    end
+
     VULNERABLE_RESOLV.any? do |requirement|
-      requirement.satisfied_by?(Gem::Version.new(version))
+      requirement.satisfied_by?(parsed)
     end
   end
 

@@ -151,5 +151,11 @@ describe DMARCator do
 
       expect(subject.vulnerable_resolv?).to be(false)
     end
+
+    it "is false when the version is not a valid gem version" do
+      allow(subject).to receive(:resolv_version).and_return("custom-build")
+
+      expect(subject.vulnerable_resolv?).to be(false)
+    end
   end
 end
