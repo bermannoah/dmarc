@@ -112,7 +112,7 @@ module DMARCator
 
     rule(:mailto_local)  { mailto_char.repeat(1) }
     rule(:mailto_domain) { mailto_char.repeat(1) }
-    rule(:mailto_char)   { match["^;,! \t@"] }
+    rule(:mailto_char)   { match["A-Za-z0-9._%+-"] }
 
     rule(:digit) { match('[0-9]') }
     rule(:wsp) { str(' ') | str("\t") }

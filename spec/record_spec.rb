@@ -80,6 +80,12 @@ describe Record do
 
         expect(rec.rua).to eq([Uri.new(URI('mailto:a@b.com'))])
       end
+
+      it 'parses a mailto URI with a plus tag' do
+        rec = subject.parse('v=DMARC1; p=none; rua=mailto:user+tag@example.com')
+
+        expect(rec.rua).to eq([Uri.new(URI('mailto:user+tag@example.com'))])
+      end
     end
 
     context 'with an invalid record' do
@@ -122,6 +128,13 @@ describe Record do
         expect(rec).to be_a Record
         expect(rec.rua).to be_nil
       end
+
+      it 'ignores a rua URI with a control character' do
+        rec = subject.parse("v=DMARC1; p=none; rua=mailto:a\nb@example.com")
+
+        expect(rec).to be_a Record
+        expect(rec.rua).to be_nil
+      end
     end
 
     context 'in strict mode' do
@@ -146,6 +159,12 @@ describe Record do
       it 'raises on a rua list containing an invalid URI' do
         expect {
           subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com,http://evil', strict: true)
+        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+      end
+
+      it 'raises on a rua URI with a control character' do
+        expect {
+          subject.parse("v=DMARC1; p=none; rua=mailto:a\nb@example.com", strict: true)
         }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
       end
     end

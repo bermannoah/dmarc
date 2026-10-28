@@ -207,6 +207,10 @@ describe Parser do
           invalid_tag: 'rua=mailto:user@example.org,http://evil'
         )
       end
+
+      it 'flags a mailto URI containing a control character' do
+        expect(subject.parse("rua=mailto:a\nb@example.com")).to include(:invalid_tag)
+      end
     end
 
     describe 'dmarc_ainterval' do
