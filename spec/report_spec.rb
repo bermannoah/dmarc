@@ -57,11 +57,35 @@ RSpec.describe DMARCator::Report do
   end
 
   it 'raises InvalidReport for oversized reports' do
-    stub_const('DMARCator::Report::MAX_REPORT_BYTES', 10)
+    allow(described_class).to receive(:max_report_bytes).and_return(10)
 
     expect {
       described_class.new("<feedback>#{'a' * 100}</feedback>")
     }.to raise_error(DMARCator::InvalidReport, /maximum size/)
+  end
+
+  describe '.max_report_bytes' do
+    after { described_class.max_report_bytes = nil }
+
+    it 'defaults to MAX_REPORT_BYTES' do
+      described_class.max_report_bytes = nil
+
+      expect(described_class.max_report_bytes).to eq(described_class::MAX_REPORT_BYTES)
+    end
+
+    it 'can be lowered to bound memory' do
+      described_class.max_report_bytes = 10
+
+      expect {
+        described_class.new("<feedback>#{'a' * 100}</feedback>")
+      }.to raise_error(DMARCator::InvalidReport, /maximum size of 10 bytes/)
+    end
+
+    it 'accepts reports within the configured limit' do
+      described_class.max_report_bytes = 1024
+
+      expect(described_class.new('<feedback/>').records).to eq([])
+    end
   end
 
   it 'returns nil for a non-numeric timestamp' do

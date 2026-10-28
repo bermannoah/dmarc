@@ -129,7 +129,13 @@ DMARC records and XML reports are treated as untrusted input:
 
 * XML reports are parsed with network access disabled (`NONET`), so external
   entities are never resolved or fetched.
-* Reports larger than 25 MiB are rejected before parsing.
+* Reports larger than `DMARCator::Report.max_report_bytes` (25 MiB by
+  default) are rejected before parsing. Parsing builds a DOM roughly 13× the
+  input size, so lower the limit to bound memory:
+
+  ```ruby
+  DMARCator::Report.max_report_bytes = 5 * 1024 * 1024
+  ```
 * A warning is emitted at load time if the bundled `resolv` gem is affected by
   CVE-2026-80212/CVE-2026-80213.
 * Domain names are validated before resolution (labels ≤ 63 octets, total ≤

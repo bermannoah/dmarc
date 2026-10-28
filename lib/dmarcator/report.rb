@@ -20,8 +20,25 @@ module DMARCator
   class Report
     include XmlHelper
 
-    # Maximum accepted report size in bytes (25 MiB).
+    # Default maximum accepted report size in bytes (25 MiB).
     MAX_REPORT_BYTES = 25 * 1024 * 1024
+
+    class << self
+      #
+      # The maximum accepted report size in bytes.
+      #
+      # Defaults to {MAX_REPORT_BYTES}. Parsing a report builds a DOM that is
+      # roughly 13x the input size, so lower this to bound memory for reports
+      # from untrusted sources.
+      #
+      # @return [Integer]
+      #
+      attr_writer :max_report_bytes
+
+      def max_report_bytes
+        @max_report_bytes || MAX_REPORT_BYTES
+      end
+    end
 
     #
     # Initializes the report from an XML string.
@@ -30,7 +47,7 @@ module DMARCator
     #   The raw DMARC XML report.
     #
     # @raise [InvalidReport]
-    #   The report is not a String, exceeds {MAX_REPORT_BYTES}, or is not
+    #   The report is not a String, exceeds {.max_report_bytes}, or is not
     #   well-formed XML.
     #
     def initialize(xml)
@@ -40,8 +57,10 @@ module DMARCator
 
       @xml = xml
 
-      if xml.bytesize > MAX_REPORT_BYTES
-        raise InvalidReport, "DMARC XML report exceeds maximum size of #{MAX_REPORT_BYTES} bytes"
+      limit = self.class.max_report_bytes
+
+      if xml.bytesize > limit
+        raise InvalidReport, "DMARC XML report exceeds maximum size of #{limit} bytes"
       end
 
       @node = Nokogiri::XML(xml) { |config| config.nonet }
