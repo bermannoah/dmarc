@@ -11,11 +11,11 @@ Gem::Specification.new do |gem|
   gem.email         = ["noah@noahberman.org"]
   gem.description   = "A hardened DMARC record parser and query client, forked from the Trail of Bits 'dmarc' gem."
   gem.summary       = "DMARC record parser and query client"
-  gem.homepage      = "https://github.com/bermannoah/dmarc"
+  gem.homepage      = "https://github.com/bermannoah/dmarcator"
 
   gem.metadata = {
-    "source_code_uri"   => "https://github.com/bermannoah/dmarc",
-    "bug_tracker_uri"   => "https://github.com/bermannoah/dmarc/issues",
+    "source_code_uri"   => "https://github.com/bermannoah/dmarcator",
+    "bug_tracker_uri"   => "https://github.com/bermannoah/dmarcator/issues",
     "rubygems_mfa_required" => "true"
   }
 
