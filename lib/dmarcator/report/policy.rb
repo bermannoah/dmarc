@@ -24,9 +24,18 @@ module DMARCator
           case element.name
           when 'pct'
             self.pct ||= parse_integer(element.text)
-          when 'domain', 'adkim', 'aspf', 'p', 'sp', 'fo'
-            name = element.name
-            public_send("#{name}=", element.text) if public_send(name).nil?
+          when 'domain'
+            self.domain ||= element.text
+          when 'adkim'
+            self.adkim ||= element.text
+          when 'aspf'
+            self.aspf ||= element.text
+          when 'p'
+            self.p ||= element.text
+          when 'sp'
+            self.sp ||= element.text
+          when 'fo'
+            self.fo ||= element.text
           end
         end
       end
