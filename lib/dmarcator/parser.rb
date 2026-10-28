@@ -211,7 +211,7 @@ module DMARCator
         raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
       end
 
-      tree = new.parse(record)
+      tree = parser.parse(record)
 
       if strict
         tree.each do |node|
@@ -225,7 +225,7 @@ module DMARCator
         end
       end
 
-      tags = Transform.new.apply(tree.reject { |node| ignored?(node) })
+      tags = transform.apply(tree.reject { |node| ignored?(node) })
       hash = {}
 
       tags.each do |tag|
@@ -254,6 +254,29 @@ module DMARCator
     #
     def self.ignored?(node)
       node.is_a?(Hash) && (node.key?(:unknown_tag) || node.key?(:invalid_tag))
+    end
+
+    #
+    # The memoized parser instance. Parslet caches rules per instance, so
+    # reusing it avoids rebuilding the grammar on every call.
+    #
+    # @return [Parser]
+    #
+    # @api private
+    #
+    def self.parser
+      @parser ||= new
+    end
+
+    #
+    # The memoized transform instance.
+    #
+    # @return [Transform]
+    #
+    # @api private
+    #
+    def self.transform
+      @transform ||= Transform.new
     end
 
     #
