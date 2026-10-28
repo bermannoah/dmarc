@@ -44,7 +44,7 @@ module DMARCator
     #
     # @option attributes [:r, :s] :aspf (:r)
     #
-    # @option attributes [Array<'0', '1', 'd', 's'>] :fo ('0')
+    # @option attributes [Array<String>] :fo (['0'])
     #
     # @option attributes [:none, :quarantine, :reject] :p
     #
@@ -153,7 +153,7 @@ module DMARCator
     #
     # `fo` field.
     #
-    # @return [Array<'0', '1', 'd', 's'>]
+    # @return [Array<String>]
     #   The value of the `fo=` field, or `["0"]` if the field was omitted.
     #
     def fo

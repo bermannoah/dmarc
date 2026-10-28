@@ -115,6 +115,10 @@ describe DMARCator do
     it "accepts a hyphen within a label" do
       expect(subject.validate_domain("foo-bar.com")).to eq("foo-bar.com")
     end
+
+    it "rejects an underscore in the domain" do
+      expect { subject.validate_domain("foo_bar.com") }.to raise_error(ArgumentError)
+    end
   end
 
   describe ".vulnerable_resolv?" do

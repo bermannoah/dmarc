@@ -62,7 +62,7 @@ module DMARCator
            domain.length <= 248 &&
            !domain.start_with?('.') &&
            !domain.include?('..') &&
-           !domain.match?(/[^A-Za-z0-9._-]/) &&
+           !domain.match?(/[^A-Za-z0-9.-]/) &&
            domain.split('.').all? { |label| label.length <= 63 && !label.start_with?('-') && !label.end_with?('-') }
       raise ArgumentError, "invalid domain: #{domain.inspect}"
     end
