@@ -14,16 +14,16 @@ module DMARCator
 
       ATTRIBUTES = [
         :source_ip, :count, :disposition, :dkim, :spf,
-        :envelope_to, :envelope_from, :header_from,
-        :auth_results, :reasons
+        :envelope_to, :envelope_from, :header_from
       ]
 
       attr_accessor(*ATTRIBUTES)
+      attr_writer :auth_results, :reasons
 
       def initialize(node)
         @node = node
-        self.reasons = []
-        self.auth_results = []
+        @reason_nodes = []
+        @auth_result_nodes = []
 
         node.element_children.each do |section|
           case section.name
@@ -32,8 +32,32 @@ module DMARCator
           when 'identifiers'
             parse_identifiers(section)
           when 'auth_results'
-            parse_auth_results(section)
+            collect_auth_results(section)
           end
+        end
+      end
+
+      #
+      # The record's `reason` elements.
+      #
+      # @return [Array<Reason>]
+      #
+      def reasons
+        return @reasons if defined?(@reasons)
+
+        @reasons = @reason_nodes.map { |reason_node| Reason.new(reason_node) }
+      end
+
+      #
+      # The record's `auth_results` entries.
+      #
+      # @return [Array<AuthResult>]
+      #
+      def auth_results
+        return @auth_results if defined?(@auth_results)
+
+        @auth_results = @auth_result_nodes.map do |auth_result_node|
+          AuthResult.new(auth_result_node)
         end
       end
 
@@ -62,7 +86,7 @@ module DMARCator
           when 'spf'
             self.spf ||= element.text
           when 'reason'
-            reasons << Reason.new(element)
+            @reason_nodes << element
           end
         end
       end
@@ -80,9 +104,9 @@ module DMARCator
         end
       end
 
-      def parse_auth_results(auth_results)
+      def collect_auth_results(auth_results)
         auth_results.element_children.each do |element|
-          self.auth_results << AuthResult.new(element)
+          @auth_result_nodes << element
         end
       end
     end
