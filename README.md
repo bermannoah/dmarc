@@ -123,6 +123,16 @@ report.records.first.source_ip
 # => "209.85.220.69"
 ```
 
+For very large reports, stream the records instead of building a DOM for the
+whole document. Memory stays proportional to a single record, at the cost of
+some speed:
+
+```ruby
+DMARCator::Report.each_record(xml_string) do |record|
+  puts record.source_ip
+end
+```
+
 ## Security
 
 DMARC records and XML reports are treated as untrusted input:
