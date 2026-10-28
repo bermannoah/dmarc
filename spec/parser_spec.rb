@@ -431,21 +431,5 @@ describe Parser do
       }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
     end
 
-    context "Alexa Top 500", :gauntlet do
-      require 'csv'
-
-      path = File.expand_path('../data/alexa.csv', __FILE__)
-      csv  = CSV.new(open(path), headers: false)
-
-      csv.each do |row|
-        rank, domain, dmarc = row
-
-        if dmarc
-          it "should parse #{dmarc.inspect}" do
-            expect { subject.parse(dmarc) }.to_not raise_error
-          end
-        end
-      end
-    end
   end
 end

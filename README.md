@@ -150,12 +150,6 @@ To run the RSpec tests:
 rake spec
 ```
 
-To test the parser against the bundled Alexa Top 500 fixture:
-
-```sh
-rake spec:gauntlet
-```
-
 ## License
 
 This project is released under the MIT License. See the [LICENSE.txt] file for
