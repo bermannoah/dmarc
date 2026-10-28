@@ -12,8 +12,3 @@ group :development do
   gem 'kramdown'
   gem 'yard', '~> 0.9'
 end
-
-group :test do
-  gem 'json'
-  gem 'simplecov', require: nil
-end
