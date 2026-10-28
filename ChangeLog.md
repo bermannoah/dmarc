@@ -1,3 +1,9 @@
+### 0.4.2 / 2026-10-28
+
+* Do not raise when the loaded `resolv` version is not a valid gem version; an unparseable version is treated as unknown instead of failing at load time.
+* Reject DMARC records larger than 4 KiB (`Parser::MAX_RECORD_BYTES`) before parsing to bound work on hostile input.
+* Raise the documented `InvalidRecord`/`InvalidReport` for non-String input instead of `ArgumentError`, `TypeError`, or a silently empty report.
+
 ### 0.4.1 / 2026-10-28
 
 * Accept a case-insensitive `mailto:` scheme in `rua`/`ruf` report URIs.
