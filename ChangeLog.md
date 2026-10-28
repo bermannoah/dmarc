@@ -1,3 +1,7 @@
+### 0.5.1 / 2026-10-28
+
+* Point the gem metadata (`homepage`, `source_code_uri`, `bug_tracker_uri`) at the renamed GitHub repository (`dmarc` → `dmarcator`).
+
 ### 0.5.0 / 2026-10-28
 
 * Performance: extract each report record in a single pass over its children instead of one XPath query per field (roughly 3x faster `Report#records`).
