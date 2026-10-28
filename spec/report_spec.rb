@@ -35,6 +35,11 @@ RSpec.describe DMARCator::Report do
     }.to raise_error(DMARCator::InvalidReport)
   end
 
+  it 'raises InvalidReport when the report is not a String' do
+    expect { described_class.new(nil) }.to raise_error(DMARCator::InvalidReport, /must be a String/)
+    expect { described_class.new(123) }.to raise_error(DMARCator::InvalidReport, /must be a String/)
+  end
+
   it 'does not resolve external entities' do
     xml = <<~XML
       <?xml version="1.0"?>

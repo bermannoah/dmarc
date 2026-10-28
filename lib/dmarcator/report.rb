@@ -29,10 +29,18 @@ module DMARCator
     # @param [String] xml
     #   The raw DMARC XML report.
     #
+    # @raise [InvalidReport]
+    #   The report is not a String, exceeds {MAX_REPORT_BYTES}, or is not
+    #   well-formed XML.
+    #
     def initialize(xml)
+      unless xml.is_a?(String)
+        raise InvalidReport, "DMARC XML report must be a String, got #{xml.class}"
+      end
+
       @xml = xml
 
-      if xml.is_a?(String) && xml.bytesize > MAX_REPORT_BYTES
+      if xml.bytesize > MAX_REPORT_BYTES
         raise InvalidReport, "DMARC XML report exceeds maximum size of #{MAX_REPORT_BYTES} bytes"
       end
 

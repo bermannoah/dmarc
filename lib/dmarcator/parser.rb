@@ -199,11 +199,15 @@ module DMARCator
     #   The Hash of tags within the record.
     #
     # @raise [InvalidRecord]
-    #   The record is malformed, is too large, or (in strict mode) contains an
-    #   unknown tag or invalid tag value.
+    #   The record is not a String, is malformed, is too large, or (in strict
+    #   mode) contains an unknown tag or invalid tag value.
     #
     def self.parse(record, strict: false)
-      if record.is_a?(String) && record.bytesize > MAX_RECORD_BYTES
+      unless record.is_a?(String)
+        raise InvalidRecord, "DMARC record must be a String, got #{record.class}"
+      end
+
+      if record.bytesize > MAX_RECORD_BYTES
         raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
       end
 

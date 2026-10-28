@@ -112,6 +112,11 @@ describe Record do
           subject.parse('v=DMARC1; p=none; p=reject')
         }.to raise_error(InvalidRecord)
       end
+
+      it 'raises when the record is not a String' do
+        expect { subject.parse(nil) }.to raise_error(InvalidRecord, /must be a String/)
+        expect { subject.parse(123) }.to raise_error(InvalidRecord, /must be a String/)
+      end
     end
 
     context 'with a non-mailto rua URI' do
