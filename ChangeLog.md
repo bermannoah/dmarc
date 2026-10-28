@@ -1,3 +1,13 @@
+### 0.4.1 / 2026-10-28
+
+* Accept a case-insensitive `mailto:` scheme in `rua`/`ruf` report URIs.
+* Fix parsing of `rua`/`ruf` lists that mix valid and invalid URIs.
+* Restrict `mailto:` address characters to a safe whitelist.
+* Reject underscores in validated domain names.
+* Remove the dead Alexa Top 500 scraping task and its fixture.
+* Drop the `simplecov` development dependency.
+* Housekeeping: remove dead rescue code, fix documentation typos, add frozen string literals, make `Uri` delegation private, and drop the deprecated `gem.test_files`.
+
 ### 0.4.0 / 2026-10-26
 
 * Add `strict: true` parsing mode to reject unknown tags and invalid tag values.
