@@ -431,5 +431,20 @@ describe Parser do
       }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
     end
 
+    it "raises when the record exceeds the maximum size" do
+      stub_const('DMARCator::Parser::MAX_RECORD_BYTES', 10)
+
+      expect {
+        subject.parse("v=DMARC1;p=none")
+      }.to raise_error(InvalidRecord, /maximum size/)
+    end
+
+    it "accepts a record at the maximum size" do
+      record = "v=DMARC1;p=none"
+      stub_const('DMARCator::Parser::MAX_RECORD_BYTES', record.bytesize)
+
+      expect(subject.parse(record)).to eq(v: :DMARC1, p: :none)
+    end
+
   end
 end

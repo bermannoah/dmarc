@@ -14,6 +14,11 @@ module DMARCator
   #
   class Parser < Parslet::Parser
 
+    # Maximum accepted DMARC record size in bytes. Real records are far
+    # smaller; the cap bounds parsing work on hostile input.
+    #
+    MAX_RECORD_BYTES = 4096
+
     root :dmarc_record
 
     rule(:dmarc_record) do
@@ -194,10 +199,14 @@ module DMARCator
     #   The Hash of tags within the record.
     #
     # @raise [InvalidRecord]
-    #   The record is malformed, or (in strict mode) contains an unknown tag
-    #   or invalid tag value.
+    #   The record is malformed, is too large, or (in strict mode) contains an
+    #   unknown tag or invalid tag value.
     #
     def self.parse(record, strict: false)
+      if record.is_a?(String) && record.bytesize > MAX_RECORD_BYTES
+        raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
+      end
+
       tree = new.parse(record)
 
       if strict
