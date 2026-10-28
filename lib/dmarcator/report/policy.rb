@@ -17,11 +17,17 @@ module DMARCator
       def initialize(node)
         @node = node
 
-        ATTRIBUTES.each do |attr|
-          self.public_send("#{attr}=", get_text("feedback/policy_published/#{attr}"))
-        end
+        policy = node.at_xpath('feedback/policy_published')
+        return unless policy
 
-        self.pct = get_int('feedback/policy_published/pct')
+        policy.element_children.each do |element|
+          case element.name
+          when 'pct'
+            self.pct = parse_integer(element.text)
+          when 'domain', 'adkim', 'aspf', 'p', 'sp', 'fo'
+            public_send("#{element.name}=", element.text)
+          end
+        end
       end
     end
   end

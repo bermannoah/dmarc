@@ -19,13 +19,40 @@ module DMARCator
 
       def initialize(node)
         @node = node
-        self.org_name = get_text('feedback/report_metadata/org_name')
-        self.email = get_text('feedback/report_metadata/email')
-        self.extra_contact_info = get_text('feedback/report_metadata/extra_contact_info')
-        self.report_id = get_text('feedback/report_metadata/report_id')
-        self.begin_at = get_timestamp('feedback/report_metadata/date_range/begin')
-        self.end_at = get_timestamp('feedback/report_metadata/date_range/end')
-        self.errors = @node.xpath('feedback/report_metadata/error').map(&:text)
+        self.errors = []
+
+        metadata = node.at_xpath('feedback/report_metadata')
+        return unless metadata
+
+        metadata.element_children.each do |element|
+          case element.name
+          when 'org_name'
+            self.org_name = element.text
+          when 'email'
+            self.email = element.text
+          when 'extra_contact_info'
+            self.extra_contact_info = element.text
+          when 'report_id'
+            self.report_id = element.text
+          when 'error'
+            errors << element.text
+          when 'date_range'
+            parse_date_range(element)
+          end
+        end
+      end
+
+      private
+
+      def parse_date_range(date_range)
+        date_range.element_children.each do |element|
+          case element.name
+          when 'begin'
+            self.begin_at = parse_timestamp(element.text)
+          when 'end'
+            self.end_at = parse_timestamp(element.text)
+          end
+        end
       end
     end
   end
