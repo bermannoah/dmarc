@@ -1,3 +1,13 @@
+### 0.5.0 / 2026-10-28
+
+* Performance: extract each report record in a single pass over its children instead of one XPath query per field (roughly 3x faster `Report#records`).
+* Performance: extract report metadata and policy in a single pass.
+* Performance: build `Record#reasons` and `Record#auth_results` lazily, so callers that only read scalar fields skip roughly half of record construction.
+* Performance: reuse one memoized parser and transform instance, making `Record.parse` roughly 30% faster.
+* Add `DMARCator::Report.max_report_bytes` to configure the maximum accepted report size; parsing builds a DOM roughly 13x the input size, so lower it to bound memory.
+* Report elements that appear more than once now consistently use the first value, matching prior behavior for records.
+* Assign `policy_published` fields explicitly instead of by element name.
+
 ### 0.4.2 / 2026-10-28
 
 * Do not raise when the loaded `resolv` version is not a valid gem version; an unparseable version is treated as unknown instead of failing at load time.
