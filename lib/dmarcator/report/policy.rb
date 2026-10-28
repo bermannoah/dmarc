@@ -23,9 +23,10 @@ module DMARCator
         policy.element_children.each do |element|
           case element.name
           when 'pct'
-            self.pct = parse_integer(element.text)
+            self.pct ||= parse_integer(element.text)
           when 'domain', 'adkim', 'aspf', 'p', 'sp', 'fo'
-            public_send("#{element.name}=", element.text)
+            name = element.name
+            public_send("#{name}=", element.text) if public_send(name).nil?
           end
         end
       end

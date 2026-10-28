@@ -122,6 +122,27 @@ RSpec.describe DMARCator::Report do
     expect(report.records.first.count).to eq(96)
   end
 
+  it 'uses the first value when an element is duplicated' do
+    report = described_class.new(<<~XML)
+      <feedback>
+        <report_metadata>
+          <org_name>first</org_name><org_name>second</org_name>
+          <date_range><begin>100</begin><begin>200</begin></date_range>
+        </report_metadata>
+        <policy_published>
+          <pct>50</pct><pct>100</pct><p>none</p><p>reject</p>
+        </policy_published>
+        <record><row><count>1</count><count>2</count></row></record>
+      </feedback>
+    XML
+
+    expect(report.metadata.org_name).to eq('first')
+    expect(report.metadata.begin_at.to_i).to eq(100)
+    expect(report.policy.pct).to eq(50)
+    expect(report.policy.p).to eq('none')
+    expect(report.records.first.count).to eq(1)
+  end
+
   it 'reads report metadata' do
     report = described_class.new(xml_report)
 
