@@ -40,6 +40,71 @@ RSpec.describe DMARCator::Report do
     expect { described_class.new(123) }.to raise_error(DMARCator::InvalidReport, /must be a String/)
   end
 
+  it 'raises InvalidReport for empty input' do
+    expect { described_class.new('') }.to raise_error(DMARCator::InvalidReport, /empty input/)
+  end
+
+  describe '.each_record' do
+    it 'yields the same records as the DOM parser' do
+      dom = described_class.new(xml_report).records
+      streamed = described_class.each_record(xml_report).to_a
+
+      expect(streamed.size).to eq(dom.size)
+      expect(streamed.map(&:source_ip)).to eq(dom.map(&:source_ip))
+      expect(streamed.map(&:count)).to eq(dom.map(&:count))
+    end
+
+    it 'streams records from a namespaced report' do
+      expect(described_class.each_record(xml_report).count).to eq(12)
+    end
+
+    it 'streams records without a namespace' do
+      expect(described_class.each_record(google_report).count).to eq(12)
+    end
+
+    it 'returns an Enumerator without a block' do
+      expect(described_class.each_record(xml_report)).to be_a(Enumerator)
+    end
+
+    it 'rejects reports whose records reference declared entities' do
+      xml = <<~XML
+        <?xml version="1.0"?>
+        <!DOCTYPE feedback [<!ENTITY xxe SYSTEM "file:///etc/hostname">]>
+        <feedback>
+          <record>
+            <row><source_ip>&xxe;</source_ip></row>
+          </record>
+        </feedback>
+      XML
+
+      expect {
+        described_class.each_record(xml).to_a
+      }.to raise_error(DMARCator::InvalidReport)
+    end
+
+    it 'raises InvalidReport for malformed XML' do
+      expect {
+        described_class.each_record('<feedback><record>').to_a
+      }.to raise_error(DMARCator::InvalidReport)
+    end
+
+    it 'raises InvalidReport when the report is not a String' do
+      expect { described_class.each_record(nil).to_a }.to raise_error(DMARCator::InvalidReport, /must be a String/)
+    end
+
+    it 'raises InvalidReport for empty input' do
+      expect { described_class.each_record('').to_a }.to raise_error(DMARCator::InvalidReport, /empty input/)
+    end
+
+    it 'raises InvalidReport for oversized reports' do
+      stub_const('DMARCator::Report::MAX_REPORT_BYTES', 10)
+
+      expect {
+        described_class.each_record("<feedback>#{'a' * 100}</feedback>").to_a
+      }.to raise_error(DMARCator::InvalidReport, /maximum size/)
+    end
+  end
+
   it 'does not resolve external entities' do
     xml = <<~XML
       <?xml version="1.0"?>
