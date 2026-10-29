@@ -8,3 +8,13 @@ version: 3
 min_age:
   value: 7
   always: true
+
+rules:
+  # ruby/setup-ruby is exempt from the cooldown: its whole job is to know which
+  # Ruby releases exist, and the workflow pins an exact version to test the
+  # gemspec's minimum. A 7-day-stale action cannot install a Ruby released
+  # during the cooldown, which is what broke CI when 3.3.13 was added.
+  - min_age: 0
+    conditions:
+      - expr: |
+          ActionRepoFullName == "ruby/setup-ruby"
