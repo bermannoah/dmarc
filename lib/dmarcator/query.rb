@@ -171,6 +171,39 @@ module DMARCator
   # @since 0.8.0
   #
   def self.txt(name, resolver: default_resolver)
+    txt_records(name, resolver: resolver).map { |record| record.strings.join }
+  end
+
+  #
+  # Looks up every TXT record at a DNS name, returning the resource records
+  # themselves.
+  #
+  # Like {txt}, but without flattening to strings. The records expose
+  # `strings` and `ttl`, which matters when caching results: use
+  # `record.ttl` to decide how long an answer may be reused.
+  #
+  # @param [String] name
+  #   The DNS name to look up.
+  #
+  # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
+  #   The resolver to use. When omitted, one is built from `DMARCATOR_DNS`.
+  #   An injected resolver keeps its own configuration.
+  #
+  # @return [Array<Resolv::DNS::Resource::IN::TXT>]
+  #   The records, or an empty array when the name has none. NXDOMAIN and
+  #   NODATA are indistinguishable here.
+  #
+  # @raise [ResolutionError]
+  #   The lookup failed. A failure is never reported as an empty result.
+  #
+  # @raise [ArgumentError]
+  #   The name is not a syntactically valid DNS name.
+  #
+  # @note Names must be ASCII: pass punycode (A-labels) rather than Unicode.
+  #
+  # @since 0.9.0
+  #
+  def self.txt_records(name, resolver: default_resolver)
     lookup_txt(validate_txt_name(name), resolver: resolver)
   end
 
@@ -204,7 +237,9 @@ module DMARCator
 
     # Per RFC 7489 §6.6.3, use the TXT record beginning with "v=DMARC1".
     # If multiple DMARC records exist, treat the domain as having none.
-    dmarc_records = lookup_txt(name, resolver: resolver).select do |text|
+    dmarc_records = lookup_txt(name, resolver: resolver).map do |record|
+      record.strings.join
+    end.select do |text|
       text.start_with?('v=DMARC1')
     end
 
@@ -224,13 +259,13 @@ module DMARCator
   #
   # Looks up the TXT records at an already-validated name.
   #
-  # Shared by {txt} and {dmarc} so both use one transport path.
+  # Shared by {txt}, {txt_records} and {dmarc} so they use one transport path.
   #
   # @param [String] name
   #
   # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
   #
-  # @return [Array<String>]
+  # @return [Array<Resolv::DNS::Resource::IN::TXT>]
   #
   # @raise [ResolutionError]
   #
@@ -246,7 +281,7 @@ module DMARCator
       raise ResolutionError, "DNS TXT lookup failed for #{name}: #{error.message}"
     end
 
-    records.map { |record| record.strings.join }
+    records
   end
   private_class_method :lookup_txt
 end

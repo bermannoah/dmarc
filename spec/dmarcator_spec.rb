@@ -172,6 +172,54 @@ describe DMARCator do
     end
   end
 
+  describe ".txt_records" do
+    it "returns the resource records unfiltered, in order" do
+      first  = txt(["v=spf1 -all"])
+      second = txt(["v=DMARC1; p=none"])
+      allow(resolver).to receive(:getresources).and_return([first, second])
+
+      expect(subject.txt_records("example.com", resolver: resolver)).to eq([first, second])
+    end
+
+    it "exposes the record strings and ttl for caching" do
+      record = txt(["v=DMARC1; p=none"])
+      allow(record).to receive(:ttl).and_return(300)
+      allow(resolver).to receive(:getresources).and_return([record])
+
+      result = subject.txt_records("_dmarc.example.com", resolver: resolver)
+
+      expect(result.first.strings).to eq(["v=DMARC1; p=none"])
+      expect(result.first.ttl).to eq(300)
+    end
+
+    it "returns an empty array when the name has no records" do
+      allow(resolver).to receive(:getresources).and_return([])
+
+      expect(subject.txt_records("_dmarc.example.com", resolver: resolver)).to eq([])
+    end
+
+    it "agrees with txt" do
+      allow(resolver).to receive(:getresources)
+        .and_return([txt(["a"]), txt(["b", "c"])])
+
+      expect(subject.txt_records("example.com", resolver: resolver).map { |r| r.strings.join })
+        .to eq(subject.txt("example.com", resolver: resolver))
+    end
+
+    it "raises ResolutionError when the resolver fails" do
+      allow(resolver).to receive(:getresources)
+        .and_raise(Resolv::ResolvError, "DNS resolv timeout: _dmarc.example.com")
+
+      expect {
+        subject.txt_records("_dmarc.example.com", resolver: resolver)
+      }.to raise_error(DMARCator::ResolutionError, /DNS TXT lookup failed/)
+    end
+
+    it "rejects invalid names" do
+      expect { subject.txt_records("") }.to raise_error(ArgumentError, /invalid TXT name/)
+    end
+  end
+
   describe ".query" do
     it "forwards to .dmarc" do
       expect(subject).to receive(:dmarc).with("google.com", resolver: resolver)
