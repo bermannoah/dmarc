@@ -185,16 +185,16 @@ describe DMARCator::Record do
     end
   end
 
-  describe ".query" do
+  describe ".lookup" do
     subject { described_class }
 
     context "when the domain has a DMARC record" do
-      it "queries and parses the DMARC record" do
-        expect(DMARCator).to receive(:query)
-          .with("google.com", anything)
+      it "looks up and parses the DMARC record" do
+        expect(DMARCator).to receive(:dmarc)
+          .with("google.com", resolver: anything)
           .and_return("v=DMARC1; p=reject")
 
-        record = subject.query("google.com")
+        record = subject.lookup("google.com")
 
         expect(record).to be_kind_of(DMARCator::Record)
         expect(record.v).to be == :DMARC1
@@ -203,12 +203,22 @@ describe DMARCator::Record do
 
     context "when the domain has no DMARC record" do
       it "returns nil" do
-        expect(DMARCator).to receive(:query)
-          .with("foobar.heythere", anything)
+        expect(DMARCator).to receive(:dmarc)
+          .with("foobar.heythere", resolver: anything)
           .and_return(nil)
 
-        expect(subject.query('foobar.heythere')).to be_nil
+        expect(subject.lookup('foobar.heythere')).to be_nil
       end
+    end
+  end
+
+  describe ".query" do
+    subject { described_class }
+
+    it "forwards to .lookup" do
+      expect(subject).to receive(:lookup).with("google.com", resolver: anything)
+
+      subject.query("google.com")
     end
   end
 

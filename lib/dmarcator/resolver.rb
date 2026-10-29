@@ -61,7 +61,9 @@ module DMARCator
 
       case name
       when 'plaintext'
-        Resolv::DNS.new
+        resolver = Resolv::DNS.new
+        resolver.timeouts = DNS_TIMEOUTS
+        resolver
       when 'doh'
         DoH.from_env(env)
       when 'dot'

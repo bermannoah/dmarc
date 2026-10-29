@@ -27,6 +27,14 @@ RSpec.describe DMARCator::Resolver do
       expect(described_class.build(env: {})).to be_a(Resolv::DNS)
     end
 
+    it 'applies the plaintext timeouts to a resolver it builds' do
+      dns = instance_double(Resolv::DNS)
+      allow(Resolv::DNS).to receive(:new).and_return(dns)
+      expect(dns).to receive(:timeouts=).with(DMARCator::DNS_TIMEOUTS)
+
+      expect(described_class.build(env: {})).to be(dns)
+    end
+
     it 'builds a DoH resolver' do
       resolver = described_class.build(
         env: { 'DMARCATOR_DNS' => 'doh', 'DMARCATOR_DOH_URL' => 'https://dns.example/dns-query' }

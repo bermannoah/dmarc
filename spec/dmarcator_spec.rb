@@ -4,85 +4,179 @@ require 'dmarcator'
 describe DMARCator do
   subject { described_class }
 
-  describe ".query" do
-    let(:txt_class) { Resolv::DNS::Resource::IN::TXT }
-    let(:resolver)  { double("resolver") }
+  let(:txt_class) { Resolv::DNS::Resource::IN::TXT }
+  let(:resolver)  { double("resolver") }
 
-    before { allow(resolver).to receive(:timeouts=) }
+  def txt(strings)
+    instance_double(txt_class, strings: strings)
+  end
 
-    def txt(strings)
-      instance_double(txt_class, strings: strings)
-    end
-
+  describe ".dmarc" do
     it "returns the DMARC TXT record" do
-      expect(resolver).to receive(:getresources)
+      allow(resolver).to receive(:getresources)
         .with("_dmarc.google.com", txt_class)
         .and_return([txt(["v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com"])])
 
-      expect(subject.query("google.com", resolver)).to eq(
+      expect(subject.dmarc("google.com", resolver: resolver)).to eq(
         "v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com"
       )
     end
 
-    it "sets explicit timeouts on the resolver" do
-      expect(resolver).to receive(:timeouts=).with(DMARCator::DNS_TIMEOUTS)
-      expect(resolver).to receive(:getresources)
-        .with("_dmarc.google.com", txt_class)
-        .and_return([txt(["v=DMARC1; p=reject"])])
-
-      subject.query("google.com", resolver)
-    end
-
     it "ignores non-DMARC TXT records" do
-      expect(resolver).to receive(:getresources)
+      allow(resolver).to receive(:getresources)
         .with("_dmarc.google.com", txt_class)
         .and_return([
           txt(["not a dmarc record"]),
           txt(["v=DMARC1; p=reject"])
         ])
 
-      expect(subject.query("google.com", resolver)).to eq("v=DMARC1; p=reject")
+      expect(subject.dmarc("google.com", resolver: resolver)).to eq("v=DMARC1; p=reject")
     end
 
     it "returns nil when multiple DMARC records exist" do
-      expect(resolver).to receive(:getresources)
+      allow(resolver).to receive(:getresources)
         .with("_dmarc.google.com", txt_class)
         .and_return([txt(["v=DMARC1; p=none"]), txt(["v=DMARC1; p=reject"])])
 
-      expect(subject.query("google.com", resolver)).to be_nil
+      expect(subject.dmarc("google.com", resolver: resolver)).to be_nil
     end
 
     it "returns nil when no DMARC record exists" do
-      expect(resolver).to receive(:getresources)
-        .with("_dmarc.google.com", txt_class)
-        .and_return([])
+      allow(resolver).to receive(:getresources).and_return([])
 
-      expect(subject.query("google.com", resolver)).to be_nil
+      expect(subject.dmarc("google.com", resolver: resolver)).to be_nil
+    end
+
+    it "returns nil when only non-DMARC TXT records exist" do
+      allow(resolver).to receive(:getresources).and_return([txt(["hello world"])])
+
+      expect(subject.dmarc("google.com", resolver: resolver)).to be_nil
     end
 
     it "raises ResolutionError when the resolver fails" do
-      expect(resolver).to receive(:getresources)
+      allow(resolver).to receive(:getresources)
         .and_raise(Resolv::ResolvError, "DNS resolv timeout: _dmarc.google.com")
 
       expect {
-        subject.query("google.com", resolver)
-      }.to raise_error(DMARCator::ResolutionError, /DNS lookup failed.*timeout/)
-    end
-
-    it "returns nil when the domain has no DMARC record" do
-      allow(resolver).to receive(:getresources).and_return([])
-
-      expect(subject.query("google.com", resolver)).to be_nil
-    end
-
-    it "returns nil when non-DMARC TXT records exist" do
-      allow(resolver).to receive(:getresources).and_return([txt(["hello world"])])
-
-      expect(subject.query("google.com", resolver)).to be_nil
+        subject.dmarc("google.com", resolver: resolver)
+      }.to raise_error(DMARCator::ResolutionError, /DNS TXT lookup failed.*timeout/)
     end
 
     it "rejects invalid domains" do
-      expect { subject.query("foo bar") }.to raise_error(ArgumentError)
+      expect { subject.dmarc("foo bar") }.to raise_error(ArgumentError)
+    end
+
+    it "does not reconfigure an injected resolver" do
+      expect(resolver).not_to receive(:timeouts=)
+      allow(resolver).to receive(:getresources).and_return([])
+
+      subject.dmarc("google.com", resolver: resolver)
+    end
+  end
+
+  describe ".txt" do
+    it "returns every TXT record unfiltered" do
+      allow(resolver).to receive(:getresources)
+        .with("example.com", txt_class)
+        .and_return([
+          txt(["v=spf1 include:_spf.example.com -all"]),
+          txt(["google-site-verification=abc"]),
+          txt(["v=DMARC1; p=none"])
+        ])
+
+      expect(subject.txt("example.com", resolver: resolver)).to eq([
+        "v=spf1 include:_spf.example.com -all",
+        "google-site-verification=abc",
+        "v=DMARC1; p=none"
+      ])
+    end
+
+    it "joins multi-chunk records without a separator" do
+      allow(resolver).to receive(:getresources)
+        .and_return([txt(["v=spf1 include:_spf.example.com", " -all"])])
+
+      expect(subject.txt("example.com", resolver: resolver)).to eq(
+        ["v=spf1 include:_spf.example.com -all"]
+      )
+    end
+
+    it "preserves order and duplicates" do
+      allow(resolver).to receive(:getresources)
+        .and_return([txt(["v=DMARC1; p=none"]), txt(["v=DMARC1; p=none"])])
+
+      expect(subject.txt("_dmarc.example.com", resolver: resolver)).to eq(
+        ["v=DMARC1; p=none", "v=DMARC1; p=none"]
+      )
+    end
+
+    it "returns an empty array when the name has no records" do
+      allow(resolver).to receive(:getresources).and_return([])
+
+      expect(subject.txt("_dmarc.example.com", resolver: resolver)).to eq([])
+    end
+
+    it "returns an empty string for an empty TXT record" do
+      allow(resolver).to receive(:getresources).and_return([txt([""])])
+
+      expect(subject.txt("example.com", resolver: resolver)).to eq([""])
+    end
+
+    it "accepts service labels with underscores" do
+      allow(resolver).to receive(:getresources).and_return([])
+
+      subject.txt("_dmarc.example.com", resolver: resolver)
+      subject.txt("s1._domainkey.example.com", resolver: resolver)
+
+      expect(resolver).to have_received(:getresources).twice
+    end
+
+    it "accepts an absolute name with a trailing dot" do
+      allow(resolver).to receive(:getresources).and_return([])
+
+      expect(subject.txt("_dmarc.example.com.", resolver: resolver)).to eq([])
+    end
+
+    it "raises ResolutionError when the resolver fails" do
+      allow(resolver).to receive(:getresources)
+        .and_raise(Resolv::ResolvError, "DNS resolv timeout: _dmarc.example.com")
+
+      expect {
+        subject.txt("_dmarc.example.com", resolver: resolver)
+      }.to raise_error(DMARCator::ResolutionError, /DNS TXT lookup failed.*timeout/)
+    end
+
+    it "propagates ResolutionError from encrypted transports" do
+      allow(resolver).to receive(:getresources)
+        .and_raise(DMARCator::ResolutionError, "DoH endpoint returned HTTP 500")
+
+      expect {
+        subject.txt("_dmarc.example.com", resolver: resolver)
+      }.to raise_error(DMARCator::ResolutionError, /HTTP 500/)
+    end
+
+    it "does not reconfigure an injected resolver" do
+      expect(resolver).not_to receive(:timeouts=)
+      allow(resolver).to receive(:getresources).and_return([])
+
+      subject.txt("_dmarc.example.com", resolver: resolver)
+    end
+
+    it "rejects empty and non-String names" do
+      expect { subject.txt("") }.to raise_error(ArgumentError, /invalid TXT name/)
+      expect { subject.txt(nil) }.to raise_error(ArgumentError, /invalid TXT name/)
+    end
+
+    it "rejects over-long labels and names" do
+      expect { subject.txt("#{'a' * 64}.example.com") }.to raise_error(ArgumentError)
+      expect { subject.txt("#{'a' * 63}.#{'a' * 63}.#{'a' * 63}.#{'a' * 62}") }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe ".query" do
+    it "forwards to .dmarc" do
+      expect(subject).to receive(:dmarc).with("google.com", resolver: resolver)
+
+      subject.query("google.com", resolver)
     end
   end
 

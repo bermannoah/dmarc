@@ -17,7 +17,17 @@ module DMARCator
   #
   # DNS query timeouts in seconds, tried in order.
   #
+  # Applied when the library builds a plaintext resolver. Timeouts on an
+  # injected resolver are left alone.
+  #
   DNS_TIMEOUTS = [2, 4, 8].freeze
+
+  #
+  # The maximum length of a textual DNS name, in octets.
+  #
+  # @since 0.8.0
+  #
+  MAX_TXT_NAME_LENGTH = 253
 
   #
   # Determines the version of the loaded `resolv` gem, if available.
@@ -57,6 +67,10 @@ module DMARCator
   #
   # Validates a domain before using it in a DNS query.
   #
+  # Rejects underscores and reserves room for the `_dmarc.` prefix, so this is
+  # the validator for registrable domains rather than arbitrary DNS names.
+  # Use {validate_txt_name} for service labels.
+  #
   # @param [String] domain
   #   The domain to validate.
   #
@@ -80,6 +94,37 @@ module DMARCator
   end
 
   #
+  # Validates an arbitrary DNS name used for a TXT lookup.
+  #
+  # Unlike {validate_domain}, service labels such as `_dmarc` and `_domainkey`
+  # are allowed, so names may contain underscores. Length and label limits are
+  # still enforced so hostile input cannot reach the resolver unbounded.
+  #
+  # @param [String] name
+  #   The DNS name to validate.
+  #
+  # @return [String]
+  #   The validated name.
+  #
+  # @raise [ArgumentError]
+  #   The name is not a syntactically valid DNS name.
+  #
+  # @since 0.8.0
+  #
+  def self.validate_txt_name(name)
+    unless name.is_a?(String) && !name.empty? &&
+           name.length <= MAX_TXT_NAME_LENGTH &&
+           !name.start_with?('.') &&
+           !name.include?('..') &&
+           name.match?(/\A[A-Za-z0-9._-]+\z/) &&
+           name.split('.').all? { |label| label.length <= 63 && !label.start_with?('-') && !label.end_with?('-') }
+      raise ArgumentError, "invalid TXT name: #{name.inspect}"
+    end
+
+    name
+  end
+
+  #
   # Builds the resolver configured by the environment.
   #
   # @return [Resolv::DNS, Resolver::DoH, Resolver::DoT]
@@ -94,50 +139,116 @@ module DMARCator
   end
 
   #
-  # Queries a domain for the DMARC record.
+  # Looks up every TXT record published at a DNS name.
   #
-  # @param [String] domain
-  #   The domain to query DMARC for.
+  # Records are returned exactly as published: unfiltered, in response order,
+  # and with multi-chunk records joined. Interpreting them (SPF, DKIM, DMARC,
+  # domain verification) is left to the caller. Use this when the individual
+  # records matter, for example to detect that a domain publishes more than
+  # one DMARC record.
+  #
+  # @param [String] name
+  #   The DNS name to look up, such as `example.com`, `_dmarc.example.com`, or
+  #   `s1._domainkey.example.com`.
   #
   # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
-  #   The resolver to use. When omitted, one is built from `DMARCATOR_DNS`;
-  #   plaintext resolvers receive {DNS_TIMEOUTS}.
+  #   The resolver to use. When omitted, one is built from `DMARCATOR_DNS`.
+  #   An injected resolver keeps its own configuration.
   #
-  # @return [String, nil]
-  #   The domain's DMARC record, or `nil` if the domain simply has none.
+  # @return [Array<String>]
+  #   The TXT records, or an empty array when the name has none. NXDOMAIN and
+  #   NODATA are indistinguishable here.
   #
   # @raise [ResolutionError]
-  #   The lookup failed. A failure is never reported as a missing record, so a
-  #   blocked or degraded resolver cannot silently enforce no policy.
+  #   The lookup failed. A failure is never reported as an empty result, so a
+  #   blocked or degraded resolver cannot be mistaken for an absent record.
   #
-  # @api semipublic
+  # @raise [ArgumentError]
+  #   The name is not a syntactically valid DNS name.
   #
-  # @since 0.3.0
+  # @note Names must be ASCII: pass punycode (A-labels) rather than Unicode.
+  #
+  # @since 0.8.0
+  #
+  def self.txt(name, resolver: default_resolver)
+    lookup_txt(validate_txt_name(name), resolver: resolver)
+  end
+
+  #
+  # Looks up the DMARC record text published for a domain.
+  #
+  # This is the lowest-cost DMARC path: one TXT lookup and no parsing. Use it
+  # for bulk scans, and call {Record.parse} only on records you care about.
+  #
+  # @param [String] domain
+  #   The domain to look up DMARC for.
+  #
+  # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
+  #   The resolver to use. When omitted, one is built from `DMARCATOR_DNS`.
+  #
+  # @return [String, nil]
+  #   The DMARC record text, or `nil` when the domain publishes none or
+  #   publishes more than one (per RFC 7489 §6.6.3). Use {txt} to see every
+  #   record, including duplicates.
+  #
+  # @raise [ResolutionError]
+  #   The lookup failed.
+  #
+  # @raise [ArgumentError]
+  #   The domain is not a syntactically valid DNS name.
+  #
+  # @since 0.8.0
+  #
+  def self.dmarc(domain, resolver: default_resolver)
+    name = "_dmarc.#{validate_domain(domain)}"
+
+    # Per RFC 7489 §6.6.3, use the TXT record beginning with "v=DMARC1".
+    # If multiple DMARC records exist, treat the domain as having none.
+    dmarc_records = lookup_txt(name, resolver: resolver).select do |text|
+      text.start_with?('v=DMARC1')
+    end
+
+    dmarc_records.first if dmarc_records.one?
+  end
+
+  #
+  # @deprecated Use {dmarc}, which names what it returns. Kept for
+  #   compatibility; it will be removed in a future release.
+  #
+  # @see dmarc
   #
   def self.query(domain,resolver=default_resolver)
-    validate_domain(domain)
+    dmarc(domain, resolver: resolver)
+  end
 
-    resolver.timeouts = DNS_TIMEOUTS if resolver.respond_to?(:timeouts=)
-
-    host = "_dmarc.#{domain}"
-
+  #
+  # Looks up the TXT records at an already-validated name.
+  #
+  # Shared by {txt} and {dmarc} so both use one transport path.
+  #
+  # @param [String] name
+  #
+  # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
+  #
+  # @return [Array<String>]
+  #
+  # @raise [ResolutionError]
+  #
+  # @api private
+  #
+  def self.lookup_txt(name, resolver:)
     # Resolv returns an empty result for NXDOMAIN and raises for timeouts and
     # other failures, so any exception here is a transport failure, not an
     # absent record.
     begin
-      records = resolver.getresources(host, Resolv::DNS::Resource::IN::TXT)
+      records = resolver.getresources(name, Resolv::DNS::Resource::IN::TXT)
     rescue Resolv::ResolvError => error
-      raise ResolutionError, "DNS lookup failed for #{host}: #{error.message}"
+      raise ResolutionError, "DNS TXT lookup failed for #{name}: #{error.message}"
     end
 
-    # Per RFC 7489 §6.6.3, use the TXT record beginning with "v=DMARC1".
-    # If multiple DMARC records exist, treat the domain as having none.
-    dmarc_records = records.map { |record| record.strings.join }
-                           .select { |text| text.start_with?('v=DMARC1') }
-
-    return dmarc_records.first if dmarc_records.one?
-    nil
+    records.map { |record| record.strings.join }
   end
+  private_class_method :lookup_txt
 end
 
 if DMARCator.vulnerable_resolv?
