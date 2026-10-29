@@ -27,6 +27,11 @@ jobs:
       - name: Run specs
         run: bundle exec rspec
 
+      - name: Check action pinning
+        uses: suzuki-shunsuke/pinact-action@896d595f299e71d65b9d28349d6956abe144390a # v3.0.0
+        with:
+          fix: 'false'
+
       # Must run under bundler: on CI the gems live in vendor/bundle, so a
       # bare `ruby` cannot resolve parslet.
       - name: Load with warnings enabled

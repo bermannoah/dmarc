@@ -1,0 +1,13 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    # Match the pinact cooldown: only propose releases that are at least a
+    # week old.
+    cooldown:
+      default-days: 7
+    assignees:
+      - bermannoah

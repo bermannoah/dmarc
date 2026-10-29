@@ -1,0 +1,10 @@
+# pinact configuration: https://github.com/suzuki-shunsuke/pinact
+#
+# Actions are pinned to commit SHAs. Updates only move to releases that are at
+# least 7 days old, and that age requirement is also verified for pins that are
+# already committed.
+version: 3
+
+min_age:
+  value: 7
+  always: true
