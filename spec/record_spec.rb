@@ -22,6 +22,16 @@ describe Record do
     it 'gives "sp" the same value as "p" if undefined' do
       expect(subject.sp).to be :none
     end
+
+    it "falls back to p when sp is omitted" do
+      record = DMARCator::Record.parse("v=DMARC1; p=reject")
+      expect(record.sp).to eq(:reject)
+    end
+
+    it "uses sp when present" do
+      record = DMARCator::Record.parse("v=DMARC1; p=none; sp=reject")
+      expect(record.sp).to eq(:reject)
+    end
   end
 
   context 'with default values' do

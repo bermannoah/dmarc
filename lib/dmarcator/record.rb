@@ -15,7 +15,7 @@ module DMARCator
   class Record
 
     # `p` field.
-    # 
+    #
     # @return [:none, :quarantine, :reject]
     attr_reader :p
 
@@ -28,11 +28,6 @@ module DMARCator
     #
     # @return [Array<Uri>]
     attr_reader :ruf
-
-    # `sp` field.
-    # 
-    # @return [:none, :quarantine, :reject]
-    attr_reader :sp
 
     # `v` field.
     #
