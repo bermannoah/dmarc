@@ -201,6 +201,7 @@ Process-wide defaults can be set from code, and take precedence over the
 ```ruby
 DMARCator.configure do |config|
   config.resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
+  config.max_report_bytes = 5 * 1024 * 1024
 end
 ```
 
@@ -293,12 +294,12 @@ DMARC records and XML reports are treated as untrusted input:
 
 * XML reports are parsed with network access disabled (`NONET`), so external
   entities are never resolved or fetched.
-* Reports larger than `DMARCator::Report.max_report_bytes` (25 MiB by
+* Reports larger than `DMARCator.config.max_report_bytes` (25 MiB by
   default) are rejected before parsing. Parsing builds a DOM roughly 13× the
   input size, so lower the limit to bound memory:
 
   ```ruby
-  DMARCator::Report.max_report_bytes = 5 * 1024 * 1024
+  DMARCator.configure { |config| config.max_report_bytes = 5 * 1024 * 1024 }
   ```
 * A warning is emitted at load time if the bundled `resolv` gem is affected by
   CVE-2026-80212/CVE-2026-80213.

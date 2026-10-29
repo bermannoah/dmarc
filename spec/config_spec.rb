@@ -63,6 +63,35 @@ RSpec.describe DMARCator::Config do
     end
   end
 
+  describe 'max_report_bytes' do
+    after { DMARCator.reset_configuration! }
+
+    it 'defaults to the library default' do
+      expect(DMARCator.config.max_report_bytes).to eq(described_class::DEFAULT_MAX_REPORT_BYTES)
+    end
+
+    it 'accepts a positive Integer' do
+      DMARCator.configure { |config| config.max_report_bytes = 1024 }
+
+      expect(DMARCator.config.max_report_bytes).to eq(1024)
+    end
+
+    it 'restores the default when set to nil' do
+      DMARCator.configure { |config| config.max_report_bytes = 1024 }
+      DMARCator.configure { |config| config.max_report_bytes = nil }
+
+      expect(DMARCator.config.max_report_bytes).to eq(described_class::DEFAULT_MAX_REPORT_BYTES)
+    end
+
+    it 'rejects values that are not positive Integers' do
+      [0, -1, '1024', 1.5].each do |value|
+        expect {
+          DMARCator.configure { |config| config.max_report_bytes = value }
+        }.to raise_error(ArgumentError, /max_report_bytes/)
+      end
+    end
+  end
+
   describe '.reset_configuration!' do
     it 'discards configured values' do
       DMARCator.configure { |config| config.resolver = double('resolver') }

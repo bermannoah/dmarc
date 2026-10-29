@@ -2,6 +2,7 @@
 
 require 'nokogiri'
 
+require_relative 'config'
 require_relative 'xml_helper'
 require_relative 'exceptions'
 require_relative 'report/metadata'
@@ -19,22 +20,35 @@ module DMARCator
     include XmlHelper
 
     # Default maximum accepted report size in bytes (25 MiB).
-    MAX_REPORT_BYTES = 25 * 1024 * 1024
+    #
+    # @deprecated Use {Config::DEFAULT_MAX_REPORT_BYTES}.
+    #
+    MAX_REPORT_BYTES = Config::DEFAULT_MAX_REPORT_BYTES
 
     class << self
       #
       # The maximum accepted report size in bytes.
       #
-      # Defaults to {MAX_REPORT_BYTES}. Parsing a report builds a DOM that is
-      # roughly 13x the input size, so lower this to bound memory for reports
-      # from untrusted sources.
+      # @deprecated Use {DMARCator.configure} with `config.max_report_bytes`.
       #
       # @return [Integer]
       #
-      attr_writer :max_report_bytes
-
       def max_report_bytes
-        @max_report_bytes || MAX_REPORT_BYTES
+        DMARCator.config.max_report_bytes
+      end
+
+      #
+      # Sets the maximum accepted report size in bytes.
+      #
+      # @deprecated Use {DMARCator.configure} with `config.max_report_bytes`.
+      #
+      # @param [Integer, nil] value
+      #
+      # @raise [ArgumentError]
+      #   The value is not a positive Integer or nil.
+      #
+      def max_report_bytes=(value)
+        DMARCator.config.max_report_bytes = value
       end
     end
 
@@ -45,8 +59,8 @@ module DMARCator
     #   The raw DMARC XML report.
     #
     # @raise [InvalidReport]
-    #   The report is not a String, exceeds {.max_report_bytes}, or is not
-    #   well-formed XML.
+    #   The report is not a String, exceeds
+    #   {Config#max_report_bytes}, or is not well-formed XML.
     #
     def initialize(xml)
       unless xml.is_a?(String)
@@ -55,7 +69,7 @@ module DMARCator
 
       @xml = xml
 
-      limit = self.class.max_report_bytes
+      limit = DMARCator.config.max_report_bytes
 
       if xml.bytesize > limit
         raise InvalidReport, "DMARC XML report exceeds maximum size of #{limit} bytes"

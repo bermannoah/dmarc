@@ -55,24 +55,21 @@ RSpec.describe DMARCator::Report do
     expect(report.metadata.org_name).to eq('')
   end
 
-  it 'raises DMARCator::InvalidReport for oversized reports' do
-    allow(described_class).to receive(:max_report_bytes).and_return(10)
-
-    expect {
-      described_class.new("<feedback>#{'a' * 100}</feedback>")
-    }.to raise_error(DMARCator::InvalidReport, /maximum size/)
-  end
-
   describe '.max_report_bytes' do
-    after { described_class.max_report_bytes = nil }
+    after { DMARCator.reset_configuration! }
 
-    it 'defaults to MAX_REPORT_BYTES' do
-      described_class.max_report_bytes = nil
-
-      expect(described_class.max_report_bytes).to eq(described_class::MAX_REPORT_BYTES)
+    it 'defaults to the configured default' do
+      expect(described_class.max_report_bytes).to eq(DMARCator::Config::DEFAULT_MAX_REPORT_BYTES)
     end
 
-    it 'can be lowered to bound memory' do
+    it 'delegates to DMARCator.config' do
+      described_class.max_report_bytes = 1024
+
+      expect(DMARCator.config.max_report_bytes).to eq(1024)
+      expect(described_class.max_report_bytes).to eq(1024)
+    end
+
+    it 'bounds the size accepted when parsing' do
       described_class.max_report_bytes = 10
 
       expect {
