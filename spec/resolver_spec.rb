@@ -232,30 +232,8 @@ RSpec.describe 'encrypted DNS transports' do
     end
 
     describe '#exchange' do
-      it 'sends a POST with the DNS message and returns the body' do
-        wire = Resolv::DNS::Message.new(1).encode
+      def stub_http(response)
         http = instance_double(Net::HTTP)
-        response = instance_double(Net::HTTPResponse, code: "200", body: wire)
-
-        allow(Net::HTTP).to receive(:new).and_return(http)
-        expect(http).to receive(:use_ssl=).with(true)
-        expect(http).to receive(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
-        expect(http).to receive(:open_timeout=)
-        expect(http).to receive(:read_timeout=)
-        expect(http).to receive(:write_timeout=)
-        expect(http).to receive(:start).and_yield(http)
-        expect(http).to receive(:request) do |request|
-          expect(request['content-type']).to eq('application/dns-message')
-          expect(request.body).to eq(wire)
-          response
-        end
-
-        expect(resolver.send(:exchange, Resolv::DNS::Message.new(1))).to eq(wire)
-      end
-
-      it 'raises when the endpoint returns a non-success status' do
-        http = instance_double(Net::HTTP)
-        response = instance_double(Net::HTTPResponse, code: "500")
 
         allow(Net::HTTP).to receive(:new).and_return(http)
         allow(http).to receive(:use_ssl=)
@@ -266,9 +244,55 @@ RSpec.describe 'encrypted DNS transports' do
         allow(http).to receive(:start).and_yield(http)
         allow(http).to receive(:request).and_return(response)
 
+        http
+      end
+
+      def stub_response(code: '200', body: '', content_type: 'application/dns-message')
+        response = instance_double(Net::HTTPResponse, code: code, body: body)
+
+        allow(response).to receive(:[]).with('content-type').and_return(content_type)
+
+        response
+      end
+
+      it 'sends a POST with the DNS message and returns the body' do
+        wire = Resolv::DNS::Message.new(1).encode
+        http = stub_http(stub_response(body: wire))
+
+        expect(http).to receive(:use_ssl=).with(true)
+        expect(http).to receive(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER)
+        expect(http).to receive(:request) do |request|
+          expect(request['content-type']).to eq('application/dns-message')
+          expect(request.body).to eq(wire)
+          stub_response(body: wire)
+        end
+
+        expect(resolver.send(:exchange, Resolv::DNS::Message.new(1))).to eq(wire)
+      end
+
+      it 'raises when the endpoint returns a non-success status' do
+        stub_http(stub_response(code: '500'))
+
         expect {
           resolver.send(:exchange, Resolv::DNS::Message.new(1))
         }.to raise_error(DMARCator::ResolutionError, /HTTP 500/)
+      end
+
+      it 'raises when the content type is not a DNS message' do
+        stub_http(stub_response(content_type: 'text/html'))
+
+        expect {
+          resolver.send(:exchange, Resolv::DNS::Message.new(1))
+        }.to raise_error(DMARCator::ResolutionError, /unexpected content-type/)
+      end
+
+      it 'raises when the response body is oversized' do
+        oversized = 'x' * (described_class::MAX_RESPONSE_BYTES + 1)
+        stub_http(stub_response(body: oversized))
+
+        expect {
+          resolver.send(:exchange, Resolv::DNS::Message.new(1))
+        }.to raise_error(DMARCator::ResolutionError, /exceeds maximum size/)
       end
 
       it 'wraps transport errors' do

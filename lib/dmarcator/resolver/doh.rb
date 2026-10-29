@@ -25,6 +25,12 @@ module DMARCator
       # Default connect/read timeout in seconds.
       DEFAULT_TIMEOUT = 5
 
+      # Maximum accepted response body in bytes (the DNS message limit).
+      MAX_RESPONSE_BYTES = 65_535
+
+      # Media type RFC 8484 requires for DNS messages.
+      CONTENT_TYPE = 'application/dns-message'
+
       # @return [URI::HTTPS] the DoH endpoint.
       attr_reader :url
 
@@ -92,8 +98,8 @@ module DMARCator
         http.ipaddr = @ipaddr if @ipaddr
 
         request = Net::HTTP::Post.new(@url.request_uri)
-        request['content-type'] = 'application/dns-message'
-        request['accept'] = 'application/dns-message'
+        request['content-type'] = CONTENT_TYPE
+        request['accept'] = CONTENT_TYPE
         request.body = query.encode
 
         response = http.start { |connection| connection.request(request) }
@@ -104,7 +110,20 @@ module DMARCator
           raise ResolutionError, "DoH endpoint returned HTTP #{status}"
         end
 
-        response.body.to_s.b
+        content_type = response['content-type'].to_s
+
+        unless content_type.start_with?(CONTENT_TYPE)
+          raise ResolutionError, "DoH endpoint returned unexpected content-type: #{content_type.inspect}"
+        end
+
+        body = response.body.to_s.b
+
+        if body.bytesize > MAX_RESPONSE_BYTES
+          raise ResolutionError,
+                "DoH response exceeds maximum size of #{MAX_RESPONSE_BYTES} bytes"
+        end
+
+        body
       rescue ResolutionError
         raise
       rescue StandardError => error
