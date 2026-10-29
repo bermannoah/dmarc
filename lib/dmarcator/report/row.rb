@@ -9,7 +9,10 @@ module DMARCator
     #
     # Represents a single `record` element of a DMARC XML report.
     #
-    class Record
+    # Named `Row` so it is not confused with {DMARCator::Record}, the parsed
+    # DMARC TXT record.
+    #
+    class Row
       include XmlHelper
 
       # Attribute names exposed by this class.

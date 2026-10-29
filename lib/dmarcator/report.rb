@@ -8,7 +8,7 @@ require_relative 'xml_helper'
 require_relative 'exceptions'
 require_relative 'report/metadata'
 require_relative 'report/policy'
-require_relative 'report/record'
+require_relative 'report/row'
 
 module DMARCator
   #
@@ -114,11 +114,11 @@ module DMARCator
     #
     # The report records.
     #
-    # @return [Array<Report::Record>]
+    # @return [Array<Report::Row>]
     #
     def records
       @records ||= @node.xpath('feedback/record').map do |node|
-        Record.new(node)
+        Row.new(node)
       end
     end
   end
