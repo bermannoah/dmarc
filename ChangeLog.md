@@ -1,3 +1,11 @@
+### 0.6.1 / 2026-10-29
+
+* Remove a redundant `attr_reader :sp` that `Record#sp` already overrode, fixing a `method redefined; discarding old sp` warning emitted under `-w` (as CI enables).
+* Add tests covering `Record#sp` falling back to `p` when `sp` is omitted.
+* Document every report accessor, constant, and public class that YARD previously omitted; documentation coverage is now 100% with no warnings.
+* Note the encrypted-transport guarantees in the README security section.
+* No functional changes.
+
 ### 0.6.0 / 2026-10-28
 
 * Add DNS over HTTPS (RFC 8484) and DNS over TLS (RFC 7858) transports, selected with `DMARCATOR_DNS` (`doh` or `dot`). No provider is bundled and plaintext remains the default.
