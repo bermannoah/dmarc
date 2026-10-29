@@ -1,3 +1,9 @@
+### 0.11.0 / 2026-10-29
+
+* Add `DMARCator.configure` for process-wide defaults, so a resolver can be set from code instead of only through the `DMARCATOR_DNS` environment variables. A configured resolver takes precedence over the environment, and `DMARCator.reset_configuration!` discards it.
+* A configured resolver may be a callable, in which case it is invoked for each lookup. This lets threaded applications use one resolver per lookup instead of sharing a `Resolv::DNS`, which does not serialise concurrent lookups.
+* Run CI on macOS 15 as well as Ubuntu 24.04, covering the Socket/OpenSSL and Net::HTTP paths used by the DoT and DoH transports.
+
 ### 0.10.0 / 2026-10-29
 
 Breaking changes, taken before 1.0 so the release does not carry them:

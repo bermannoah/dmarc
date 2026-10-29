@@ -193,6 +193,31 @@ helper returning "the" record would hide exactly those conditions. DKIM is also
 per-selector and selectors cannot be enumerated, so any convenience method would
 have to take a selector and would only build the name above.
 
+## Configuration
+
+Process-wide defaults can be set from code, and take precedence over the
+`DMARCATOR_DNS` environment variables:
+
+```ruby
+DMARCator.configure do |config|
+  config.resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
+end
+```
+
+A resolver object is shared by every thread, and `Resolv::DNS` does not
+serialise concurrent lookups, so threaded applications should configure a
+factory instead:
+
+```ruby
+DMARCator.configure do |config|
+  config.resolver = -> { Resolv::DNS.new }
+end
+```
+
+`DMARCator.reset_configuration!` discards configured values, which is useful in
+tests. Passing `resolver:` to a lookup still overrides both the configured
+default and the environment.
+
 ## Strict parsing
 
 By default, unknown tags and tags with invalid values are ignored. Pass

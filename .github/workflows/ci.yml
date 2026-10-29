@@ -10,18 +10,23 @@ permissions:
 
 jobs:
   test:
-    # Pinned rather than ubuntu-latest: the label is migrating from 24.04 to
-    # 26.04 between 2026-10-19 and 2026-11-19, so runs can otherwise land on
-    # different images with different Ruby versions available.
-    # https://github.com/actions/runner-images/issues/14748
-    runs-on: ubuntu-24.04
-
     strategy:
       fail-fast: false
       matrix:
+        os:
+          # Pinned rather than ubuntu-latest: the label is migrating from 24.04
+          # to 26.04 between 2026-10-19 and 2026-11-19, so runs can otherwise
+          # land on different images with different Ruby versions available.
+          # https://github.com/actions/runner-images/issues/14748
+          - ubuntu-24.04
+          # Pinned for the same reason. macOS exercises the Socket/OpenSSL and
+          # Net::HTTP paths used by the DoT and DoH transports.
+          - macos-15
         ruby:
           - '3.3.13' # minimum supported version
           - '4.0'
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -36,6 +41,7 @@ jobs:
 
       - name: Check action pinning
         uses: suzuki-shunsuke/pinact-action@896d595f299e71d65b9d28349d6956abe144390a # v3.0.0
+        if: runner.os == 'Linux'
         with:
           fix: 'false'
 
@@ -51,6 +57,7 @@ jobs:
           fi
 
       - name: Check documentation
+        if: runner.os == 'Linux'
         run: bundle exec yard doc --no-output --fail-on-warning
 
       - name: Build gem
