@@ -1,3 +1,21 @@
+### 0.10.0 / 2026-10-29
+
+Breaking changes, taken before 1.0 so the release does not carry them:
+
+* Add `DMARCator::Error` as the base class for every error the library raises. `InvalidRecord`, `InvalidReport` and `ResolutionError` inherit from it, so one `rescue DMARCator::Error` catches all three.
+* `InvalidRecord` no longer inherits from `Parslet::ParseFailed`, removing the parser implementation from the public exception contract. Parse failures still expose the underlying parser error as their `cause`.
+* Remove the deprecated `DMARCator.query` and `DMARCator::Record.query` aliases. Use `DMARCator.dmarc` and `DMARCator::Record.lookup`.
+* Rename `DMARCator::Report::Record` to `DMARCator::Report::Row`, so aggregate rows are not confused with `DMARCator::Record`, the parsed DMARC TXT record.
+
+Migration:
+
+| Before | After |
+|---|---|
+| `DMARCator.query(domain)` | `DMARCator.dmarc(domain)` |
+| `DMARCator::Record.query(domain)` | `DMARCator::Record.lookup(domain)` |
+| `DMARCator::Report::Record` | `DMARCator::Report::Row` |
+| `rescue Parslet::ParseFailed` | `rescue DMARCator::Error` |
+
 ### 0.9.0 / 2026-10-29
 
 * Add `DMARCator.txt_records`, which returns the TXT resource records instead of strings, so callers that cache lookups can read each record's `ttl`. `DMARCator.txt` is now defined in terms of it and behaves the same.
