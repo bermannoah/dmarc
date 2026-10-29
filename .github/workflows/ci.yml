@@ -27,8 +27,16 @@ jobs:
       - name: Run specs
         run: bundle exec rspec
 
+      # Must run under bundler: on CI the gems live in vendor/bundle, so a
+      # bare `ruby` cannot resolve parslet.
       - name: Load with warnings enabled
-        run: ruby -w -Ilib -e 'require "dmarcator"'
+        run: |
+          bundle exec ruby -w -e 'require "dmarcator"' 2> warnings.log
+          if grep -q 'dmarcator' warnings.log; then
+            echo '::error::dmarcator emitted warnings'
+            cat warnings.log
+            exit 1
+          fi
 
       - name: Check documentation
         run: bundle exec yard doc --no-output --fail-on-warning
