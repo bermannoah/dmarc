@@ -156,6 +156,30 @@ To run the RSpec tests:
 rake spec
 ```
 
+## Releasing
+
+Every published version must have an annotated tag pointing at the commit that
+was built, so a gem can always be traced back to its source:
+
+```sh
+# 1. Bump VERSION in lib/dmarcator/version.rb and add a ChangeLog entry.
+# 2. Commit the release.
+git commit -am "Bump version to X.Y.Z"
+
+# 3. Tag that commit before building anything.
+git tag -a vX.Y.Z -m "dmarcator X.Y.Z"
+
+# 4. Push the commit and its tags.
+git push origin main --follow-tags
+
+# 5. Build and publish from the tagged checkout.
+gem build dmarc.gemspec
+gem push dmarcator-X.Y.Z.gem
+```
+
+Tag before publishing, never after: a tag without a published gem, or a gem
+without a tag, makes the two hard to reconcile later.
+
 ## License
 
 This project is released under the MIT License. See the [LICENSE.txt] file for
