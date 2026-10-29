@@ -344,7 +344,7 @@ module DMARCator
 
     #
     # @deprecated Use {lookup}, which names what it returns. Kept for
-    #   compatibility; it will be removed in a future release.
+    #   compatibility; it will be removed in 1.0.0.
     #
     # @see lookup
     #

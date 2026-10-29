@@ -177,6 +177,34 @@ more than the lookup on a fast resolver); `Resolv::DNS` does not lock per query,
 so use one resolver per thread when parallelising; and DoT/DoH open a new TLS
 connection per lookup, so plaintext is the better choice for bulk work.
 
+### SPF and DKIM
+
+The TXT primitives also cover the other two records a checker needs. There is
+no record-type-specific API, because the semantics belong to the caller:
+
+```ruby
+DMARCator.txt("example.com")                # SPF (RFC 7208)
+DMARCator.txt("s1._domainkey.example.com")  # DKIM (RFC 6376)
+```
+
+Both need the raw list rather than a single value: more than one SPF record is
+a `permerror`, and DKIM keys can be duplicated, rotated or revoked (`p=`). A
+helper returning "the" record would hide exactly those conditions. DKIM is also
+per-selector and selectors cannot be enumerated, so any convenience method would
+have to take a selector and would only build the name above.
+
+## Deprecations
+
+Two aliases are kept for compatibility and are **removed in 1.0.0**:
+
+| Deprecated | Use instead | Returns |
+|---|---|---|
+| `DMARCator.query(domain)` | `DMARCator.dmarc(domain)` | `String` / `nil` |
+| `DMARCator::Record.query(domain)` | `DMARCator::Record.lookup(domain)` | `Record` / `nil` |
+
+They behave identically and emit no warnings, so they will not show up in CI
+logs; search your code for `.query(` to find call sites.
+
 ## Strict parsing
 
 By default, unknown tags and tags with invalid values are ignored. Pass
