@@ -1,3 +1,7 @@
+### 0.9.0 / 2026-10-29
+
+* Add `DMARCator.txt_records`, which returns the TXT resource records instead of strings, so callers that cache lookups can read each record's `ttl`. `DMARCator.txt` is now defined in terms of it and behaves the same.
+
 ### 0.8.0 / 2026-10-29
 
 * Add `DMARCator.txt`, which returns every TXT record at a name — unfiltered, in response order, with multi-chunk records joined. It accepts service labels such as `_dmarc` and `_domainkey` through a new relaxed `validate_txt_name`, and lets callers detect duplicate DMARC records that `dmarc` deliberately hides.

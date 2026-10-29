@@ -104,6 +104,7 @@ The lookup methods are named after what they return:
 
 | Method | Returns | Cost |
 |---|---|---|
+| `DMARCator.txt_records(name)` | `Array<Resolv::DNS::Resource::IN::TXT>` — the records themselves | one lookup |
 | `DMARCator.txt(name)` | `Array<String>` — every TXT record at `name` | one lookup |
 | `DMARCator.dmarc(domain)` | `String` — the DMARC record text, or `nil` | one lookup |
 | `DMARCator::Record.lookup(domain)` | `Record` — parsed | one lookup + parse (~0.4 ms) |
@@ -136,13 +137,24 @@ else :duplicate  # more than one DMARC record breaks enforcement
 end
 ```
 
-All three methods accept an injected resolver, and an injected resolver keeps
-its own configuration (timeouts are only applied to resolvers the library
-builds):
+Use `DMARCator.txt_records` when you need the DNS TTL, for example to cache
+lookups in a database:
+
+```ruby
+records = DMARCator.txt_records("_dmarc.#{domain}")
+records.each do |record|
+  record.strings.join  # the TXT value
+  record.ttl           # seconds the answer may be cached
+end
+```
+
+All of these accept an injected resolver, and an injected resolver keeps its
+own configuration (timeouts are only applied to resolvers the library builds):
 
 ```ruby
 resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
 DMARCator.txt("_dmarc.example.com", resolver: resolver)
+DMARCator.txt_records("_dmarc.example.com", resolver: resolver)
 DMARCator.dmarc("example.com", resolver: resolver)
 DMARCator::Record.lookup("example.com", resolver: resolver)
 ```
