@@ -183,5 +183,15 @@ describe DMARCator::Uri do
     it "should pass through methods to uri" do
       expect(subject.host).to be(uri.host)
     end
+
+    it "does not expose private methods of the wrapped URI" do
+      expect {
+        subject.set_trace_func(proc {})
+      }.to raise_error(NoMethodError)
+    end
+
+    it "does not claim to respond to private URI methods" do
+      expect(subject).not_to respond_to(:set_trace_func)
+    end
   end
 end

@@ -118,19 +118,24 @@ module DMARCator
     private
 
     #
-    # Pass all missing methods to {#uri}.
+    # Pass public methods through to {#uri}.
+    #
+    # Private methods are not forwarded: delegation is limited to the wrapped
+    # URI's public interface.
     #
     def method_missing(name,*arguments,&block)
-      @uri.send(name,*arguments,&block)
+      return super unless @uri.respond_to?(name)
+
+      @uri.public_send(name,*arguments,&block)
     end
 
     #
-    # Indicates whether a missing method can be handled by {#uri}.
+    # Indicates whether a missing public method can be handled by {#uri}.
     #
     # @return [Boolean]
     #
     def respond_to_missing?(name, include_private = false)
-      @uri.respond_to?(name, include_private) || super
+      @uri.respond_to?(name) || super
     end
 
   end
