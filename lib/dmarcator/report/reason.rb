@@ -10,9 +10,14 @@ module DMARCator
     class Reason
       include XmlHelper
 
+      # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :comment]
 
-      attr_accessor(*ATTRIBUTES)
+      # @!attribute [rw] type
+      #   @return [String, nil] the reason type.
+      # @!attribute [rw] comment
+      #   @return [String, nil] an optional explanatory comment.
+      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
 
       def initialize(node)
         @node = node

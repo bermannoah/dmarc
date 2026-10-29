@@ -3,6 +3,11 @@
 require 'parslet'
 
 module DMARCator
+  #
+  # Raised when a DMARC record cannot be parsed.
+  #
+  # @since 0.2.0
+  #
   class InvalidRecord < Parslet::ParseFailed
   end
 

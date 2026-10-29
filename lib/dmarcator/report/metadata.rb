@@ -10,12 +10,27 @@ module DMARCator
     class Metadata
       include XmlHelper
 
+      # Attribute names exposed by this class.
       ATTRIBUTES = [
         :org_name, :email, :extra_contact_info, :report_id,
         :begin_at, :end_at, :errors
       ]
 
-      attr_accessor(*ATTRIBUTES)
+      # @!attribute [rw] org_name
+      #   @return [String, nil] the reporting organization.
+      # @!attribute [rw] email
+      #   @return [String, nil] the reporting organization's contact address.
+      # @!attribute [rw] extra_contact_info
+      #   @return [String, nil] additional contact information.
+      # @!attribute [rw] report_id
+      #   @return [String, nil] the unique report identifier.
+      # @!attribute [rw] begin_at
+      #   @return [Time, nil] the start of the reporting interval.
+      # @!attribute [rw] end_at
+      #   @return [Time, nil] the end of the reporting interval.
+      # @!attribute [rw] errors
+      #   @return [Array<String>] errors reported by the reporting organization.
+      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
 
       def initialize(node)
         @node = node

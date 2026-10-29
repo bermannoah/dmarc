@@ -10,9 +10,20 @@ module DMARCator
     class AuthResult
       include XmlHelper
 
+      # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :domain, :result, :selector, :scope]
 
-      attr_accessor(*ATTRIBUTES)
+      # @!attribute [rw] type
+      #   @return [String] the entry name (`dkim` or `spf`).
+      # @!attribute [rw] domain
+      #   @return [String, nil] the authenticated domain.
+      # @!attribute [rw] result
+      #   @return [String, nil] the authentication result.
+      # @!attribute [rw] selector
+      #   @return [String, nil] the DKIM selector.
+      # @!attribute [rw] scope
+      #   @return [String, nil] the SPF scope.
+      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
 
       def initialize(node)
         @node = node

@@ -12,12 +12,29 @@ module DMARCator
     class Record
       include XmlHelper
 
+      # Attribute names exposed by this class.
       ATTRIBUTES = [
         :source_ip, :count, :disposition, :dkim, :spf,
         :envelope_to, :envelope_from, :header_from
       ]
 
-      attr_accessor(*ATTRIBUTES)
+      # @!attribute [rw] source_ip
+      #   @return [String, nil] the sending IP address.
+      # @!attribute [rw] count
+      #   @return [Integer, nil] the number of messages from this source.
+      # @!attribute [rw] disposition
+      #   @return [String, nil] the action applied to the messages.
+      # @!attribute [rw] dkim
+      #   @return [String, nil] the DKIM evaluation result.
+      # @!attribute [rw] spf
+      #   @return [String, nil] the SPF evaluation result.
+      # @!attribute [rw] envelope_to
+      #   @return [String, nil] the envelope recipient domain.
+      # @!attribute [rw] envelope_from
+      #   @return [String, nil] the envelope sender domain.
+      # @!attribute [rw] header_from
+      #   @return [String, nil] the `From` header domain.
+      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
       attr_writer :auth_results, :reasons
 
       def initialize(node)

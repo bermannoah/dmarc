@@ -10,9 +10,24 @@ module DMARCator
     class Policy
       include XmlHelper
 
+      # Attribute names exposed by this class.
       ATTRIBUTES = [:domain, :adkim, :aspf, :p, :sp, :pct, :fo]
 
-      attr_accessor(*ATTRIBUTES)
+      # @!attribute [rw] domain
+      #   @return [String, nil] the domain the policy applies to.
+      # @!attribute [rw] adkim
+      #   @return [String, nil] the DKIM alignment mode (`r` or `s`).
+      # @!attribute [rw] aspf
+      #   @return [String, nil] the SPF alignment mode (`r` or `s`).
+      # @!attribute [rw] p
+      #   @return [String, nil] the requested policy.
+      # @!attribute [rw] sp
+      #   @return [String, nil] the requested subdomain policy.
+      # @!attribute [rw] pct
+      #   @return [Integer, nil] the percentage of messages the policy applied to.
+      # @!attribute [rw] fo
+      #   @return [String, nil] the requested failure-reporting options.
+      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
 
       def initialize(node)
         @node = node

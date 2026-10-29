@@ -50,6 +50,21 @@ module DMARCator
       unknown_tag
     end
 
+    #
+    # Defines a rule for a `tag=value` DMARC tag, capturing values that do not
+    # match the rule as `:invalid_tag` so strict mode can reject them.
+    #
+    # @param [Symbol] name
+    #   The rule name, used as `dmarc_<name>`.
+    #
+    # @param [String] tag
+    #   The DMARC tag name.
+    #
+    # @yieldreturn [Parslet::Atoms::Base]
+    #   The parslet matching the tag's value.
+    #
+    # @api private
+    #
     def self.tag_rule(name,tag,&block)
       rule(:"dmarc_#{name}") do
         (
@@ -123,6 +138,11 @@ module DMARCator
     rule(:wsp) { str(' ') | str("\t") }
     rule(:wsp?) { wsp.repeat }
 
+    #
+    # Converts the raw parse tree into tag attributes.
+    #
+    # @api private
+    #
     class Transform < Parslet::Transform
 
       rule(fo_opt: simple(:fo_opt)) { fo_opt }
@@ -155,8 +175,21 @@ module DMARCator
       rule(rua: subtree(:uris)) { {rua: Array(uris)} }
       rule(ruf: subtree(:uris)) { {ruf: Array(uris)} }
 
+      # Maximum length of error messages echoed from untrusted input.
       MAX_ERROR_MESSAGE_LENGTH = 300
 
+      #
+      # Parses a `mailto:` URI from a parse tree slice.
+      #
+      # @param [Parslet::Slice] value
+      #
+      # @return [URI::MailTo]
+      #
+      # @raise [InvalidRecord]
+      #   The URI is not a valid `mailto:` URI.
+      #
+      # @api private
+      #
       def self.parse_uri(value)
         uri = value.to_s
 
@@ -173,6 +206,15 @@ module DMARCator
         parsed
       end
 
+      #
+      # Truncates an error message to a bounded length.
+      #
+      # @param [String] message
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def self.truncate(message)
         message = message.to_s
 

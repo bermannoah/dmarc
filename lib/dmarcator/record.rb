@@ -7,6 +7,11 @@ require 'dmarcator/exceptions'
 require 'resolv'
 
 module DMARCator
+  #
+  # A parsed DMARC record, as published in a `_dmarc.<domain>` TXT record.
+  #
+  # @see https://www.rfc-editor.org/rfc/rfc7489
+  #
   class Record
 
     # `p` field.

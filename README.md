@@ -177,6 +177,11 @@ DMARC records and XML reports are treated as untrusted input:
   CVE-2026-80212/CVE-2026-80213.
 * Domain names are validated before resolution (labels ≤ 63 octets, total ≤
   248 octets, no leading/trailing hyphens).
+* Optional [DNS over HTTPS and DNS over TLS](#dns-transport) transports verify
+  TLS certificates and fail closed: a transport failure raises
+  `DMARCator::ResolutionError` rather than being reported as a domain without a
+  DMARC record, so a blocked or downgraded lookup can never silently enforce no
+  policy.
 
 ## Requirements
 
