@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'dmarcator/parser'
 
-describe Parser do
+describe DMARCator::Parser do
   describe "rules" do
     describe 'dmarc_uri' do
       subject { described_class.new.dmarc_uri }
@@ -349,7 +349,7 @@ describe Parser do
     end
   end
 
-  describe Parser::Transform do
+  describe DMARCator::Parser::Transform do
     let(:tree) do
       [
         {v: 'DMARC1'},
@@ -393,8 +393,8 @@ describe Parser do
       expect(subject).to include(aspf: :r)
     end
 
-    it "should convert {uri: ...} to Uri objects" do
-      expect(subject).to include(rua: [Uri.new(URI("mailto:d@rua.agari.com"))])
+    it "should convert {uri: ...} to DMARCator::Uri objects" do
+      expect(subject).to include(rua: [DMARCator::Uri.new(URI("mailto:d@rua.agari.com"))])
     end
   end
 
@@ -422,13 +422,13 @@ describe Parser do
     it "raises on unknown tags when strict" do
       expect {
         subject.parse("v=DMARC1;p=none;foo=xxx", strict: true)
-      }.to raise_error(InvalidRecord, /unknown DMARC tag/)
+      }.to raise_error(DMARCator::InvalidRecord, /unknown DMARC tag/)
     end
 
     it "raises on invalid tag values when strict" do
       expect {
         subject.parse("v=DMARC1;p=none;pct=abc", strict: true)
-      }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+      }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
     end
 
     it "raises when the record exceeds the maximum size" do
@@ -436,7 +436,7 @@ describe Parser do
 
       expect {
         subject.parse("v=DMARC1;p=none")
-      }.to raise_error(InvalidRecord, /maximum size/)
+      }.to raise_error(DMARCator::InvalidRecord, /maximum size/)
     end
 
     it "accepts a record at the maximum size" do

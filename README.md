@@ -93,6 +93,11 @@ record = DMARCator::Record.query("twitter.com")
 # => #<DMARCator::Record ... @p=:reject, @rua=[...], ...>
 ```
 
+Domains must be ASCII (A-labels): pass punycode such as
+`xn--mnchen-3ya.de` rather than `münchen.de`. A lookup failure raises
+`DMARCator::ResolutionError`; `nil` only means the domain genuinely has no
+DMARC record.
+
 ## Strict parsing
 
 By default, unknown tags and tags with invalid values are ignored. Pass

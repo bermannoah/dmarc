@@ -16,6 +16,8 @@ Gem::Specification.new do |gem|
   gem.metadata = {
     "source_code_uri"   => "https://github.com/bermannoah/dmarcator",
     "bug_tracker_uri"   => "https://github.com/bermannoah/dmarcator/issues",
+    "changelog_uri"     => "https://github.com/bermannoah/dmarcator/blob/main/ChangeLog.md",
+    "documentation_uri" => "https://rubydoc.info/gems/dmarcator",
     "rubygems_mfa_required" => "true"
   }
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'dmarcator/record'
 
-describe Record do
+describe DMARCator::Record do
   describe '#initialize' do
     let(:attributes) do
       {
@@ -81,51 +81,51 @@ describe Record do
       it 'parse and returns a record' do
         rec = subject.parse('v=DMARC1; p=quarantine')
 
-        expect(rec).to be_a Record
+        expect(rec).to be_a DMARCator::Record
         expect(rec.p).to eq :quarantine
       end
 
       it 'parses case-insensitive mailto URIs' do
         rec = subject.parse('v=DMARC1; p=none; rua=MAILTO:a@b.com')
 
-        expect(rec.rua).to eq([Uri.new(URI('mailto:a@b.com'))])
+        expect(rec.rua).to eq([DMARCator::Uri.new(URI('mailto:a@b.com'))])
       end
 
       it 'parses a mailto URI with a plus tag' do
         rec = subject.parse('v=DMARC1; p=none; rua=mailto:user+tag@example.com')
 
-        expect(rec.rua).to eq([Uri.new(URI('mailto:user+tag@example.com'))])
+        expect(rec.rua).to eq([DMARCator::Uri.new(URI('mailto:user+tag@example.com'))])
       end
     end
 
     context 'with an invalid record' do
-      it 'raises an InvalidRecord error' do
+      it 'raises an DMARCator::InvalidRecord error' do
         expect {
           subject.parse('v=XXXXXXXXXX')
-        }.to raise_error(InvalidRecord)
+        }.to raise_error(DMARCator::InvalidRecord)
       end
 
       it 'raises when the p tag is missing' do
         expect {
           subject.parse('v=DMARC1')
-        }.to raise_error(InvalidRecord)
+        }.to raise_error(DMARCator::InvalidRecord)
       end
 
       it 'raises when pct is out of range' do
         expect {
           subject.parse('v=DMARC1; p=none; pct=999')
-        }.to raise_error(InvalidRecord)
+        }.to raise_error(DMARCator::InvalidRecord)
       end
 
       it 'raises when tags are duplicated' do
         expect {
           subject.parse('v=DMARC1; p=none; p=reject')
-        }.to raise_error(InvalidRecord)
+        }.to raise_error(DMARCator::InvalidRecord)
       end
 
       it 'raises when the record is not a String' do
-        expect { subject.parse(nil) }.to raise_error(InvalidRecord, /must be a String/)
-        expect { subject.parse(123) }.to raise_error(InvalidRecord, /must be a String/)
+        expect { subject.parse(nil) }.to raise_error(DMARCator::InvalidRecord, /must be a String/)
+        expect { subject.parse(123) }.to raise_error(DMARCator::InvalidRecord, /must be a String/)
       end
     end
 
@@ -133,21 +133,21 @@ describe Record do
       it 'ignores the invalid rua tag' do
         rec = subject.parse('v=DMARC1; p=none; rua=http://169.254.169.254/?x=1')
 
-        expect(rec).to be_a Record
+        expect(rec).to be_a DMARCator::Record
         expect(rec.rua).to be_nil
       end
 
       it 'ignores a list containing an invalid rua URI' do
         rec = subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com,http://evil')
 
-        expect(rec).to be_a Record
+        expect(rec).to be_a DMARCator::Record
         expect(rec.rua).to be_nil
       end
 
       it 'ignores a rua URI with a control character' do
         rec = subject.parse("v=DMARC1; p=none; rua=mailto:a\nb@example.com")
 
-        expect(rec).to be_a Record
+        expect(rec).to be_a DMARCator::Record
         expect(rec.rua).to be_nil
       end
     end
@@ -162,25 +162,25 @@ describe Record do
       it 'raises on unknown tags' do
         expect {
           subject.parse('v=DMARC1; p=none; foo=bar', strict: true)
-        }.to raise_error(InvalidRecord, /unknown DMARC tag/)
+        }.to raise_error(DMARCator::InvalidRecord, /unknown DMARC tag/)
       end
 
       it 'raises on invalid tag values' do
         expect {
           subject.parse('v=DMARC1; p=none; pct=abc', strict: true)
-        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+        }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
       end
 
       it 'raises on a rua list containing an invalid URI' do
         expect {
           subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com,http://evil', strict: true)
-        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+        }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
       end
 
       it 'raises on a rua URI with a control character' do
         expect {
           subject.parse("v=DMARC1; p=none; rua=mailto:a\nb@example.com", strict: true)
-        }.to raise_error(InvalidRecord, /invalid DMARC tag value/)
+        }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
       end
     end
   end
@@ -196,7 +196,7 @@ describe Record do
 
         record = subject.query("google.com")
 
-        expect(record).to be_kind_of(Record)
+        expect(record).to be_kind_of(DMARCator::Record)
         expect(record.v).to be == :DMARC1
       end
     end

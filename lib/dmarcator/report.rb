@@ -78,7 +78,9 @@ module DMARCator
     # @return [BigDecimal, nil]
     #
     def version
-      @version ||= begin
+      return @version if defined?(@version)
+
+      @version = begin
         value = get_text('feedback/version')
 
         if value && !value.empty?

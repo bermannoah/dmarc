@@ -29,13 +29,13 @@ RSpec.describe DMARCator::Report do
     expect(report.version).to be_nil
   end
 
-  it 'raises InvalidReport for malformed XML' do
+  it 'raises DMARCator::InvalidReport for malformed XML' do
     expect {
       described_class.new('this is not xml')
     }.to raise_error(DMARCator::InvalidReport)
   end
 
-  it 'raises InvalidReport when the report is not a String' do
+  it 'raises DMARCator::InvalidReport when the report is not a String' do
     expect { described_class.new(nil) }.to raise_error(DMARCator::InvalidReport, /must be a String/)
     expect { described_class.new(123) }.to raise_error(DMARCator::InvalidReport, /must be a String/)
   end
@@ -56,7 +56,7 @@ RSpec.describe DMARCator::Report do
     expect(report.metadata.org_name).to eq('')
   end
 
-  it 'raises InvalidReport for oversized reports' do
+  it 'raises DMARCator::InvalidReport for oversized reports' do
     allow(described_class).to receive(:max_report_bytes).and_return(10)
 
     expect {
