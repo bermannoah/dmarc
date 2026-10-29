@@ -1,3 +1,25 @@
+### 0.12.0 / 2026-10-29
+
+Breaking changes, taken before 1.0:
+
+* `Report#version` returns the published value as a String instead of a `BigDecimal`, and the `bigdecimal` runtime dependency is gone. A non-numeric version still yields `nil`.
+* Parsed report objects (`Report::Metadata`, `Policy`, `Row`, `AuthResult`, `Reason`) are read-only. Their attributes were previously writable, which allowed a parsed report to be mutated into a state that never came from the document.
+* `Report.max_report_bytes` now delegates to `DMARCator.config.max_report_bytes`. The class-level accessors remain, so existing callers keep working; `Config#max_report_bytes` defaults to 25 MiB and rejects values that are not a positive Integer or nil.
+
+Other changes:
+
+* `DMARCator::XmlHelper` methods are private to including classes, `Record.truncate_error_message` is private, and `DMARCator::Parser` is documented as `@api private`.
+* Add an API-contract spec that pins the public surface of every public class, so additions and removals are deliberate.
+* Add `SECURITY.md` and document the stability, thread-safety and deprecation policies in the README. `SECURITY.md` now ships with the gem.
+
+Migration:
+
+| Before | After |
+|---|---|
+| `report.version == BigDecimal("0.1")` | `report.version == "0.1"` |
+| `report.policy.pct = 50` | assign nothing; parsed values are read-only |
+| `Report.max_report_bytes = n` | `DMARCator.configure { |c| c.max_report_bytes = n }` |
+
 ### 0.11.0 / 2026-10-29
 
 * Add `DMARCator.configure` for process-wide defaults, so a resolver can be set from code instead of only through the `DMARCATOR_DNS` environment variables. A configured resolver takes precedence over the environment, and `DMARCator.reset_configuration!` discards it.

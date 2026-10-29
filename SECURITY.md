@@ -1,0 +1,75 @@
+# Security Policy
+
+## Supported versions
+
+Security fixes are released for the latest published version. Older versions
+are not patched; the fix ships in a new release.
+
+| Version | Supported |
+|---------|-----------|
+| 0.11.x  | ✅ |
+| < 0.11  | ❌ |
+
+Before 1.0, a security fix may ship in a minor version that also contains
+breaking changes. The ChangeLog marks breaking changes explicitly.
+
+## Reporting a vulnerability
+
+Report suspected vulnerabilities privately through GitHub's
+[private vulnerability reporting][advisories] on
+https://github.com/bermannoah/dmarcator. Please do not open a public issue.
+
+Include, as far as you can:
+
+- the version affected, and the Ruby and `resolv` versions,
+- the input that triggers the problem (a DMARC record, report, or domain name),
+- what you expected and what happened,
+- whether the DNS transport was plaintext, DNS over HTTPS, or DNS over TLS.
+
+You will get an acknowledgement, an assessment, and a coordinated disclosure
+date. Credit is given in the ChangeLog unless you ask otherwise.
+
+## What this library treats as untrusted
+
+Everything it parses or resolves is untrusted, and the design assumes so:
+
+- **DMARC records** come from DNS and are parsed by a grammar with input
+  bounds; error messages echoing input are truncated.
+- **DMARC XML reports** are untrusted documents. They are parsed with network
+  access disabled (`NONET`), size-capped, and rejected on malformed input.
+- **Domain names** are validated before reaching the resolver.
+- **DNS responses** are validated by the encrypted transports (transaction id,
+  question, truncation bit), and TLS certificates are always verified.
+
+Lookup failures fail closed: a transport error raises
+`DMARCator::ResolutionError` rather than being reported as "no DMARC record",
+so a blocked or degraded resolver cannot silently result in no policy being
+enforced.
+
+## In scope
+
+- Parser bugs reachable from a DMARC record, an XML report, or a domain name:
+  crashes, unbounded memory or CPU, entity expansion, unsafe reflection.
+- Transport bugs: TLS verification bypass, response spoofing not caught by the
+  id/question checks, request smuggling, unbounded response buffering.
+- Silent fail-open behaviour: any path where a failure is reported as an
+  absent record.
+
+## Out of scope
+
+- Vulnerabilities in `parslet`, `nokogiri`, or Ruby itself. Report those
+  upstream; the library's load-time guard for known `resolv` issues is a
+  warning, not a substitute for patching.
+- The *policy* decisions of an application built on the library, such as
+  whether to fail open on `DMARCator::ResolutionError`.
+- Misconfiguration of the caller's resolver, or the trustworthiness of a
+  third-party DNS provider chosen by the caller.
+
+## Hardening already applied
+
+The ChangeLog records these, and the README documents the current behaviour:
+XXE and entity limits, report and record size caps, `pct`/`ri` range checks,
+duplicate-tag rejection, strict `mailto:`-only report URIs, DNS name
+validation, TLS verification, and the `resolv` CVE guard.
+
+[advisories]: https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability

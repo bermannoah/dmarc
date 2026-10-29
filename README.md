@@ -288,9 +288,34 @@ resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
 record   = DMARCator::Record.lookup("example.com", resolver: resolver)
 ```
 
+## Stability
+
+The public API is pinned by a contract spec in the test suite: the module
+methods, constants and per-class public methods it asserts are the supported
+surface. Anything marked `@api private` in the documentation — the parser, the
+XML helper, the internal resolver plumbing — may change in a minor release.
+
+### Thread safety
+
+* `DMARCator::Record`, `DMARCator::Report` and the parsed value objects are
+  read-only after construction and safe to share between threads.
+* The memoized parser and transform are shared, and safe for concurrent use.
+* Resolvers are not necessarily safe for concurrent lookups: `Resolv::DNS` does
+  not serialise queries. Use one resolver per thread, or configure a factory
+  with `DMARCator.configure` so each lookup builds its own.
+* `DMARCator.configure` mutates process-wide state. Call it during boot rather
+  than per request.
+
+### Deprecations
+
+A method is deprecated in a minor release by documentation only — no runtime
+warnings, so nothing is added to application logs. Deprecated methods are
+removed in the next major release.
+
 ## Security
 
-DMARC records and XML reports are treated as untrusted input:
+DMARC records and XML reports are treated as untrusted input. See
+[SECURITY.md](SECURITY.md) for the reporting policy and scope.
 
 * XML reports are parsed with network access disabled (`NONET`), so external
   entities are never resolved or fetched.
