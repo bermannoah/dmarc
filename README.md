@@ -89,7 +89,7 @@ record.sp
 Query the DMARC record for a domain:
 
 ```ruby
-record = DMARCator::Record.query("twitter.com")
+record = DMARCator::Record.lookup("twitter.com")
 # => #<DMARCator::Record ... @p=:reject, @rua=[...], ...>
 ```
 
@@ -97,6 +97,73 @@ Domains must be ASCII (A-labels): pass punycode such as
 `xn--mnchen-3ya.de` rather than `münchen.de`. A lookup failure raises
 `DMARCator::ResolutionError`; `nil` only means the domain genuinely has no
 DMARC record.
+
+## Lookup APIs
+
+The lookup methods are named after what they return:
+
+| Method | Returns | Cost |
+|---|---|---|
+| `DMARCator.txt(name)` | `Array<String>` — every TXT record at `name` | one lookup |
+| `DMARCator.dmarc(domain)` | `String` — the DMARC record text, or `nil` | one lookup |
+| `DMARCator::Record.lookup(domain)` | `Record` — parsed | one lookup + parse (~0.4 ms) |
+| `DMARCator::Record.parse(text)` | `Record` — parsed from a string | parse only |
+
+`DMARCator.txt` is the primitive: unfiltered, in response order, multi-chunk
+records joined. It works for any TXT name, including `_dmarc.` and
+`_domainkey.` labels, and leaves interpretation to the caller:
+
+```ruby
+DMARCator.txt("_dmarc.example.com")
+# => ["v=DMARC1; p=reject; rua=mailto:dmarc@example.com"]
+
+DMARCator.txt("example.com")
+# => ["v=spf1 include:_spf.example.com -all", "google-site-verification=abc"]
+
+DMARCator.txt("s1._domainkey.example.com")
+# => []
+```
+
+Because it returns every record, it is also how you detect misconfiguration
+that `DMARCator.dmarc` deliberately hides per RFC 7489 §6.6.3:
+
+```ruby
+records = DMARCator.txt("_dmarc.#{domain}").select { |t| t.start_with?("v=DMARC1") }
+case records.length
+when 0 then :none
+when 1 then :ok
+else :duplicate  # more than one DMARC record breaks enforcement
+end
+```
+
+All three methods accept an injected resolver, and an injected resolver keeps
+its own configuration (timeouts are only applied to resolvers the library
+builds):
+
+```ruby
+resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
+DMARCator.txt("_dmarc.example.com", resolver: resolver)
+DMARCator.dmarc("example.com", resolver: resolver)
+DMARCator::Record.lookup("example.com", resolver: resolver)
+```
+
+### Bulk lookups
+
+`DMARCator.dmarc` is the cheapest DMARC path — one lookup, no parsing. For a
+scan over many domains:
+
+```ruby
+resolver = DMARCator.default_resolver   # build once, not per domain
+domains.each do |domain|
+  record = DMARCator.dmarc(domain, resolver: resolver)
+  # parse only when you need the fields
+end
+```
+
+Notes for large scans: `Record.lookup` adds a parse per domain (~0.4 ms, far
+more than the lookup on a fast resolver); `Resolv::DNS` does not lock per query,
+so use one resolver per thread when parallelising; and DoT/DoH open a new TLS
+connection per lookup, so plaintext is the better choice for bulk work.
 
 ## Strict parsing
 
@@ -164,7 +231,7 @@ A resolver can also be built explicitly:
 
 ```ruby
 resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
-record   = DMARCator::Record.query("example.com", resolver)
+record   = DMARCator::Record.lookup("example.com", resolver: resolver)
 ```
 
 ## Security

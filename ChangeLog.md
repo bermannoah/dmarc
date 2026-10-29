@@ -1,3 +1,10 @@
+### 0.8.0 / 2026-10-29
+
+* Add `DMARCator.txt`, which returns every TXT record at a name — unfiltered, in response order, with multi-chunk records joined. It accepts service labels such as `_dmarc` and `_domainkey` through a new relaxed `validate_txt_name`, and lets callers detect duplicate DMARC records that `dmarc` deliberately hides.
+* Rename the lookup methods after what they return: `DMARCator.dmarc` (was `DMARCator.query`) and `DMARCator::Record.lookup` (was `DMARCator::Record.query`). The old names remain as deprecated aliases and emit no runtime warnings.
+* Apply `DMARCATOR_DNS_TIMEOUTS` when the library builds a plaintext resolver, instead of on every lookup. An injected resolver now keeps its own configuration.
+* Document the lookup APIs, bulk-scan guidance and deprecations in the README.
+
 ### 0.7.0 / 2026-10-29
 
 * Plaintext DNS lookups now fail closed: a lookup failure raises `DMARCator::ResolutionError` instead of being reported as a domain without a DMARC record. Previously a timeout or resolver failure looked like no policy, which failed open. This is a behavior change and applies to every transport.
