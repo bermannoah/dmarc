@@ -247,16 +247,6 @@ module DMARCator
   end
 
   #
-  # @deprecated Use {dmarc}, which names what it returns. Kept for
-  #   compatibility; it will be removed in 1.0.0.
-  #
-  # @see dmarc
-  #
-  def self.query(domain,resolver=default_resolver)
-    dmarc(domain, resolver: resolver)
-  end
-
-  #
   # Looks up the TXT records at an already-validated name.
   #
   # Shared by {txt}, {txt_records} and {dmarc} so they use one transport path.

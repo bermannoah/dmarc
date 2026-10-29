@@ -220,14 +220,6 @@ describe DMARCator do
     end
   end
 
-  describe ".query" do
-    it "forwards to .dmarc" do
-      expect(subject).to receive(:dmarc).with("google.com", resolver: resolver)
-
-      subject.query("google.com", resolver)
-    end
-  end
-
   describe ".validate_domain" do
     it "accepts a valid domain" do
       expect(subject.validate_domain("example.com")).to eq("example.com")

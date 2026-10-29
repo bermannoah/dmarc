@@ -344,16 +344,6 @@ module DMARCator
     end
 
     #
-    # @deprecated Use {lookup}, which names what it returns. Kept for
-    #   compatibility; it will be removed in 1.0.0.
-    #
-    # @see lookup
-    #
-    def self.query(domain,resolver=DMARCator.default_resolver)
-      lookup(domain, resolver: resolver)
-    end
-
-    #
     # Converts the record to a Hash.
     #
     # @return [Hash{Symbol => Object}]

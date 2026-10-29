@@ -193,18 +193,6 @@ helper returning "the" record would hide exactly those conditions. DKIM is also
 per-selector and selectors cannot be enumerated, so any convenience method would
 have to take a selector and would only build the name above.
 
-## Deprecations
-
-Two aliases are kept for compatibility and are **removed in 1.0.0**:
-
-| Deprecated | Use instead | Returns |
-|---|---|---|
-| `DMARCator.query(domain)` | `DMARCator.dmarc(domain)` | `String` / `nil` |
-| `DMARCator::Record.query(domain)` | `DMARCator::Record.lookup(domain)` | `Record` / `nil` |
-
-They behave identically and emit no warnings, so they will not show up in CI
-logs; search your code for `.query(` to find call sites.
-
 ## Strict parsing
 
 By default, unknown tags and tags with invalid values are ignored. Pass

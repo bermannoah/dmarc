@@ -212,16 +212,6 @@ describe DMARCator::Record do
     end
   end
 
-  describe ".query" do
-    subject { described_class }
-
-    it "forwards to .lookup" do
-      expect(subject).to receive(:lookup).with("google.com", resolver: anything)
-
-      subject.query("google.com")
-    end
-  end
-
   shared_examples "question mark method" do |field,value|
     describe "#{field}?" do
       context "when #{field} is set" do
