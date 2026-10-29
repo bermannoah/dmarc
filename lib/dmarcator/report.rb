@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require 'bigdecimal'
-require 'bigdecimal/util'
 
 require_relative 'xml_helper'
 require_relative 'exceptions'
@@ -73,23 +71,22 @@ module DMARCator
     end
 
     #
-    # The report version.
+    # The report version, as published.
     #
-    # @return [BigDecimal, nil]
+    # Returned as a String because versions are opaque identifiers, not
+    # numbers to compute with.
+    #
+    # @return [String, nil]
+    #   The version, or `nil` when it is absent or not numeric.
     #
     def version
       return @version if defined?(@version)
 
       @version = begin
         value = get_text('feedback/version')
+        value = value.strip if value
 
-        if value && !value.empty?
-          begin
-            BigDecimal(value)
-          rescue ArgumentError
-            nil
-          end
-        end
+        value if value && value.match?(/\A\d+(?:\.\d+)*\z/)
       end
     end
 

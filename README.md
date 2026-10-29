@@ -236,7 +236,7 @@ Parse a DMARC aggregate/forensic report:
 report = DMARCator::Report.new(xml_string)
 
 report.version
-# => 0.1e0
+# => "0.1"
 
 report.metadata.org_name
 # => "google.com"
@@ -316,7 +316,6 @@ DMARC records and XML reports are treated as untrusted input:
 * [Ruby] >= 3.3.13
 * [parslet] >= 1.0.0, < 3.0.0
 * [nokogiri] >= 1.10
-* [bigdecimal] >= 1.0
 
 ## Testing
 
@@ -386,5 +385,4 @@ created by D Salko and released under the MIT License.
 [Ruby]: https://www.ruby-lang.org
 [parslet]: https://kschiess.github.io/parslet/
 [nokogiri]: https://nokogiri.org
-[bigdecimal]: https://github.com/ruby/bigdecimal
 [LICENSE.txt]: LICENSE.txt

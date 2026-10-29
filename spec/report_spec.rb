@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 require 'dmarcator/report'
-require 'bigdecimal'
 
 RSpec.describe DMARCator::Report do
   let(:example_path) { File.join(__dir__, 'support', 'complete.xml') }
@@ -17,7 +16,7 @@ RSpec.describe DMARCator::Report do
 
   it 'reads report version if available' do
     report = described_class.new(xml_report)
-    expect(report.version).to eq(BigDecimal('0.1'))
+    expect(report.version).to eq('0.1')
 
     google = described_class.new(google_report)
     expect(google.version).to be_nil
