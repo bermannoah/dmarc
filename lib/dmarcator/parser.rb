@@ -10,6 +10,10 @@ module DMARCator
   #
   # DMARC parser.
   #
+  # An implementation detail: use {Record.parse} rather than this class.
+  #
+  # @api private
+  #
   # @see https://tools.ietf.org/html/rfc7489#section-6.4
   #
   class Parser < Parslet::Parser

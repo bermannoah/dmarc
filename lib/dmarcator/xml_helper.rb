@@ -7,6 +7,8 @@ module DMARCator
   # Internal helper for extracting values from parsed DMARC XML reports.
   #
   module XmlHelper
+    private
+
     #
     # Returns the text of the first node matching the XPath expression.
     #

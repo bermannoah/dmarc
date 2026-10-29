@@ -312,6 +312,8 @@ module DMARCator
       end
     end
 
+    private_class_method :truncate_error_message
+
     #
     # Looks up and parses the DMARC record for a domain.
     #
