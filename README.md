@@ -216,8 +216,12 @@ was built, so a gem can always be traced back to its source:
 # 2. Commit the release.
 git commit -am "Bump version to X.Y.Z"
 
-# 3. Tag that commit before building anything.
-git tag -a vX.Y.Z -m "dmarcator X.Y.Z"
+# 3. Tag that commit before building anything, with release notes in the
+#    tag message. Repeating -m adds blank-line-separated paragraphs.
+git tag -a vX.Y.Z \
+    -m "dmarcator X.Y.Z" \
+    -m "Summary of the release, including behaviour changes and upgrade notes." \
+    -m "See ChangeLog.md for the itemized list."
 
 # 4. Push the commit and its tags.
 git push origin main --follow-tags
@@ -226,6 +230,10 @@ git push origin main --follow-tags
 gem build dmarc.gemspec
 gem push dmarcator-X.Y.Z.gem
 ```
+
+The tag message is the release note: it is what `git show vX.Y.Z` prints, so
+put the highlight summary and any upgrade guidance there. Write it before step
+4, because a pushed tag message cannot be changed without force-pushing the tag.
 
 Tag before publishing, never after: a tag without a published gem, or a gem
 without a tag, makes the two hard to reconcile later.
