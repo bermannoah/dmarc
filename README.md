@@ -149,9 +149,11 @@ hostname.
 
 Encrypted transports fail closed: a transport failure raises
 `DMARCator::ResolutionError` instead of being reported as a domain without a
-DMARC record. Plaintext is the default because forcing a public resolver breaks
-private and split-horizon zones, and some networks block port 853 or public
-resolvers.
+DMARC record. This applies to every transport, including plaintext —
+`Resolv` returns an empty result for NXDOMAIN and raises for timeouts and
+other failures, so a failed lookup is never mistaken for an absent record.
+Plaintext remains the default because forcing a public resolver breaks private
+and split-horizon zones, and some networks block port 853 or public resolvers.
 
 A resolver can also be built explicitly:
 
@@ -181,7 +183,8 @@ DMARC records and XML reports are treated as untrusted input:
   TLS certificates and fail closed: a transport failure raises
   `DMARCator::ResolutionError` rather than being reported as a domain without a
   DMARC record, so a blocked or downgraded lookup can never silently enforce no
-  policy.
+  policy. Plaintext lookups fail closed the same way. DoH responses must be
+  `application/dns-message` and are capped at 65,535 bytes.
 
 ## Requirements
 
