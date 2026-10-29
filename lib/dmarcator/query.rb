@@ -3,6 +3,7 @@
 require 'resolv'
 require 'rubygems'
 
+require_relative 'config'
 require_relative 'resolver'
 
 module DMARCator
@@ -125,7 +126,11 @@ module DMARCator
   end
 
   #
-  # Builds the resolver configured by the environment.
+  # The default resolver: a {configure}d one, or one built from the
+  # environment.
+  #
+  # A configured resolver may be an object or a callable; a callable is called
+  # for each lookup, which is what threaded applications should use.
   #
   # @return [Resolv::DNS, Resolver::DoH, Resolver::DoT]
   #
@@ -135,7 +140,11 @@ module DMARCator
   # @since 0.6.0
   #
   def self.default_resolver
-    Resolver.build
+    configured = config.resolver
+
+    return configured.call if configured.respond_to?(:call)
+
+    configured || Resolver.build
   end
 
   #
