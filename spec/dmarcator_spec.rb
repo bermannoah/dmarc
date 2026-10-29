@@ -60,8 +60,23 @@ describe DMARCator do
       expect(subject.query("google.com", resolver)).to be_nil
     end
 
-    it "returns nil when the resolver raises ResolvError" do
-      expect(resolver).to receive(:getresources).and_raise(Resolv::ResolvError)
+    it "raises ResolutionError when the resolver fails" do
+      expect(resolver).to receive(:getresources)
+        .and_raise(Resolv::ResolvError, "DNS resolv timeout: _dmarc.google.com")
+
+      expect {
+        subject.query("google.com", resolver)
+      }.to raise_error(DMARCator::ResolutionError, /DNS lookup failed.*timeout/)
+    end
+
+    it "returns nil when the domain has no DMARC record" do
+      allow(resolver).to receive(:getresources).and_return([])
+
+      expect(subject.query("google.com", resolver)).to be_nil
+    end
+
+    it "returns nil when non-DMARC TXT records exist" do
+      allow(resolver).to receive(:getresources).and_return([txt(["hello world"])])
 
       expect(subject.query("google.com", resolver)).to be_nil
     end

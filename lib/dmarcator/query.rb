@@ -104,11 +104,11 @@ module DMARCator
   #   plaintext resolvers receive {DNS_TIMEOUTS}.
   #
   # @return [String, nil]
-  #   The domain's DMARC record or `nil` if none exists.
+  #   The domain's DMARC record, or `nil` if the domain simply has none.
   #
-  # @raise [Resolver::DoH, Resolver::DoT] resolution errors
-  #   Encrypted transports raise {ResolutionError} when the lookup fails, so
-  #   a transport problem is never reported as a missing record.
+  # @raise [ResolutionError]
+  #   The lookup failed. A failure is never reported as a missing record, so a
+  #   blocked or degraded resolver cannot silently enforce no policy.
   #
   # @api semipublic
   #
@@ -121,10 +121,13 @@ module DMARCator
 
     host = "_dmarc.#{domain}"
 
+    # Resolv returns an empty result for NXDOMAIN and raises for timeouts and
+    # other failures, so any exception here is a transport failure, not an
+    # absent record.
     begin
       records = resolver.getresources(host, Resolv::DNS::Resource::IN::TXT)
-    rescue Resolv::ResolvError
-      return nil
+    rescue Resolv::ResolvError => error
+      raise ResolutionError, "DNS lookup failed for #{host}: #{error.message}"
     end
 
     # Per RFC 7489 §6.6.3, use the TXT record beginning with "v=DMARC1".
