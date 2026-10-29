@@ -121,6 +121,15 @@ RSpec.describe DMARCator::Report do
     expect(report.records.first.count).to eq(96)
   end
 
+  it 'exposes parsed values as read-only' do
+    report = described_class.new(xml_report)
+
+    expect { report.metadata.org_name = 'x' }.to raise_error(NoMethodError)
+    expect { report.policy.pct = 1 }.to raise_error(NoMethodError)
+    expect { report.records.first.source_ip = 'x' }.to raise_error(NoMethodError)
+    expect { report.records.first.reasons = [] }.to raise_error(NoMethodError)
+  end
+
   it 'uses the first value when an element is duplicated' do
     report = described_class.new(<<~XML)
       <feedback>

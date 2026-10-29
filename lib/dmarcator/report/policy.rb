@@ -13,21 +13,21 @@ module DMARCator
       # Attribute names exposed by this class.
       ATTRIBUTES = [:domain, :adkim, :aspf, :p, :sp, :pct, :fo]
 
-      # @!attribute [rw] domain
+      # @!attribute [r] domain
       #   @return [String, nil] the domain the policy applies to.
-      # @!attribute [rw] adkim
+      # @!attribute [r] adkim
       #   @return [String, nil] the DKIM alignment mode (`r` or `s`).
-      # @!attribute [rw] aspf
+      # @!attribute [r] aspf
       #   @return [String, nil] the SPF alignment mode (`r` or `s`).
-      # @!attribute [rw] p
+      # @!attribute [r] p
       #   @return [String, nil] the requested policy.
-      # @!attribute [rw] sp
+      # @!attribute [r] sp
       #   @return [String, nil] the requested subdomain policy.
-      # @!attribute [rw] pct
+      # @!attribute [r] pct
       #   @return [Integer, nil] the percentage of messages the policy applied to.
-      # @!attribute [rw] fo
+      # @!attribute [r] fo
       #   @return [String, nil] the requested failure-reporting options.
-      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
+      ATTRIBUTES.each { |attribute| attr_reader(attribute) }
 
       def initialize(node)
         @node = node
@@ -38,19 +38,19 @@ module DMARCator
         policy.element_children.each do |element|
           case element.name
           when 'pct'
-            self.pct ||= parse_integer(element.text)
+            @pct ||= parse_integer(element.text)
           when 'domain'
-            self.domain ||= element.text
+            @domain ||= element.text
           when 'adkim'
-            self.adkim ||= element.text
+            @adkim ||= element.text
           when 'aspf'
-            self.aspf ||= element.text
+            @aspf ||= element.text
           when 'p'
-            self.p ||= element.text
+            @p ||= element.text
           when 'sp'
-            self.sp ||= element.text
+            @sp ||= element.text
           when 'fo'
-            self.fo ||= element.text
+            @fo ||= element.text
           end
         end
       end

@@ -13,32 +13,32 @@ module DMARCator
       # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :domain, :result, :selector, :scope]
 
-      # @!attribute [rw] type
+      # @!attribute [r] type
       #   @return [String] the entry name (`dkim` or `spf`).
-      # @!attribute [rw] domain
+      # @!attribute [r] domain
       #   @return [String, nil] the authenticated domain.
-      # @!attribute [rw] result
+      # @!attribute [r] result
       #   @return [String, nil] the authentication result.
-      # @!attribute [rw] selector
+      # @!attribute [r] selector
       #   @return [String, nil] the DKIM selector.
-      # @!attribute [rw] scope
+      # @!attribute [r] scope
       #   @return [String, nil] the SPF scope.
-      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
+      ATTRIBUTES.each { |attribute| attr_reader(attribute) }
 
       def initialize(node)
         @node = node
-        self.type = node.name
+        @type = node.name
 
         node.element_children.each do |element|
           case element.name
           when 'domain'
-            self.domain ||= element.text
+            @domain ||= element.text
           when 'result'
-            self.result ||= element.text
+            @result ||= element.text
           when 'selector'
-            self.selector ||= element.text
+            @selector ||= element.text
           when 'scope'
-            self.scope ||= element.text
+            @scope ||= element.text
           end
         end
       end

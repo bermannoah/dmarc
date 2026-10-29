@@ -21,24 +21,23 @@ module DMARCator
         :envelope_to, :envelope_from, :header_from
       ]
 
-      # @!attribute [rw] source_ip
+      # @!attribute [r] source_ip
       #   @return [String, nil] the sending IP address.
-      # @!attribute [rw] count
+      # @!attribute [r] count
       #   @return [Integer, nil] the number of messages from this source.
-      # @!attribute [rw] disposition
+      # @!attribute [r] disposition
       #   @return [String, nil] the action applied to the messages.
-      # @!attribute [rw] dkim
+      # @!attribute [r] dkim
       #   @return [String, nil] the DKIM evaluation result.
-      # @!attribute [rw] spf
+      # @!attribute [r] spf
       #   @return [String, nil] the SPF evaluation result.
-      # @!attribute [rw] envelope_to
+      # @!attribute [r] envelope_to
       #   @return [String, nil] the envelope recipient domain.
-      # @!attribute [rw] envelope_from
+      # @!attribute [r] envelope_from
       #   @return [String, nil] the envelope sender domain.
-      # @!attribute [rw] header_from
+      # @!attribute [r] header_from
       #   @return [String, nil] the `From` header domain.
-      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
-      attr_writer :auth_results, :reasons
+      ATTRIBUTES.each { |attribute| attr_reader(attribute) }
 
       def initialize(node)
         @node = node
@@ -87,9 +86,9 @@ module DMARCator
         row.element_children.each do |element|
           case element.name
           when 'source_ip'
-            self.source_ip ||= element.text
+            @source_ip ||= element.text
           when 'count'
-            self.count ||= parse_integer(element.text)
+            @count ||= parse_integer(element.text)
           when 'policy_evaluated'
             parse_policy_evaluated(element)
           end
@@ -100,11 +99,11 @@ module DMARCator
         policy_evaluated.element_children.each do |element|
           case element.name
           when 'disposition'
-            self.disposition ||= element.text
+            @disposition ||= element.text
           when 'dkim'
-            self.dkim ||= element.text
+            @dkim ||= element.text
           when 'spf'
-            self.spf ||= element.text
+            @spf ||= element.text
           when 'reason'
             @reason_nodes << element
           end
@@ -115,11 +114,11 @@ module DMARCator
         identifiers.element_children.each do |element|
           case element.name
           when 'envelope_to'
-            self.envelope_to ||= element.text
+            @envelope_to ||= element.text
           when 'envelope_from'
-            self.envelope_from ||= element.text
+            @envelope_from ||= element.text
           when 'header_from'
-            self.header_from ||= element.text
+            @header_from ||= element.text
           end
         end
       end

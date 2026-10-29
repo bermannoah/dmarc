@@ -13,11 +13,11 @@ module DMARCator
       # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :comment]
 
-      # @!attribute [rw] type
+      # @!attribute [r] type
       #   @return [String, nil] the reason type.
-      # @!attribute [rw] comment
+      # @!attribute [r] comment
       #   @return [String, nil] an optional explanatory comment.
-      ATTRIBUTES.each { |attribute| attr_accessor(attribute) }
+      ATTRIBUTES.each { |attribute| attr_reader(attribute) }
 
       def initialize(node)
         @node = node
@@ -25,9 +25,9 @@ module DMARCator
         node.element_children.each do |element|
           case element.name
           when 'type'
-            self.type ||= element.text
+            @type ||= element.text
           when 'comment'
-            self.comment ||= element.text
+            @comment ||= element.text
           end
         end
       end
