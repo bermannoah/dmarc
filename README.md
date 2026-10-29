@@ -315,7 +315,8 @@ removed in the next major release.
 ## Security
 
 DMARC records and XML reports are treated as untrusted input. See
-[SECURITY.md](SECURITY.md) for the reporting policy and scope.
+[SECURITY.md](https://github.com/bermannoah/dmarcator/blob/main/SECURITY.md)
+for the reporting policy and scope.
 
 * XML reports are parsed with network access disabled (`NONET`), so external
   entities are never resolved or fetched.

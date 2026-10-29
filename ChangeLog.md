@@ -10,7 +10,7 @@ Other changes:
 
 * `DMARCator::XmlHelper` methods are private to including classes, `Record.truncate_error_message` is private, and `DMARCator::Parser` is documented as `@api private`.
 * Add an API-contract spec that pins the public surface of every public class, so additions and removals are deliberate.
-* Add `SECURITY.md` and document the stability, thread-safety and deprecation policies in the README. `SECURITY.md` now ships with the gem.
+* Add `SECURITY.md` and document the stability, thread-safety and deprecation policies in the README.
 
 Migration:
 
