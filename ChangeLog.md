@@ -3,6 +3,9 @@
 * Plaintext DNS lookups now fail closed: a lookup failure raises `DMARCator::ResolutionError` instead of being reported as a domain without a DMARC record. Previously a timeout or resolver failure looked like no policy, which failed open. This is a behavior change and applies to every transport.
 * DoH responses must use the `application/dns-message` content type (RFC 8484) and are capped at 65,535 bytes.
 * `DMARCator::Uri` no longer forwards calls to private methods of the wrapped `URI::MailTo`.
+* Remove the unused `XmlHelper#get_int`/`#get_timestamp` helpers and the deprecated `Record.from_txt`.
+* Memoize a missing report version instead of recomputing it, and scope spec constants under `DMARCator`.
+* Add `changelog_uri` and `documentation_uri` gem metadata, and document that domains must be passed as A-labels.
 * Add a CI workflow that runs the specs on the minimum supported Ruby and the current release, loads the gem with warnings enabled, fails on YARD warnings, and builds the gem.
 
 ### 0.6.1 / 2026-10-29
