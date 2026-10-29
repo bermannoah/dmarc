@@ -285,7 +285,8 @@ module DMARCator
 
       new(attributes)
     rescue Parslet::ParseFailed => error
-      raise InvalidRecord.new(truncate_error_message(error.message), error.cause)
+      # Raising inside the rescue sets this error as the cause automatically.
+      raise InvalidRecord, truncate_error_message(error.message)
     end
 
     # Maximum length of error messages echoed from parsing untrusted input.
