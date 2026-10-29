@@ -288,13 +288,6 @@ module DMARCator
       raise InvalidRecord.new(truncate_error_message(error.message), error.cause)
     end
 
-    #
-    # @deprecated use {parse} instead.
-    #
-    def self.from_txt(rec)
-      parse(rec)
-    end
-
     # Maximum length of error messages echoed from parsing untrusted input.
     MAX_ERROR_MESSAGE_LENGTH = 500
 

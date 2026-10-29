@@ -21,30 +21,6 @@ module DMARCator
     end
 
     #
-    # Returns a Unix timestamp as a `Time`.
-    #
-    # @param [String] xpath
-    #   The XPath expression to match.
-    #
-    # @return [Time, nil]
-    #
-    def get_timestamp(xpath)
-      parse_timestamp(get_text(xpath))
-    end
-
-    #
-    # Returns an integer value.
-    #
-    # @param [String] xpath
-    #   The XPath expression to match.
-    #
-    # @return [Integer, nil]
-    #
-    def get_int(xpath)
-      parse_integer(get_text(xpath))
-    end
-
-    #
     # Parses a Unix timestamp from raw element text.
     #
     # @param [String, nil] value
