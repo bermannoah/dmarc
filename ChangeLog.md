@@ -1,3 +1,10 @@
+### 0.6.0 / 2026-10-28
+
+* Add DNS over HTTPS (RFC 8484) and DNS over TLS (RFC 7858) transports, selected with `DMARCATOR_DNS` (`doh` or `dot`). No provider is bundled and plaintext remains the default.
+* Encrypted transports verify TLS certificates, validate the response id, question and TC bit, and follow CNAMEs up to a bounded depth.
+* Add `DMARCator::ResolutionError`; encrypted transport failures raise instead of being reported as a missing record.
+* Add `DMARCator.default_resolver` and `DMARCator::Resolver.build` for explicit transport configuration.
+
 ### 0.5.1 / 2026-10-28
 
 * Point the gem metadata (`homepage`, `source_code_uri`, `bug_tracker_uri`) at the renamed GitHub repository (`dmarc` → `dmarcator`).

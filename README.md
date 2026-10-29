@@ -123,6 +123,43 @@ report.records.first.source_ip
 # => "209.85.220.69"
 ```
 
+## DNS transport
+
+By default, DMARC lookups use plain DNS through `Resolv`. Encrypted transports
+can be selected with environment variables; no DNS provider is baked in:
+
+```sh
+# DNS over HTTPS (RFC 8484)
+export DMARCATOR_DNS=doh
+export DMARCATOR_DOH_URL=https://cloudflare-dns.com/dns-query
+export DMARCATOR_DOH_IP=1.1.1.1          # optional: pin the endpoint
+
+# DNS over TLS (RFC 7858)
+export DMARCATOR_DNS=dot
+export DMARCATOR_DOT_SERVER=1.1.1.1:853
+export DMARCATOR_DOT_SNI=cloudflare-dns.com   # optional: name to verify
+
+# optional, both transports (seconds, default 5)
+export DMARCATOR_DNS_TIMEOUT=5
+```
+
+Certificates are always verified. `DMARCATOR_DOH_IP` pins the address so the
+DoH endpoint does not have to be resolved first; TLS still verifies the URL's
+hostname.
+
+Encrypted transports fail closed: a transport failure raises
+`DMARCator::ResolutionError` instead of being reported as a domain without a
+DMARC record. Plaintext is the default because forcing a public resolver breaks
+private and split-horizon zones, and some networks block port 853 or public
+resolvers.
+
+A resolver can also be built explicitly:
+
+```ruby
+resolver = DMARCator::Resolver::DoH.new(url: "https://dns.example/dns-query")
+record   = DMARCator::Record.query("example.com", resolver)
+```
+
 ## Security
 
 DMARC records and XML reports are treated as untrusted input:

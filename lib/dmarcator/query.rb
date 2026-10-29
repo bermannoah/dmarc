@@ -3,6 +3,8 @@
 require 'resolv'
 require 'rubygems'
 
+require_relative 'resolver'
+
 module DMARCator
   #
   # Resolv gem versions affected by CVE-2026-80212 and CVE-2026-80213.
@@ -78,25 +80,44 @@ module DMARCator
   end
 
   #
+  # Builds the resolver configured by the environment.
+  #
+  # @return [Resolv::DNS, Resolver::DoH, Resolver::DoT]
+  #
+  # @raise [ArgumentError]
+  #   The configured transport or its settings are invalid.
+  #
+  # @since 0.6.0
+  #
+  def self.default_resolver
+    Resolver.build
+  end
+
+  #
   # Queries a domain for the DMARC record.
   #
   # @param [String] domain
   #   The domain to query DMARC for.
   #
-  # @param [Resolv::DNS] resolver
-  #   The resolver to use. Its timeouts are set to {DNS_TIMEOUTS}.
+  # @param [Resolv::DNS, Resolver::DoH, Resolver::DoT] resolver
+  #   The resolver to use. When omitted, one is built from `DMARCATOR_DNS`;
+  #   plaintext resolvers receive {DNS_TIMEOUTS}.
   #
   # @return [String, nil]
   #   The domain's DMARC record or `nil` if none exists.
+  #
+  # @raise [Resolver::DoH, Resolver::DoT] resolution errors
+  #   Encrypted transports raise {ResolutionError} when the lookup fails, so
+  #   a transport problem is never reported as a missing record.
   #
   # @api semipublic
   #
   # @since 0.3.0
   #
-  def self.query(domain,resolver=Resolv::DNS.new)
+  def self.query(domain,resolver=default_resolver)
     validate_domain(domain)
 
-    resolver.timeouts = DNS_TIMEOUTS
+    resolver.timeouts = DNS_TIMEOUTS if resolver.respond_to?(:timeouts=)
 
     host = "_dmarc.#{domain}"
 

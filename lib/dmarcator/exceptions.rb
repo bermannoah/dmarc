@@ -11,4 +11,15 @@ module DMARCator
   #
   class InvalidReport < StandardError
   end
+
+  #
+  # Raised when an encrypted DNS transport fails to return a usable answer.
+  #
+  # This is deliberately distinct from a missing record: a failed lookup must
+  # not be mistaken for a domain without a DMARC policy.
+  #
+  # @since 0.6.0
+  #
+  class ResolutionError < StandardError
+  end
 end

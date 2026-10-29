@@ -338,7 +338,7 @@ module DMARCator
     #
     # @api public
     #
-    def self.query(domain,resolver=Resolv::DNS.new)
+    def self.query(domain,resolver=DMARCator.default_resolver)
       if (dmarc = DMARCator.query(domain,resolver))
         parse(dmarc)
       end
