@@ -1,3 +1,12 @@
+### 1.0.0 / 2026-10-30
+
+The public API is now frozen.
+
+* The contract spec added in 0.12.0 defines the supported surface: the module methods, constants and per-class public methods it asserts. Anything documented as `@api private` may still change in a minor release.
+* Deprecations are documentation-only, and removals happen only in a major release. `Report.max_report_bytes`, `Report.max_report_bytes=` and `Report::MAX_REPORT_BYTES` are deprecated in favour of `DMARCator.configure` and `Config::DEFAULT_MAX_REPORT_BYTES`, and will be removed in 2.0.
+* Supported Ruby is `>= 3.3.13`. Dropping a Ruby series is the one documented exception to the no-breaking-changes promise: it is announced in a minor release and removed in the next major.
+* No functional changes since 0.12.0.
+
 ### 0.12.0 / 2026-10-29
 
 Breaking changes, taken before 1.0:

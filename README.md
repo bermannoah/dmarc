@@ -312,6 +312,13 @@ A method is deprecated in a minor release by documentation only — no runtime
 warnings, so nothing is added to application logs. Deprecated methods are
 removed in the next major release.
 
+### Ruby support
+
+The minimum is Ruby 3.3.13, the first release in that series with the regular
+expression fixes the library requires. Dropping support for a Ruby series is
+the one documented exception to the no-breaking-changes promise: it is announced
+in a minor release and removed in the next major.
+
 ## Security
 
 DMARC records and XML reports are treated as untrusted input. See

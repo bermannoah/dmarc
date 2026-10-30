@@ -21,7 +21,7 @@ module DMARCator
 
     # Default maximum accepted report size in bytes (25 MiB).
     #
-    # @deprecated Use {Config::DEFAULT_MAX_REPORT_BYTES}.
+    # @deprecated Use {Config::DEFAULT_MAX_REPORT_BYTES}. Removed in 2.0.
     #
     MAX_REPORT_BYTES = Config::DEFAULT_MAX_REPORT_BYTES
 
@@ -30,6 +30,7 @@ module DMARCator
       # The maximum accepted report size in bytes.
       #
       # @deprecated Use {DMARCator.configure} with `config.max_report_bytes`.
+      #   Removed in 2.0.
       #
       # @return [Integer]
       #
@@ -41,6 +42,7 @@ module DMARCator
       # Sets the maximum accepted report size in bytes.
       #
       # @deprecated Use {DMARCator.configure} with `config.max_report_bytes`.
+      #   Removed in 2.0.
       #
       # @param [Integer, nil] value
       #
