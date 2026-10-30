@@ -12,7 +12,7 @@ DMARCator is a Ruby library for parsing and querying [DMARC] records.
 
 [DMARC] policies are published as DNS TXT records at `_dmarc.<domain>`. This
 library parses those records into a structured `DMARCator::Record`, queries them
-directly through Ruby's `Resolv` DNS client, and parses the XML aggregate
+over DNS, and parses the XML aggregate
 reports those policies generate.
 
 ## Installation
@@ -173,9 +173,9 @@ end
 ```
 
 Notes for large scans: `Record.lookup` adds a parse per domain (~0.4 ms, far
-more than the lookup on a fast resolver); `Resolv::DNS` does not lock per query,
-so use one resolver per thread when parallelising; and DoT/DoH open a new TLS
-connection per lookup, so plaintext is the better choice for bulk work.
+more than the lookup on a fast resolver); each lookup opens its own TCP
+connection, so keep one resolver per thread when parallelising; and DoT/DoH add
+a TLS handshake per lookup, so plaintext is the better choice for bulk work.
 
 ### SPF and DKIM
 
@@ -205,9 +205,8 @@ DMARCator.configure do |config|
 end
 ```
 
-A resolver object is shared by every thread, and `Resolv::DNS` does not
-serialise concurrent lookups, so threaded applications should configure a
-factory instead:
+A resolver object is shared by every thread, so threaded applications should
+configure a factory instead:
 
 ```ruby
 DMARCator.configure do |config|
@@ -251,8 +250,9 @@ report.records.first.source_ip
 
 ## DNS transport
 
-By default, DMARC lookups use plain DNS through `Resolv`. Encrypted transports
-can be selected with environment variables; no DNS provider is baked in:
+By default, lookups use plain DNS over **TCP** (`DMARCator::Resolver::Plain`).
+Encrypted transports can be selected with environment variables; no DNS provider
+is baked in:
 
 ```sh
 # DNS over HTTPS (RFC 8484)
@@ -271,7 +271,15 @@ export DMARCATOR_DNS_TIMEOUT=5
 
 Certificates are always verified. `DMARCATOR_DOH_IP` pins the address so the
 DoH endpoint does not have to be resolved first; TLS still verifies the URL's
-hostname.
+hostname. `DMARCATOR_DNS_TIMEOUT` applies to every transport, including
+plaintext (default 5 seconds).
+
+Plaintext uses TCP rather than UDP deliberately. `Resolv::DNS` reads UDP replies
+into a 512-byte buffer, so a larger answer cannot be decoded, is discarded, and
+the resulting timeout is swallowed — meaning any TXT set over 512 bytes (common
+for SPF, and for domains with several DKIM keys) came back as an empty result,
+indistinguishable from "no records published". TCP has no such limit, and
+failures raise `DMARCator::ResolutionError`.
 
 Encrypted transports fail closed: a transport failure raises
 `DMARCator::ResolutionError` instead of being reported as a domain without a
@@ -300,9 +308,10 @@ XML helper, the internal resolver plumbing — may change in a minor release.
 * `DMARCator::Record`, `DMARCator::Report` and the parsed value objects are
   read-only after construction and safe to share between threads.
 * The memoized parser and transform are shared, and safe for concurrent use.
-* Resolvers are not necessarily safe for concurrent lookups: `Resolv::DNS` does
-  not serialise queries. Use one resolver per thread, or configure a factory
-  with `DMARCator.configure` so each lookup builds its own.
+* Resolvers are not necessarily safe for concurrent lookups: each lookup opens
+  its own connection, but `Resolv::DNS` (if you inject one) does not serialise
+  queries. Use one resolver per thread, or configure a factory with
+  `DMARCator.configure` so each lookup builds its own.
 * `DMARCator.configure` mutates process-wide state. Call it during boot rather
   than per request.
 

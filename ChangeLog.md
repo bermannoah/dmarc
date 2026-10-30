@@ -1,3 +1,10 @@
+### 1.2.0 / 2026-10-30
+
+* Plaintext lookups now use DNS over TCP (`DMARCator::Resolver::Plain`) instead of `Resolv::DNS`. `Resolv` reads UDP replies into a 512-byte buffer, so a larger answer cannot be decoded, is discarded, and the resulting timeout is swallowed. Any TXT set over 512 bytes — common for SPF and for domains with several DKIM keys — was therefore returned as an empty array, which is indistinguishable from "no records published". TCP has no such limit, and failures raise `ResolutionError`.
+* `DMARCATOR_DNS_TIMEOUT` now applies to plaintext lookups as well (default 5 seconds).
+* `DMARCator::DNS_TIMEOUTS` is no longer used and is deprecated; it will be removed in 2.0.
+* An injected `Resolv::DNS` still works, but carries the same 512-byte UDP limitation. Use `DMARCator::Resolver::Plain`, DoH, or DoT for SPF and DKIM accuracy.
+
 ### 1.1.0 / 2026-10-30
 
 * Replace the Parslet grammar with a hand-written parser in `DMARCator::Internal`. Parsing behaviour is unchanged, verified differentially against the previous parser over 128 real-world and 47 edge-case records in both lenient and strict modes; record parsing is roughly 30x faster (0.84 ms to 0.03 ms per record).
