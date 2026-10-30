@@ -22,9 +22,9 @@ RSpec.describe 'public API' do
 
     it 'exposes these constants' do
       expect(DMARCator.constants(false).sort).to eq([
-        :Config, :DNS_TIMEOUTS, :Error, :InvalidRecord, :InvalidReport,
-        :MAX_TXT_NAME_LENGTH, :Parser, :Record, :Report, :ResolutionError,
-        :Resolver, :Uri, :VERSION, :VULNERABLE_RESOLV, :XmlHelper
+        :Config, :DNS_TIMEOUTS, :Error, :Internal, :InvalidRecord,
+        :InvalidReport, :MAX_TXT_NAME_LENGTH, :Record, :Report,
+        :ResolutionError, :Resolver, :Uri, :VERSION, :VULNERABLE_RESOLV
       ])
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe 'public API' do
 
   describe 'internals' do
     it 'keeps XML helpers private to the including classes' do
-      expect(DMARCator::XmlHelper.instance_methods(false)).to be_empty
+      expect(DMARCator::Internal::XmlHelper.instance_methods(false)).to be_empty
     end
 
     it 'keeps the error truncation helper private' do

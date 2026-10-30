@@ -3,7 +3,7 @@
 require 'nokogiri'
 
 require_relative 'config'
-require_relative 'xml_helper'
+require_relative 'internal/xml_helper'
 require_relative 'exceptions'
 require_relative 'report/metadata'
 require_relative 'report/policy'
@@ -17,7 +17,7 @@ module DMARCator
   # resolved or fetched; treat report XML as untrusted input.
   #
   class Report
-    include XmlHelper
+    include Internal::XmlHelper
 
     # Default maximum accepted report size in bytes (25 MiB).
     #

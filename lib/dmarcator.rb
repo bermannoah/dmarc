@@ -3,7 +3,7 @@
 require 'dmarcator/exceptions'
 require 'dmarcator/query'
 require 'dmarcator/record'
-require 'dmarcator/parser'
+require 'dmarcator/internal/parser'
 require 'dmarcator/report'
 require 'dmarcator/version'
 

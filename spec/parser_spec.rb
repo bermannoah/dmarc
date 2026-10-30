@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'dmarcator/parser'
+require 'dmarcator/internal/parser'
 
-describe DMARCator::Parser do
+describe DMARCator::Internal::Parser do
   describe "rules" do
     describe 'dmarc_uri' do
       subject { described_class.new.dmarc_uri }
@@ -349,7 +349,7 @@ describe DMARCator::Parser do
     end
   end
 
-  describe DMARCator::Parser::Transform do
+  describe DMARCator::Internal::Parser::Transform do
     let(:tree) do
       [
         {v: 'DMARC1'},
@@ -432,7 +432,7 @@ describe DMARCator::Parser do
     end
 
     it "raises when the record exceeds the maximum size" do
-      stub_const('DMARCator::Parser::MAX_RECORD_BYTES', 10)
+      stub_const('DMARCator::Internal::Parser::MAX_RECORD_BYTES', 10)
 
       expect {
         subject.parse("v=DMARC1;p=none")
@@ -441,7 +441,7 @@ describe DMARCator::Parser do
 
     it "accepts a record at the maximum size" do
       record = "v=DMARC1;p=none"
-      stub_const('DMARCator::Parser::MAX_RECORD_BYTES', record.bytesize)
+      stub_const('DMARCator::Internal::Parser::MAX_RECORD_BYTES', record.bytesize)
 
       expect(subject.parse(record)).to eq(v: :DMARC1, p: :none)
     end

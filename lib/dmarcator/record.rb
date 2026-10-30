@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'dmarcator/query'
-require 'dmarcator/parser'
+require 'dmarcator/internal/parser'
 require 'dmarcator/exceptions'
 
 require 'resolv'
@@ -277,7 +277,7 @@ module DMARCator
     # @api public
     #
     def self.parse(record, strict: false)
-      attributes = Parser.parse(record, strict: strict)
+      attributes = Internal::Parser.parse(record, strict: strict)
 
       unless attributes[:p]
         raise InvalidRecord, "DMARC record is missing the required 'p' tag"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../xml_helper'
+require_relative '../internal/xml_helper'
 require_relative 'auth_result'
 require_relative 'reason'
 
@@ -13,7 +13,7 @@ module DMARCator
     # DMARC TXT record.
     #
     class Row
-      include XmlHelper
+      include Internal::XmlHelper
 
       # Attribute names exposed by this class.
       ATTRIBUTES = [

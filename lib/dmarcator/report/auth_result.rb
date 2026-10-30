@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../xml_helper'
+require_relative '../internal/xml_helper'
 
 module DMARCator
   class Report
@@ -8,7 +8,7 @@ module DMARCator
     # Represents an `auth_results` entry (DKIM/SPF) in a DMARC XML report.
     #
     class AuthResult
-      include XmlHelper
+      include Internal::XmlHelper
 
       # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :domain, :result, :selector, :scope]

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../xml_helper'
+require_relative '../internal/xml_helper'
 
 module DMARCator
   class Report
@@ -8,7 +8,7 @@ module DMARCator
     # Represents a `reason` element of a DMARC XML report record.
     #
     class Reason
-      include XmlHelper
+      include Internal::XmlHelper
 
       # Attribute names exposed by this class.
       ATTRIBUTES = [:type, :comment]
