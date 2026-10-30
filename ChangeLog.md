@@ -5,7 +5,9 @@ The public API is now frozen.
 * The contract spec added in 0.12.0 defines the supported surface: the module methods, constants and per-class public methods it asserts. Anything documented as `@api private` may still change in a minor release.
 * Deprecations are documentation-only, and removals happen only in a major release. `Report.max_report_bytes`, `Report.max_report_bytes=` and `Report::MAX_REPORT_BYTES` are deprecated in favour of `DMARCator.configure` and `Config::DEFAULT_MAX_REPORT_BYTES`, and will be removed in 2.0.
 * Supported Ruby is `>= 3.3.13`. Dropping a Ruby series is the one documented exception to the no-breaking-changes promise: it is announced in a minor release and removed in the next major.
-* No functional changes since 0.12.0.
+* Parsed report values are now frozen, not merely reader-only: the strings taken from the document and the arrays holding records, errors, reasons, auth results and the parsed record's `rua`/`ruf`/`fo` cannot be mutated in place. `Record` and the report value objects are therefore safe to share between threads.
+* The parser and XML helper moved to `DMARCator::Internal`, so the public constants are only documented API and the parser can be replaced in a minor release.
+* Parsing, lookup and transport behaviour are unchanged from 0.12.0; the differences above are the freeze itself.
 
 ### 0.12.0 / 2026-10-29
 
