@@ -83,6 +83,18 @@ module DMARCator
             raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
           end
 
+          # Malformed or non-ASCII-compatible encodings make the regular
+          # expressions below raise ArgumentError or Encoding::CompatibilityError
+          # instead of InvalidRecord, which would escape `rescue DMARCator::Error`.
+          unless record.encoding.ascii_compatible?
+            raise InvalidRecord,
+                  "DMARC record must be ASCII-compatible text, got #{record.encoding}"
+          end
+
+          unless record.valid_encoding?
+            raise InvalidRecord, "DMARC record is not valid #{record.encoding} text"
+          end
+
           tags = { v: :DMARC1 }
 
           split(record).each do |segment|
@@ -235,7 +247,7 @@ module DMARCator
 
           return nil unless scanner.scan(/mailto:/i) && scanner.scan(ADDRESS)
 
-          uri_text = scanner.string[start...scanner.pos]
+          uri_text = scanner.string.byteslice(start, scanner.pos - start)
           size = unit = nil
 
           if scanner.scan(/!/)

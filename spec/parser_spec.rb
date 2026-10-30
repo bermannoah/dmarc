@@ -143,6 +143,32 @@ RSpec.describe DMARCator::Internal::Parser do
       end
     end
 
+    context 'with an unusable string encoding' do
+      it 'raises rather than leaking an encoding error' do
+        invalid_utf8 = "v=DMARC1; p=none\xFF".dup.force_encoding('UTF-8')
+        utf16 = 'v=DMARC1; p=none'.encode('UTF-16LE')
+
+        expect { subject.parse(invalid_utf8) }
+          .to raise_error(DMARCator::InvalidRecord, /not valid UTF-8/)
+        expect { subject.parse(utf16) }
+          .to raise_error(DMARCator::InvalidRecord, /ASCII-compatible/)
+      end
+
+      it 'accepts ASCII-compatible encodings' do
+        ['ISO-8859-1', 'Shift_JIS', 'US-ASCII'].each do |encoding|
+          record = 'v=DMARC1; p=none'.encode(encoding)
+
+          expect(subject.parse(record)[:p]).to eq(:none), encoding
+        end
+      end
+
+      it 'accepts the binary strings a DNS resolver returns' do
+        binary = "v=DMARC1; p=none; rua=mailto:\xFF@b.com".b
+
+        expect(subject.parse(binary)[:p]).to eq(:none)
+      end
+    end
+
     context 'with rua and ruf lists' do
       it 'parses several URIs' do
         tags = subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com, mailto:c@d.com')
