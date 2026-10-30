@@ -231,6 +231,29 @@ RSpec.describe 'encrypted DNS transports' do
       server&.close
     end
 
+    # Serves one connection, letting the handler write raw bytes.
+    def with_raw_tcp_server(handler)
+      server = TCPServer.new('127.0.0.1', 0)
+      port = server.addr[1]
+
+      thread = Thread.new do
+        client = server.accept
+
+        begin
+          length = client.read(2).unpack1('n')
+          query = Resolv::DNS::Message.decode(client.read(length))
+          handler.call(client, query)
+        ensure
+          client.close
+        end
+      end
+
+      yield port
+    ensure
+      thread&.join(5)
+      server&.close
+    end
+
     def answer_with(query, texts)
       response = Resolv::DNS::Message.new(query.id)
       response.qr = 1
@@ -293,6 +316,40 @@ RSpec.describe 'encrypted DNS transports' do
         expect(resolver.getresources(name, txt_class).map(&:strings)).to eq(
           [['v=DMARC1; p=reject']]
         )
+      end
+    end
+
+    describe 'truncated responses' do
+      it 'raises when the header is incomplete' do
+        with_raw_tcp_server(->(client, _query) { client.write("\x00") }) do |port|
+          resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 2)
+
+          expect {
+            resolver.getresources(name, txt_class)
+          }.to raise_error(DMARCator::ResolutionError, /short DNS response/)
+        end
+      end
+
+      it 'raises when the body is missing' do
+        with_raw_tcp_server(->(client, _query) { client.write([100].pack('n')) }) do |port|
+          resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 2)
+
+          expect {
+            resolver.getresources(name, txt_class)
+          }.to raise_error(DMARCator::ResolutionError, /short DNS response.*expected 100 bytes, got 0/)
+        end
+      end
+
+      it 'raises when the body is shorter than declared' do
+        handler = ->(client, _query) { client.write([100].pack('n') + ('x' * 10)) }
+
+        with_raw_tcp_server(handler) do |port|
+          resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 2)
+
+          expect {
+            resolver.getresources(name, txt_class)
+          }.to raise_error(DMARCator::ResolutionError, /short DNS response.*expected 100 bytes, got 10/)
+        end
       end
     end
 

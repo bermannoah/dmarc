@@ -107,8 +107,13 @@ module DMARCator
         header = socket.read(2)
         raise ResolutionError, 'short DNS response' if header.nil? || header.bytesize < 2
 
-        body = socket.read(header.unpack1('n'))
-        raise ResolutionError, 'short DNS response' if body.nil?
+        length = header.unpack1('n')
+        body = socket.read(length)
+
+        if body.nil? || body.bytesize != length
+          raise ResolutionError,
+                "short DNS response (expected #{length} bytes, got #{body&.bytesize || 0})"
+        end
 
         body
       ensure
