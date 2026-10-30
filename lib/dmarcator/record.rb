@@ -284,35 +284,7 @@ module DMARCator
       end
 
       new(attributes)
-    rescue Parslet::ParseFailed => error
-      # Raising inside the rescue sets this error as the cause automatically.
-      raise InvalidRecord, truncate_error_message(error.message)
     end
-
-    # Maximum length of error messages echoed from parsing untrusted input.
-    MAX_ERROR_MESSAGE_LENGTH = 500
-
-    #
-    # Truncates error messages to avoid echoing large amounts of untrusted
-    # input in exceptions.
-    #
-    # @param [String] message
-    #   The error message to truncate.
-    #
-    # @return [String]
-    #   The truncated error message.
-    #
-    def self.truncate_error_message(message)
-      message = message.to_s
-
-      if message.length > MAX_ERROR_MESSAGE_LENGTH
-        message[0, MAX_ERROR_MESSAGE_LENGTH] + "..."
-      else
-        message
-      end
-    end
-
-    private_class_method :truncate_error_message
 
     #
     # Looks up and parses the DMARC record for a domain.

@@ -1,450 +1,234 @@
 require 'spec_helper'
-require 'dmarcator/internal/parser'
+require 'dmarcator'
 
-describe DMARCator::Internal::Parser do
-  describe "rules" do
-    describe 'dmarc_uri' do
-      subject { described_class.new.dmarc_uri }
+RSpec.describe DMARCator::Internal::Parser do
+  subject { described_class }
 
-      let(:uri) { 'mailto:user@example.org' }
-
-      it 'parses mailto URIs' do
-        expect(subject.parse(uri)).to eq(uri: uri)
-      end
-
-      it 'parses case-insensitive mailto URIs' do
-        expect(subject.parse('MAILTO:user@example.org')).to eq(uri: 'MAILTO:user@example.org')
-      end
-
-      it 'parses mailto URIs with size' do
-        expect(subject.parse(uri + '!20')).to eq(uri: uri, size: '20')
-      end
-
-      it 'parses mailto URIs with size and unit' do
-        expect(subject.parse(uri + '!20k')).to eq(uri: uri, size: '20', unit: 'k')
-      end
+  describe '.parse' do
+    it 'parses a minimal record' do
+      expect(subject.parse('v=DMARC1;p=none')).to eq(v: :DMARC1, p: :none)
     end
 
-    describe 'dmarc_record' do
-      subject { described_class.new.dmarc_record }
+    it 'parses every known tag' do
+      record = 'v=DMARC1;p=reject;sp=quarantine;adkim=s;aspf=r;ri=3600;pct=50;' \
+               'rf=iodef;fo=0:1:d:s;rua=mailto:a@b.com;ruf=mailto:c@d.com'
 
-      it 'parses version and policy' do
-        record = 'v=DMARC1;p=none'
-        expect(subject.parse record).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'}
-        ])
-      end
-
-      it 'parses version, policy, and other tags' do
-        record = 'v=DMARC1;p=none;sp=reject;adkim=r;aspf=r'
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'},
-          {sp: 'reject'},
-          {adkim: 'r'},
-          {aspf: 'r'}
-        ])
-      end
-
-      it 'parses version, policy, and rua' do
-        record = 'v=DMARC1;p=quarantine;rua=mailto:foo@example.com,mailto:bar@example.com'
-        expect(subject.parse record).to eq([
-          {v: 'DMARC1'},
-          {p: 'quarantine'},
-          {rua: [
-            {uri: 'mailto:foo@example.com'},
-            {uri: 'mailto:bar@example.com'}
-          ]}
-        ])
-      end
-
-      it 'ignores order of tags' do
-        record = 'v=DMARC1; rua=mailto:foo@example.com; p=none'
-
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {rua: {uri: 'mailto:foo@example.com'}},
-          {p: 'none'}
-        ])
-      end
-
-      it 'ignores spacing' do
-        record1 = 'v=DMARC1;p=none;sp=reject'
-        record2 = 'v = DMARC1 ; p = none ; sp = reject'
-        expect(subject.parse record1).to eq(subject.parse record2)
-      end
-
-      it 'ignores trailing separators' do
-        record = 'v=DMARC1; p=none; '
-
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'}
-        ])
-      end
-
-      it 'ignores trailing spacing without final separator' do
-        record = 'v=DMARC1; p=none '
-
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'}
-        ])
-      end
-
-      it "captures unknown tags" do
-        record = 'v=DMARC1;p=none;foo=xxx;sp=reject;bar=xxx;adkim=r;aspf=r'
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'},
-          {unknown_tag: 'foo=xxx'},
-          {sp: 'reject'},
-          {unknown_tag: 'bar=xxx'},
-          {adkim: 'r'},
-          {aspf: 'r'}
-        ])
-      end
-
-      it "captures syntax errors" do
-        record = 'v=DMARC1;p=none;sp;adkim=X;aspf='
-        expect(subject.parse(record)).to eq([
-          {v: 'DMARC1'},
-          {p: 'none'},
-          {unknown_tag: 'sp'},
-          {invalid_tag: 'adkim=X'},
-          {unknown_tag: 'aspf='}
-        ])
-      end
+      expect(subject.parse(record)).to eq(
+        v: :DMARC1, p: :reject, sp: :quarantine, adkim: :s, aspf: :r,
+        ri: 3600, pct: 50, rf: :iodef, fo: %w[0 1 d s],
+        rua: [DMARCator::Uri.new(URI('mailto:a@b.com'))],
+        ruf: [DMARCator::Uri.new(URI('mailto:c@d.com'))]
+      )
     end
 
-    describe 'dmarc_version' do
-      subject { described_class.new.dmarc_version }
+    it 'coerces values to symbols and integers' do
+      tags = subject.parse('v=DMARC1;p=none;pct=100;ri=86400')
 
-      it 'parses DMARC versions' do
-        expect(subject.parse('v=DMARC1')).to eq(v: 'DMARC1')
-      end
-
-      it 'ignores spacing' do
-        expect(subject.parse 'v = DMARC1').to eq(subject.parse 'v=DMARC1')
-      end
+      expect(tags[:p]).to eq(:none)
+      expect(tags[:pct]).to eq(100)
+      expect(tags[:ri]).to eq(86_400)
     end
 
-    describe 'dmarc_request' do
-      subject { described_class.new.dmarc_request }
-
-      it 'parses "none" requests' do
-        expect(subject.parse('p=none')).to eq(p: 'none')
-      end
-
-      it 'parses quarantine requests' do
-        expect(subject.parse('p=quarantine')).to eq(p: 'quarantine')
-      end
-
-      it 'parses reject requests' do
-        expect(subject.parse('p=reject')).to eq(p: 'reject')
-      end
-
-      it 'ingores spacing' do
-        expect(subject.parse 'p=none').to eq(subject.parse 'p = none')
-      end
+    it 'ignores tag order' do
+      expect(subject.parse('v=DMARC1; rua=mailto:a@b.com; p=none')).to eq(
+        subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com')
+      )
     end
 
-    describe 'dmarc_srequest' do
-      subject { described_class.new.dmarc_srequest }
-
-      it 'parses "none" requests' do
-        expect(subject.parse('sp=none')).to eq(sp: 'none')
-      end
-
-      it 'parses quarantine requests' do
-        expect(subject.parse('sp=quarantine')).to eq(sp: 'quarantine')
-      end
-
-      it 'parses reject requests' do
-        expect(subject.parse('sp=reject')).to eq(sp: 'reject')
-      end
-
-      it 'ignores spacing' do
-        expect(subject.parse 'sp=none').to eq(subject.parse 'sp = none')
-      end
+    it 'ignores spacing around separators and equals signs' do
+      expect(subject.parse("v = DMARC1 ;\tp = none ; sp = reject\t")).to eq(
+        v: :DMARC1, p: :none, sp: :reject
+      )
     end
 
-    describe 'dmarc_auri' do
-      subject { described_class.new.dmarc_auri }
+    it 'accepts a trailing separator and whitespace' do
+      expect(subject.parse('v=DMARC1; p=none; ')).to eq(v: :DMARC1, p: :none)
+      expect(subject.parse('v=DMARC1; p=none ')).to eq(v: :DMARC1, p: :none)
+      expect(subject.parse('v=DMARC1;')).to eq(v: :DMARC1)
+    end
 
-      it 'parses one URI' do
-        expect(subject.parse('rua=mailto:user@example.org')).to eq(
-          rua: {
-            uri: 'mailto:user@example.org'
-          }
+    context 'with unknown tags' do
+      it 'ignores them' do
+        expect(subject.parse('v=DMARC1;p=none;foo=bar;sp=reject')).to eq(
+          v: :DMARC1, p: :none, sp: :reject
         )
       end
 
-      it 'parses many URIs' do
-        expect(
-          subject.parse('rua = mailto:user1@example.org, mailto:user2@example.org')
-        ).to eq(
-          rua: [
-            {uri: 'mailto:user1@example.org'},
-            {uri: 'mailto:user2@example.org'}
-          ]
-        )
-      end
-
-      it 'parses maximum report size' do
-        expect(subject.parse('rua = mailto:user1@example.com!20m')).to eq(
-          rua: {
-            uri: 'mailto:user1@example.com',
-            size: '20',
-            unit: 'm'
-          }
-        )
-      end
-
-      it 'flags a list containing an invalid URI' do
-        expect(subject.parse('rua=mailto:user@example.org,http://evil')).to eq(
-          invalid_tag: 'rua=mailto:user@example.org,http://evil'
-        )
-      end
-
-      it 'flags a mailto URI containing a control character' do
-        expect(subject.parse("rua=mailto:a\nb@example.com")).to include(:invalid_tag)
+      it 'raises in strict mode' do
+        expect {
+          subject.parse('v=DMARC1;p=none;foo=bar', strict: true)
+        }.to raise_error(DMARCator::InvalidRecord, /unknown DMARC tag/)
       end
     end
 
-    describe 'dmarc_ainterval' do
-      subject { described_class.new.dmarc_ainterval }
-
-      it 'parses a one digit interval' do
-        expect(subject.parse('ri=1')).to eq(ri: '1')
+    context 'with invalid tag values' do
+      it 'ignores the tag' do
+        expect(subject.parse('v=DMARC1;p=none;sp=REJECT;adkim=X')).to eq(
+          v: :DMARC1, p: :none
+        )
       end
 
-      it 'parses a many digit interval' do
-        expect(subject.parse('ri=86400')).to eq(ri: '86400')
+      it 'raises in strict mode' do
+        expect {
+          subject.parse('v=DMARC1;p=none;sp=REJECT', strict: true)
+        }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
       end
 
-      it 'ignores spacing' do
-        expect(subject.parse 'ri = 86400').to eq(subject.parse 'ri=86400')
+      it 'treats a known tag with an empty value as unknown' do
+        expect(subject.parse('v=DMARC1;p=none;fo=')).to eq(v: :DMARC1, p: :none)
+
+        expect {
+          subject.parse('v=DMARC1;p=none;fo=', strict: true)
+        }.to raise_error(DMARCator::InvalidRecord, /unknown DMARC tag/)
       end
     end
 
-    describe 'dmarc_furi' do
-      subject { described_class.new.dmarc_furi }
-
-      it 'parses one URI' do
-        expect(subject.parse('ruf=mailto:user@example.org')).to eq(
-          ruf: {
-            uri: 'mailto:user@example.org'
-          }
-        )
-      end
-
-      it 'parses many URIs' do
-        expect(
-          subject.parse('ruf = mailto:user1@example.org, mailto:user2@example.org')
-        ).to eq(
-          ruf: [
-            {uri: 'mailto:user1@example.org'},
-            {uri: 'mailto:user2@example.org'}
-          ]
-        )
-      end
-
-      it 'parses maximum report size' do
-        expect(subject.parse('ruf = mailto:user1@example.com!20m')).to eq(
-          ruf: {
-            uri: 'mailto:user1@example.com',
-            size: '20',
-            unit: 'm'
-          }
-        )
+    context 'with duplicate tags' do
+      it 'raises' do
+        expect {
+          subject.parse('v=DMARC1;p=none;p=reject')
+        }.to raise_error(DMARCator::InvalidRecord, /duplicate DMARC tag: p/)
       end
     end
 
-    describe 'dmarc_fo' do
-      let(:fo) { described_class.new.dmarc_fo }
+    context 'with out-of-range values' do
+      it 'rejects pct above 100' do
+        expect {
+          subject.parse('v=DMARC1;p=none;pct=999')
+        }.to raise_error(DMARCator::InvalidRecord, /pct must be/)
+      end
 
-      context 'one value' do
-        %w[0 1 d s].each do |value|
-          it "parses #{value}" do
-            expect(fo.parse("fo=#{value}")).to eq(fo: {fo_opt: value})
-          end
+      it 'rejects ri above 2**32-1' do
+        expect {
+          subject.parse('v=DMARC1;p=none;ri=4294967296')
+        }.to raise_error(DMARCator::InvalidRecord, /ri must be/)
+      end
+    end
+
+    context 'with a malformed record' do
+      it 'requires the version tag first' do
+        ['', ';v=DMARC1', 'DMARC1;p=none', 'V=DMARC1;p=none', 'v=dmarc1;p=none',
+         'v=XXXXXXXXXX'].each do |record|
+          expect { subject.parse(record) }.to raise_error(DMARCator::InvalidRecord), record.inspect
         end
       end
 
-      it 'parses many values' do
-        expect(fo.parse('fo=0:1:d:s')).to eq(
-          fo: [{fo_opt: '0'}, {fo_opt: '1'}, {fo_opt: 'd'}, {fo_opt: 's'}]
+      it 'rejects an empty tag between separators' do
+        expect {
+          subject.parse('v=DMARC1;p=none;;sp=reject')
+        }.to raise_error(DMARCator::InvalidRecord)
+      end
+
+      it 'rejects a valid value followed by junk' do
+        expect {
+          subject.parse('v=DMARC1;p=none x')
+        }.to raise_error(DMARCator::InvalidRecord)
+      end
+
+      it 'rejects a URI followed by junk' do
+        expect {
+          subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com!20x')
+        }.to raise_error(DMARCator::InvalidRecord)
+      end
+
+      it 'rejects input that is not a String' do
+        expect { subject.parse(nil) }.to raise_error(DMARCator::InvalidRecord, /must be a String/)
+        expect { subject.parse(123) }.to raise_error(DMARCator::InvalidRecord, /must be a String/)
+      end
+
+      it 'rejects records above the size limit' do
+        expect {
+          subject.parse("v=DMARC1;p=none;#{'a' * 5000}")
+        }.to raise_error(DMARCator::InvalidRecord, /maximum size/)
+      end
+    end
+
+    context 'with rua and ruf lists' do
+      it 'parses several URIs' do
+        tags = subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com, mailto:c@d.com')
+
+        expect(tags[:rua].map(&:to_s)).to eq(%w[mailto:a@b.com mailto:c@d.com])
+      end
+
+      it 'parses size and unit' do
+        uri = subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com!20m')[:rua].first
+
+        expect(uri.size).to eq(20)
+        expect(uri.unit).to eq(:m)
+        expect(uri.to_s).to eq('mailto:a@b.com!20m')
+      end
+
+      it 'parses a size without a unit' do
+        uri = subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com!20')[:rua].first
+
+        expect(uri.size).to eq(20)
+        expect(uri.unit).to be_nil
+      end
+
+      it 'accepts every unit' do
+        uri = subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com!1k')[:rua].first
+        expect(uri.unit).to eq(:k)
+      end
+
+      it 'accepts an upper-case scheme' do
+        uri = subject.parse('v=DMARC1;p=none;rua=MAILTO:a@b.com')[:rua].first
+
+        expect(uri.to_s).to eq('mailto:a@b.com')
+      end
+
+      it 'ignores a list containing a non-mailto URI' do
+        expect(subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com,http://evil')).to eq(
+          v: :DMARC1, p: :none
+        )
+      end
+
+      it 'raises on such a list in strict mode' do
+        expect {
+          subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com,http://evil', strict: true)
+        }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
+      end
+
+      it 'ignores an address with a control character' do
+        expect(subject.parse("v=DMARC1;p=none;rua=mailto:a\nb@b.com")).to eq(
+          v: :DMARC1, p: :none
+        )
+      end
+
+      it 'ignores a bare bang' do
+        expect(subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com!')).to eq(
+          v: :DMARC1, p: :none
+        )
+      end
+
+      it 'ignores a trailing comma' do
+        expect(subject.parse('v=DMARC1;p=none;rua=mailto:a@b.com,')).to eq(
+          v: :DMARC1, p: :none
         )
       end
     end
 
-    describe 'dmarc_rfmt' do
-      subject { described_class.new.dmarc_rfmt }
-
-      it 'parses afrf format' do
-        expect(subject.parse('rf=afrf')).to eq(rf: 'afrf')
+    context 'with the fo tag' do
+      it 'parses a single option' do
+        expect(subject.parse('v=DMARC1;p=none;fo=1')[:fo]).to eq(['1'])
       end
 
-      it 'parses iodef format' do
-        expect(subject.parse('rf=iodef')).to eq(rf: 'iodef')
+      it 'parses several options' do
+        expect(subject.parse('v=DMARC1;p=none;fo=0:1:d:s')[:fo]).to eq(%w[0 1 d s])
       end
 
-      it 'ignores spacing' do
-        expect(subject.parse 'rf=iodef').to eq(subject.parse 'rf = iodef')
+      it 'ignores an unknown option' do
+        expect(subject.parse('v=DMARC1;p=none;fo=x')).to eq(v: :DMARC1, p: :none)
       end
     end
 
-    describe 'dmarc_percent' do
-      subject { described_class.new.dmarc_percent }
-
-      it 'parses a one-digit percent' do
-        expect(subject.parse('pct=1')).to eq(pct: '1')
+    context 'with bracket-less integers' do
+      it 'ignores more than three pct digits' do
+        expect(subject.parse('v=DMARC1;p=none;pct=1000')).to eq(v: :DMARC1, p: :none)
       end
 
-      it 'parses a two-digit percent' do
-        expect(subject.parse('pct=10')).to eq(pct: '10')
-      end
-
-      it 'parses a three-digit percent' do
-        expect(subject.parse('pct=100')).to eq(pct: '100')
-      end
-
-      it 'ignores spacing' do
-        expect(subject.parse 'pct = 100').to eq(subject.parse 'pct=100')
+      it 'ignores more than ten ri digits' do
+        expect(subject.parse('v=DMARC1;p=none;ri=99999999999')).to eq(v: :DMARC1, p: :none)
       end
     end
-
-    describe 'dmarc_adkim' do
-      subject { described_class.new.dmarc_adkim }
-
-      it 'parses a relaxed DKIM policy' do
-        expect(subject.parse('adkim=r')).to eq(adkim: 'r')
-      end
-
-      it 'parses a strict DKIM policy' do
-        expect(subject.parse('adkim=s')).to eq(adkim: 's')
-      end
-
-      it 'ignores spacing' do
-        expect(subject.parse 'adkim=r').to eq(subject.parse 'adkim = r')
-      end
-    end
-
-    describe 'dmarc_aspf' do
-      subject { described_class.new.dmarc_aspf }
-
-      it 'parses a relaxed SPF policy' do
-        expect(subject.parse('aspf=r')).to eq(aspf: 'r')
-      end
-
-      it 'parses a strict SPF policy' do
-        expect(subject.parse('aspf=s')).to eq(aspf: 's')
-      end
-
-      it 'ignores spacing' do
-        expect(subject.parse 'aspf=s').to eq(subject.parse 'aspf = s')
-      end
-    end
-  end
-
-  describe DMARCator::Internal::Parser::Transform do
-    let(:tree) do
-      [
-        {v: 'DMARC1'},
-        {p: 'none'},
-        {sp: 'reject'},
-        {pct: '100'},
-        {adkim: 'r'},
-        {aspf: 'r'},
-        {fo: [{fo_opt: '0'}, {fo_opt: '1'}, {fo_opt: 'd'}, {fo_opt: 's'}]},
-        {rua: {uri: "mailto:d@rua.agari.com"}}
-      ]
-    end
-
-    subject { described_class.new.apply(tree) }
-
-    it "should coerce :v into a Symbol" do
-      expect(subject).to include(v: :DMARC1)
-    end
-
-    it "should coerce :p into a Symbol" do
-      expect(subject).to include(p: :none)
-    end
-
-    it "should coerce :sp into a Symbol" do
-      expect(subject).to include(sp: :reject)
-    end
-
-    it "should flatten :fo options" do
-      expect(subject).to include(fo: %w[0 1 d s])
-    end
-
-    it "should coerce :pct into an Integer" do
-      expect(subject).to include(pct: 100)
-    end
-
-    it "should coerce :adkim into a Symbol" do
-      expect(subject).to include(adkim: :r)
-    end
-
-    it "should coerce :aspf into a Symbol" do
-      expect(subject).to include(aspf: :r)
-    end
-
-    it "should convert {uri: ...} to DMARCator::Uri objects" do
-      expect(subject).to include(rua: [DMARCator::Uri.new(URI("mailto:d@rua.agari.com"))])
-    end
-  end
-
-  describe ".parse" do
-    subject { described_class }
-
-    let(:record) { "v=DMARC1;p=none;pct=100;fo=0:1:d:s" }
-
-    it "should combine all tags into one Hash" do
-      expect(subject.parse(record)).to eq(
-        v: :DMARC1,
-        p: :none,
-        pct: 100,
-        fo: ['0', '1', 'd', 's']
-      )
-    end
-
-    it "ignores unknown tags and invalid values by default" do
-      expect(subject.parse("v=DMARC1;p=none;foo=xxx;pct=abc")).to eq(
-        v: :DMARC1,
-        p: :none
-      )
-    end
-
-    it "raises on unknown tags when strict" do
-      expect {
-        subject.parse("v=DMARC1;p=none;foo=xxx", strict: true)
-      }.to raise_error(DMARCator::InvalidRecord, /unknown DMARC tag/)
-    end
-
-    it "raises on invalid tag values when strict" do
-      expect {
-        subject.parse("v=DMARC1;p=none;pct=abc", strict: true)
-      }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC tag value/)
-    end
-
-    it "raises when the record exceeds the maximum size" do
-      stub_const('DMARCator::Internal::Parser::MAX_RECORD_BYTES', 10)
-
-      expect {
-        subject.parse("v=DMARC1;p=none")
-      }.to raise_error(DMARCator::InvalidRecord, /maximum size/)
-    end
-
-    it "accepts a record at the maximum size" do
-      record = "v=DMARC1;p=none"
-      stub_const('DMARCator::Internal::Parser::MAX_RECORD_BYTES', record.bytesize)
-
-      expect(subject.parse(record)).to eq(v: :DMARC1, p: :none)
-    end
-
   end
 end

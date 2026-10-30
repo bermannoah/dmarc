@@ -15,7 +15,7 @@ RSpec.describe 'DMARCator error hierarchy' do
   end
 
   it 'does not expose the parser implementation' do
-    expect(DMARCator::InvalidRecord.ancestors).not_to include(Parslet::ParseFailed)
+    expect(DMARCator::InvalidRecord.ancestors.map(&:name)).not_to include('Parslet::ParseFailed')
   end
 
   it 'lets callers rescue one base class' do
@@ -23,11 +23,9 @@ RSpec.describe 'DMARCator error hierarchy' do
     expect { DMARCator::Report.new('not xml') }.to raise_error(DMARCator::Error)
   end
 
-  it 'keeps the underlying cause for parse failures' do
+  it 'raises InvalidRecord for parse failures' do
     expect {
       DMARCator::Record.parse('!!!')
-    }.to raise_error(DMARCator::InvalidRecord) { |error|
-      expect(error.cause).to be_a(Parslet::ParseFailed)
-    }
+    }.to raise_error(DMARCator::InvalidRecord, /invalid DMARC record/)
   end
 end

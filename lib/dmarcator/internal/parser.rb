@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+require 'strscan'
+require 'uri'
+
 require_relative '../exceptions'
 require_relative '../uri'
-
-require 'parslet'
-require 'uri'
 
 module DMARCator
   #
@@ -15,342 +15,288 @@ module DMARCator
   #
   module Internal
     #
-    # DMARC parser.
+    # Parses DMARC records (RFC 7489 section 6.4).
     #
-    # An implementation detail: use {Record.parse} rather than this class.
+    # A hand-written parser rather than a parser-combinator grammar: the
+    # language is small, and this keeps record parsing allocation-light and
+    # free of a runtime dependency.
+    #
+    # @see https://www.rfc-editor.org/rfc/rfc7489#section-6.4
     #
     # @api private
     #
-    # @see https://tools.ietf.org/html/rfc7489#section-6.4
-    #
-    class Parser < Parslet::Parser
-
+    class Parser
       # Maximum accepted DMARC record size in bytes. Real records are far
       # smaller; the cap bounds parsing work on hostile input.
-      #
       MAX_RECORD_BYTES = 4096
 
-      root :dmarc_record
+      # Maximum length of error messages echoed from untrusted input.
+      MAX_ERROR_MESSAGE_LENGTH = 300
 
-      rule(:dmarc_record) do
-        dmarc_version.repeat(1,1) >>
-        (dmarc_sep >> dmarc_tag).repeat >>
-        dmarc_sep.maybe >>
-        wsp?.maybe
-      end
+      # Tags whose value is one keyword from a fixed set.
+      KEYWORD_TAGS = {
+        'p' => %w[none quarantine reject],
+        'sp' => %w[none quarantine reject],
+        'adkim' => %w[r s],
+        'aspf' => %w[r s],
+        'rf' => %w[afrf iodef]
+      }.freeze
 
-      rule(:dmarc_sep) { wsp? >> str(';') >> wsp? }
+      # Tags whose value is a decimal number of at most N digits.
+      DIGIT_TAGS = { 'ri' => 10, 'pct' => 3 }.freeze
 
-      rule(:dmarc_version) do
-        str('v') >> wsp? >>
-        str('=') >> wsp? >>
-        str('DMARC1').as(:v)
-      end
+      # Tags whose value is a list of mailto URIs.
+      URI_TAGS = %w[rua ruf].freeze
 
-      rule(:dmarc_tag) do
-        dmarc_request   |
-        dmarc_srequest  |
-        dmarc_auri      |
-        dmarc_furi      |
-        dmarc_adkim     |
-        dmarc_aspf      |
-        dmarc_ainterval |
-        dmarc_fo        |
-        dmarc_rfmt      |
-        dmarc_percent   |
-        unknown_tag
-      end
+      # The `v=` tag, which may only appear first.
+      VERSION = /\Av[ \t]*=[ \t]*DMARC1\z/
 
-      #
-      # Defines a rule for a `tag=value` DMARC tag, capturing values that do not
-      # match the rule as `:invalid_tag` so strict mode can reject them.
-      #
-      # @param [Symbol] name
-      #   The rule name, used as `dmarc_<name>`.
-      #
-      # @param [String] tag
-      #   The DMARC tag name.
-      #
-      # @yieldreturn [Parslet::Atoms::Base]
-      #   The parslet matching the tag's value.
-      #
-      # @api private
-      #
-      def self.tag_rule(name,tag,&block)
-        rule(:"dmarc_#{name}") do
-          (
-            str(tag) >> wsp? >> str('=') >> wsp? >>
-            instance_eval(&block).as(tag.to_sym)
-          ) |
-          (
-            str(tag) >> wsp? >> str('=') >> wsp? >>
-            match["^; \t"].repeat(1)
-          ).as(:invalid_tag)
-        end
-      end
+      # Characters allowed in a mailto local part and domain.
+      ADDRESS = /[A-Za-z0-9._%+-]+@[A-Za-z0-9._%+-]+/
 
-      tag_rule(:request,'p') do
-        str('none') | str('quarantine') | str('reject')
-      end
+      # Characters allowed between tags.
+      WSP = /[ \t]*/
 
-      tag_rule(:srequest,'sp') do
-        str('none') | str('quarantine') | str('reject')
-      end
-
-      tag_rule(:auri, 'rua') do
-        dmarc_uri >> (uri_list_sep.present? >> uri_list_sep).repeat >> (wsp? >> str(',')).absent?
-      end
-
-      tag_rule(:ainterval,'ri') { digit.repeat(1, 10) >> digit.absent? }
-
-      tag_rule(:furi,'ruf') do
-        dmarc_uri >> (uri_list_sep.present? >> uri_list_sep).repeat >> (wsp? >> str(',')).absent?
-      end
-
-      tag_rule(:fo,'fo') do
-        fo_opt >> (wsp? >> str(':') >> wsp? >> fo_opt).repeat
-      end
-
-      rule(:fo_opt) { match['01ds'].as(:fo_opt) }
-
-      tag_rule(:rfmt,'rf') { str('afrf') | str('iodef') }
-
-      tag_rule(:percent,'pct') { digit.repeat(1,3) >> digit.absent? }
-
-      tag_rule(:adkim, 'adkim') { match['rs'] }
-      tag_rule(:aspf, 'aspf')   { match['rs'] }
-
-      rule(:unknown_tag) { match["^; \t"].repeat(1).as(:unknown_tag) }
-
-      rule(:dmarc_uri) do
-        mailto_uri.as(:uri) >> (
-          str('!') >> digit.repeat(1, 10).as(:size) >> digit.absent? >> (
-            match['kmgt']
-          ).as(:unit).maybe
-        ).maybe >> str('!').absent?
-      end
-
-      rule(:uri_list_sep) { wsp? >> str(',') >> wsp? >> dmarc_uri }
-
-      rule(:mailto_uri) do
-        match['mM'] >> match['aA'] >> match['iI'] >> match['lL'] >> match['tT'] >> match['oO'] >>
-        str(':') >> mailto_address
-      end
-
-      rule(:mailto_address) do
-        mailto_local >> str('@') >> mailto_domain
-      end
-
-      rule(:mailto_local)  { mailto_char.repeat(1) }
-      rule(:mailto_domain) { mailto_char.repeat(1) }
-      rule(:mailto_char)   { match["A-Za-z0-9._%+-"] }
-
-      rule(:digit) { match('[0-9]') }
-      rule(:wsp) { str(' ') | str("\t") }
-      rule(:wsp?) { wsp.repeat }
-
-      #
-      # Converts the raw parse tree into tag attributes.
-      #
-      # @api private
-      #
-      class Transform < Parslet::Transform
-
-        rule(fo_opt: simple(:fo_opt)) { fo_opt }
-        rule(fo: simple(:fo_opt)) { {fo: [fo_opt]} }
-
-        rule(v: simple(:version)) { {v: version.to_sym} }
-        rule(p:  simple(:p))  { {p:  p.to_sym } }
-        rule(sp: simple(:sp)) { {sp: sp.to_sym} }
-        rule(rf: simple(:rf)) { {rf: rf.to_sym} }
-        rule(adkim: simple(:adkim)) { {adkim: adkim.to_sym} }
-        rule(aspf:  simple(:aspf))  { {aspf: aspf.to_sym} }
-
-        rule(pct: simple(:pct)) { {pct: pct.to_i} }
-        rule(ri:  simple(:ri))  { {ri:  ri.to_i}  }
-
-        rule(uri: simple(:uri), size: simple(:size), unit: simple(:unit)) do
-          Uri.new(
-            Transform.parse_uri(uri),
-            size.to_i,
-            unit.to_sym
-          )
-        end
-        rule(uri: simple(:uri), size: simple(:size)) do
-          Uri.new(
-            Transform.parse_uri(uri),
-            size.to_i
-          )
-        end
-        rule(uri: simple(:uri)) { Uri.new(Transform.parse_uri(uri)) }
-        rule(rua: subtree(:uris)) { {rua: Array(uris)} }
-        rule(ruf: subtree(:uris)) { {ruf: Array(uris)} }
-
-        # Maximum length of error messages echoed from untrusted input.
-        MAX_ERROR_MESSAGE_LENGTH = 300
-
+      class << self
         #
-        # Parses a `mailto:` URI from a parse tree slice.
+        # Parses a DMARC record.
         #
-        # @param [Parslet::Slice] value
+        # @param [String] record
+        #   The raw DMARC record to parse.
         #
-        # @return [URI::MailTo]
+        # @param [Boolean] strict (false)
+        #   When `true`, raise on unknown tags or invalid tag values instead
+        #   of silently ignoring them.
+        #
+        # @return [Hash{Symbol => Object}]
         #
         # @raise [InvalidRecord]
-        #   The URI is not a valid `mailto:` URI.
+        #   The record is malformed, is too large, or (in strict mode)
+        #   contains an unknown tag or invalid tag value.
         #
-        # @api private
-        #
-        def self.parse_uri(value)
-          uri = value.to_s
-
-          begin
-            parsed = URI.parse(uri)
-          rescue URI::Error => error
-            raise InvalidRecord, truncate(error.message)
+        def parse(record, strict: false)
+          unless record.is_a?(String)
+            raise InvalidRecord, "DMARC record must be a String, got #{record.class}"
           end
 
-          unless parsed.is_a?(URI::MailTo)
-            raise InvalidRecord, "invalid DMARC report URI (expected mailto): #{truncate(uri)}"
+          if record.bytesize > MAX_RECORD_BYTES
+            raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
           end
 
-          parsed
+          tags = { v: :DMARC1 }
+
+          split(record).each do |segment|
+            status, key, value = parse_segment(segment)
+
+            case status
+            when :ok
+              raise InvalidRecord, "duplicate DMARC tag: #{key}" if tags.key?(key)
+
+              tags[key] = value
+            when :unknown
+              if strict
+                raise InvalidRecord, "unknown DMARC tag: #{truncate(segment).inspect}"
+              end
+            when :invalid
+              if strict
+                raise InvalidRecord, "invalid DMARC tag value: #{truncate(segment).inspect}"
+              end
+            end
+          end
+
+          validate!(tags)
+        end
+
+        private
+
+        #
+        # Splits a record into tag segments, validating the version tag.
+        #
+        def split(record)
+          separator = record.index(';')
+          version = (separator ? record[0, separator] : record).sub(/[ \t]+\z/, '')
+          rest = separator ? record[(separator + 1)..] : ''
+
+          unless version.match?(VERSION)
+            raise InvalidRecord, "invalid DMARC record: #{truncate(record).inspect}"
+          end
+
+          # At most one trailing separator, plus optional surrounding space.
+          rest = rest.sub(/[ \t]+\z/, '').sub(/;[ \t]*\z/, '').sub(/[ \t]+\z/, '')
+
+          return [] if rest.empty?
+
+          rest.split(';', -1).map do |segment|
+            segment = segment.sub(/\A[ \t]+/, '').sub(/[ \t]+\z/, '')
+
+            if segment.empty?
+              raise InvalidRecord, "invalid DMARC record: #{truncate(record).inspect}"
+            end
+
+            segment
+          end
+        end
+
+        #
+        # Classifies and parses one `tag=value` segment.
+        #
+        # @return [Array(Symbol, Symbol, Object), Array(Symbol)]
+        #
+        def parse_segment(segment)
+          name, value = segment.split('=', 2)
+
+          return [:unknown] if value.nil?
+
+          name = name.sub(/[ \t]+\z/, '').sub(/\A[ \t]+/, '')
+          value = value.sub(/\A[ \t]+/, '').sub(/[ \t]+\z/, '')
+
+          # A known tag with an empty value is not a tag at all.
+          return [:unknown] if value.empty?
+
+          if (keywords = KEYWORD_TAGS[name])
+            keyword(name, keywords, value)
+          elsif (max = DIGIT_TAGS[name])
+            digits(name, max, value)
+          elsif name == 'fo'
+            fo(value)
+          elsif URI_TAGS.include?(name)
+            uri_list(name, value, segment)
+          else
+            [:unknown]
+          end
+        end
+
+        def keyword(name, keywords, value)
+          return [:ok, name.to_sym, value.to_sym] if keywords.include?(value)
+
+          # A known keyword followed by junk is a malformed record, not an
+          # invalid value: the value grammar matched and the remainder did not.
+          malformed!(value) if keywords.any? { |keyword| value.start_with?(keyword) }
+
+          [:invalid]
+        end
+
+        def digits(name, max, value)
+          if value.match?(/\A\d+\z/)
+            return [:invalid] if value.length > max
+
+            return [:ok, name.to_sym, value.to_i]
+          end
+
+          malformed!(value) if value.match?(/\A\d/)
+
+          [:invalid]
+        end
+
+        def fo(value)
+          return [:ok, :fo, value.split(':')] if value.match?(/\A[01ds](?::[01ds])*\z/)
+
+          malformed!(value) if value.match?(/\A[01ds](?::[01ds])*/)
+
+          [:invalid]
+        end
+
+        def uri_list(name, value, _segment)
+          uris = []
+          scanner = StringScanner.new(value)
+
+          loop do
+            uri = parse_uri(scanner)
+
+            # Any failure inside a URI makes the whole tag invalid.
+            return [:invalid] if uri.nil?
+
+            uris << uri
+
+            scanner.skip(WSP)
+
+            break if scanner.eos?
+
+            # A valid URI followed by junk is a malformed record.
+            malformed!(value) unless scanner.scan(/,/)
+
+            scanner.skip(WSP)
+
+            # A trailing comma leaves no URI to parse.
+            return [:invalid] if scanner.eos?
+          end
+
+          [:ok, name.to_sym, uris]
+        end
+
+        #
+        # Parses one `mailto:` URI, with its optional size and unit.
+        #
+        # @return [Uri, nil]
+        #   The URI, or `nil` when the value is not a valid DMARC URI.
+        #
+        def parse_uri(scanner)
+          start = scanner.pos
+
+          return nil unless scanner.scan(/mailto:/i) && scanner.scan(ADDRESS)
+
+          uri_text = scanner.string[start...scanner.pos]
+          size = unit = nil
+
+          if scanner.scan(/!/)
+            digits = scanner.scan(/\d{1,10}/)
+
+            # A bare `!` or more than ten digits is an invalid value.
+            return nil if digits.nil? || scanner.match?(/\d/)
+
+            size = digits.to_i
+            unit = scanner.scan(/[kmgt]/)&.to_sym
+
+            # A second `!` is an invalid value.
+            return nil if scanner.match?(/!/)
+          end
+
+          parsed = begin
+            URI.parse(uri_text)
+          rescue URI::Error
+            return nil
+          end
+
+          return nil unless parsed.is_a?(URI::MailTo)
+
+          Uri.new(parsed, size, unit)
+        end
+
+        #
+        # Raises for input whose valid prefix was followed by junk.
+        #
+        def malformed!(value)
+          raise InvalidRecord, "invalid DMARC record: #{truncate(value).inspect}"
+        end
+
+        #
+        # Validates parsed tag values that have a range.
+        #
+        def validate!(tags)
+          if tags[:pct] && !tags[:pct].between?(0, 100)
+            raise InvalidRecord, 'pct must be an integer between 0 and 100'
+          end
+
+          if tags[:ri] && !tags[:ri].between?(0, 2**32 - 1)
+            raise InvalidRecord, 'ri must be an integer between 0 and 4294967295'
+          end
+
+          tags
         end
 
         #
         # Truncates an error message to a bounded length.
         #
-        # @param [String] message
-        #
-        # @return [String]
-        #
-        # @api private
-        #
-        def self.truncate(message)
+        def truncate(message)
           message = message.to_s
 
           if message.length > MAX_ERROR_MESSAGE_LENGTH
-            message[0, MAX_ERROR_MESSAGE_LENGTH] + "..."
+            message[0, MAX_ERROR_MESSAGE_LENGTH] + '...'
           else
             message
           end
         end
-
       end
-
-      #
-      # Parses a DMARC record.
-      #
-      # @param [String] record
-      #   The raw DMARC record to parse.
-      #
-      # @param [Boolean] strict (false)
-      #   When `true`, raise on unknown tags or invalid tag values instead of
-      #   silently ignoring them.
-      #
-      # @return [Hash{Symbol => Object}]
-      #   The Hash of tags within the record.
-      #
-      # @raise [InvalidRecord]
-      #   The record is not a String, is malformed, is too large, or (in strict
-      #   mode) contains an unknown tag or invalid tag value.
-      #
-      def self.parse(record, strict: false)
-        unless record.is_a?(String)
-          raise InvalidRecord, "DMARC record must be a String, got #{record.class}"
-        end
-
-        if record.bytesize > MAX_RECORD_BYTES
-          raise InvalidRecord, "DMARC record exceeds maximum size of #{MAX_RECORD_BYTES} bytes"
-        end
-
-        tree = parser.parse(record)
-
-        if strict
-          tree.each do |node|
-            next unless ignored?(node)
-
-            if node.key?(:unknown_tag)
-              raise InvalidRecord, "unknown DMARC tag: #{Transform.truncate(node[:unknown_tag].to_s).inspect}"
-            else
-              raise InvalidRecord, "invalid DMARC tag value: #{Transform.truncate(node[:invalid_tag].to_s).inspect}"
-            end
-          end
-        end
-
-        tags = transform.apply(tree.reject { |node| ignored?(node) })
-        hash = {}
-
-        tags.each do |tag|
-          tag.each_key do |key|
-            if hash.key?(key)
-              raise InvalidRecord, "duplicate DMARC tag: #{key}"
-            end
-          end
-
-          hash.merge!(tag)
-        end
-
-        validate!(hash)
-
-        return hash
-      end
-
-      #
-      # Determines whether a parse-tree node represents a tag that the lenient
-      # parser dropped because it was unknown or had an invalid value.
-      #
-      # @param [Object] node
-      #   The parse-tree node.
-      #
-      # @return [Boolean]
-      #
-      def self.ignored?(node)
-        node.is_a?(Hash) && (node.key?(:unknown_tag) || node.key?(:invalid_tag))
-      end
-
-      #
-      # The memoized parser instance. Parslet caches rules per instance, so
-      # reusing it avoids rebuilding the grammar on every call.
-      #
-      # @return [Parser]
-      #
-      # @api private
-      #
-      def self.parser
-        @parser ||= new
-      end
-
-      #
-      # The memoized transform instance.
-      #
-      # @return [Transform]
-      #
-      # @api private
-      #
-      def self.transform
-        @transform ||= Transform.new
-      end
-
-      #
-      # Validates the parsed tags.
-      #
-      # @param [Hash{Symbol => Object}] tags
-      #   The parsed tags.
-      #
-      # @raise [InvalidRecord]
-      #   One of the tags has an invalid value.
-      #
-      def self.validate!(tags)
-        if tags[:pct] && !(tags[:pct].is_a?(Integer) && tags[:pct].between?(0, 100))
-          raise InvalidRecord, "pct must be an integer between 0 and 100"
-        end
-
-        if tags[:ri] && !(tags[:ri].is_a?(Integer) && tags[:ri].between?(0, 2**32 - 1))
-          raise InvalidRecord, "ri must be an integer between 0 and 4294967295"
-        end
-      end
-
     end
   end
 end
