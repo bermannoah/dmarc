@@ -1,0 +1,143 @@
+v=DMARC1; p=quarantine; rua=mailto:mailauth-reports@google.com
+v=DMARC1; p=reject; pct=100; rua=mailto:d@rua.agari.com,mailto:postmaster@facebook.com; ruf=mailto:d@ruf.agari.com;
+v=DMARC1; p=reject; sp=none; pct=100; rua=mailto:dmarc-yahoo-rua@yahoo-inc.com, mailto:dmarc_y_rua@yahoo.com;
+v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
+v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarc-reports@bounces.amazon.com; ruf=mailto:dmarc-reports@bounces.amazon.com
+v=DMARC1; p=reject; rua=mailto:d@rua.agari.com,mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:d@ruf.agari.com,mailto:dmarc_afrf@auth.returnpath.net; pct=100
+v=DMARC1; p=quarantine; rua=mailto:dmarc-tb@service.alibaba.com
+v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
+v=DMARC1; p=quarantine; rua=mailto:dmarc-tm@service.alibaba.com
+v=DMARC1; p=none; rua=mailto:dmarc-rua@yandex.ru
+v=DMARC1; p=quarantine; pct=10; rua=mailto:dmarc-reports@pinterest.com,mailto:gdx8h9rd@ag.dmarcian.com; ruf=mailto:dmarc-failures@pinterest.com,mailto:gdx8h9rd@fr.dmarcian.com;
+v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net; rf=afrf; pct=100
+v=DMARC1; p=none; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;
+v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:dk@bounce.paypal.com,mailto:d@ruf.agari.com
+v=DMARC1;p=none;rua=mailto:d@rua.agari.com,mailto:dmarc_rua@corp.mail.ru;ruf=mailto:d@ruf.agari.com;fo=1;
+v=DMARC1; p=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
+v=DMARC1;p=none;ruf=mailto:d@ruf.agari.com;rua=mailto:d@rua.agari.com;fo=1
+v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
+v=DMARC1; p=none; rua=mailto:dmarc-ap@service.alibaba.com; ruf=mailto:dmarc-ap@service.alibaba.com
+v=DMARC1; p=none; rua=mailto:dmarc_icbu@service.alibaba.com; ruf=mailto:dmarc_icbu@service.alibaba.com
+v=DMARC1;p=none;pct=0;rua=mailto:dmarcreports@godaddy.com
+v=DMARC1; p=none; pct=100; rua=mailto:dmarc-reports@bounces.amazon.com; ruf=mailto:dmarc-reports@bounces.amazon.com
+v=DMARC1; p=reject; fo=1; pct=100; rua=mailto:dropbox@rua.agari.com,mailto:dmarc@dropbox.com; ruf=mailto:dropbox@ruf.agari.com
+v=DMARC1;p=reject;pct=100;ruf=mailto:d@ruf.agari.com,mailto:netflix@ruf.netcraft.com;rua=mailto:d@rua.agari.com,mailto:netflix@rua.netcraft.com
+v=DMARC1; p=reject; rua=mailto:d@rua.agari.com,mailto:dmarc_agg@auth.returnpath.net,mailto:dmarc@booking.com; ruf=mailto:d@ruf.agari.com,mailto:dmarc_afrf@auth.returnpath.net,mailto:dmarc@booking.com
+v=DMARC1; p=none; rua=mailto:dmarc-report-a@rx.rakuten.co.jp
+v=DMARC1; p=none; pct=100; rua=mailto:dmarc-yahoo-rua@yahoo-inc.com;
+v=DMARC1; p=none; rua=mailto:dmarc@github.com
+v=DMARC1;p=none;pct=100;fo=1;ruf=mailto:d@ruf.agari.com;rua=mailto:d@rua.agari.com
+v=DMARC1; p=quarantine; rua=mailto:dmarc@service.alibaba.com; ruf=mailto:dmarc@service.alibaba.com
+v=DMARC1; p=none; pct=0; rua=mailto:dmarc-reports@vubeis.net; aspf=r; adkim=r; sp=none; ruf=mailto:dmarc-abuse-reports@vubeis.net;
+v=DMARC1; p=none; rua=mailto:paperboydmarcrua@lga2.nytimes.com; ruf=mailto:paperboydmarcruf@lga2.nytimes.com;
+v=DMARC1; p=reject; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;
+v=DMARC1; p=none; rua=mailto:dmarc@yelp.com; ruf=mailto:dmarc@yelp.com; ri=43200;
+v=DMARC1; p=none; rua=mailto:19ezfriw@ag.dmarcian.com; ruf=mailto:19ezfriw@fr.dmarcian.com;
+v=DMARC1; p=none; rua=mailto:mailauth-reports@google.com
+v=DMARC1; p=none; rua=mailto:auth.report_ns@bankofamerica.com
+v=DMARC1; p=quarantine; rua=mailto:dmarc@mashable.com; ruf=mailto:dmarc@mashable.com
+v=DMARC1; p=none; rua=mailto:dmarc-feedback@etsy.com
+v=DMARC1; p=quarantine; pct=100; adkim=r; aspf=r; rua=mailto:dmarc@indeed.com;
+v=DMARC1; p=none; pct=100; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net,mailto:d@rua.agari.com,mailto:dmarc-rua@corp.badoo.com; ruf=mailto:dmarc_afrf@auth.returnpath.net,mailto:d@ruf.agari.com,mailto:dmarc-ruf@corp.badoo.com
+v=DMARC1; p=none; rua=mailto:dmarc@dmarc.aweber.com; ruf=mailto:dmarc@dmarc.aweber.com; rf=afrf; pct=100
+v=DMARC1; p=none; rua=mailto:dmarc-reports@addthis.com
+v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net, mailto:wells-fargo@rua.agari.com; ruf=mailto:dmarc_afrf@auth.returnpath.net, mailto:wells-fargo@ruf.agari.com; fo=1
+v=DMARC1; p=none; rua=mailto:dmarc-reports@avg.com; ruf=mailto:dmarc-forensic@avg.com
+v=DMARC1; p=none; sp=none; rua=mailto:dmarc-rua@wikimedia.org; ruf=mailto:dmarc-ruf@wikimedia.org;
+v=DMARC1;p=quarantine;pct=75;rua=mailto:dmarcaggregate@bet365.com;ruf=mailto:dmarcforensic@bet365.com;
+v=DMARC1; p=none; rua=mailto:dmarc@zeobit.com; ruf=mailto:dmarc@zeobit.com; rf=afrf; pct=0;
+v=DMARC1; p=none; pct=100; rua=mailto:dmarc@bitly.com; ruf=mailto:ruf@dmarc.bitly.net; fo=1;
+v=DMARC1; p=quarantine;rua=mailto:0skcd1oz@ag.dmarcian.com; ruf=mailto:0skcd1oz@fr.dmarcian.com;
+v=DMARC1; p=none; pct=100; rua=mailto:jpzegiki@ag.dmarcian.com; ruf=mailto:jpzegiki@fr.dmarcian.com;
+v=DMARC1; p=reject; rua=mailto:ups@rua.agari.com; ruf=mailto:ups@ruf.agari.com; fo=1
+v=DMARC1; p=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;
+v=DMARC1; p=none; rua=mailto:dmarc@disqus.com; ruf=mailto:dmarc@disqus.com;
+v=DMARC1; p=reject; pct=100; rua=mailto:d0sya9cf@ag.dmarcian.com; ruf=mailto:d0sya9cf@fr.dmarcian.com; adkim=s; aspf=s;
+v=DMARC1; p=none; rua=mailto:infdmarcaggr@infusionmail.com; ruf=mailto:infdmarcforensics@infusionmail.com; pct=100
+v=DMARC1; p=none; fo=1; rua=mailto:rua@zendesk.com; ruf=mailto:ruf@zendesk.com
+v=DMARC1; p=reject; adkim=s; aspf=r; rf=afrf; pct=100;
+v=DMARC1; p=quarantine; rua=mailto:newsletter@bongacams.com; ruf=mailto:newsletter@bongacams.com; adkim=s; aspf=s; pct=100; rf=afrf; ri=14400; sp=quarantine
+v=DMARC1; p=none; fo=1; rua=mailto:u-s-postal-service@rua.agari.com; ruf=mailto:u-s-postal-service@ruf.agari.com
+v=DMARC1; p=none; rua=mailto:dmarc-rua@dmarctest.comcast.net;
+v=DMARC1; p=reject; pct=100; rua=mailto:dmarc_agg@auth.returnpath.net,mailto:dmarc@fedex.com; ruf=mailto:dmarc_afrf@auth.returnpath.net,mailto:dmarc@fedex.com; fo=1
+v=DMARC1; p=none; rua=mailto:dmarc-reports@ign.com; ruf=mailto:dmarc-reports@ign.com; rf=afrf; pct=100;
+v=DMARC1; p=none;fo=1; rua=mailto:icici-bank@rua.agari.com,mailto:dmarc-rua@icicibank.com,mailto:dmarc_agg@auth.returnpath.net;ruf=mailto:icici-bank@ruf.agari.com,mailto:dmarc-ruf@icicibank.com,mailto:dmarc_afrf@auth.returnpath.net
+v=DMARC1;p=reject;sp=none;fo=1;rua=mailto:dmarc_agg@auth.returnpath.net;ruf=mailto:dmarc_afrf@auth.returnpath.net
+v=DMARC1; p=none; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1
+v=DMARC1; p=none; fo=1; rua=mailto:dmarc_rua@groupon.com,mailto:d@rua.agari.com; ruf=mailto:dmarc_ruf@groupon.com,mailto:d@ruf.agari.com; rf=afrf; pct=100
+v=DMARC1; p=none; rua=mailto:dmarcreports@constantcontact.com; ruf=mailto:dmarcreports@constantcontact.com; rf=afrf; pct=100;
+v=DMARC1; p=none; sp=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;
+v=DMARC1; p=quarantine
+v=DMARC1; p=reject; pct=100; rua=mailto:dmarc@evernote.com; ruf=mailto:dmarc-ruf@evernote.com; fo=0:s
+v=DMARC1; p=none; rua=mailto:dmarc-dell-rua@sonicwall.com; ruf=mailto:dmarc-dell-ruf@sonicwall.com
+v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net, mailto:mailadmin@surveymonkey.com; ruf=mailto:dmarc_afrf@auth.returnpath.net, mailto:mailadmin@surveymonkey.com; rf=afrf; pct=100
+v=DMARC1; p=reject; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net; rf=afrf; pct=100
+v=DMARC1; p=none; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net
+v=DMARC1;p=none
+v=DMARC1; p=reject
+v=DMARC1; p=none; sp=reject; adkim=r; aspf=r
+v = DMARC1 ; p = none ; sp = reject
+v=DMARC1; p=none; 
+v=DMARC1; p=none 
+v=DMARC1;p=none;foo=xxx;sp=reject;bar=xxx;adkim=r;aspf=r
+v=DMARC1;p=none;sp;adkim=X;aspf=
+v=DMARC1;p=quarantine;rua=mailto:foo@example.com,mailto:bar@example.com
+rua = mailto:user1@example.org, mailto:user2@example.org
+rua = mailto:user1@example.com!20m
+v=DMARC1;p=none;rua=MAILTO:a@b.com
+v=DMARC1;p=none;rua=mailto:a@b.com,http://evil
+v=DMARC1;p=none;rua=mailto:a
+b@example.com
+v=DMARC1;p=none;pct=999
+v=DMARC1;p=none;p=reject
+v=DMARC1; p=none; fo=0:1:d:s
+v=DMARC1;p=none;ri=86400
+v=DMARC1;p=none;pct=100
+v=XXXXXXXXXX
+v=DMARC1
+v=DMARC1;
+;v=DMARC1
+v=DMARC1;p=none;;sp=reject
+v=DMARC1;p=none; v=DMARC1
+v=DMARC1;p=none;sp=REJECT
+v=DMARC1;p=none;rua=mailto:a@b.com!20x
+v=DMARC1;p=none;rua=mailto:a@b.com!20
+v=DMARC1;p=none;rua=mailto:a@b.com!
+v=DMARC1;p=none;fo=
+v=DMARC1;p=none;pct=
+DMARC1;p=none
+v=DMARC1; p=none; unknown
+v=DMARC1;p=none;ruf=mailto:a@b.com
+v=DMARC1; p=none; fo=1
+v=DMARC1;p=none;adkim=s;aspf=s
+v=DMARC1; p=none; rf=iodef
+v=DMARC1; p=none; rf=afrf
+v=DMARC1;p=none;ri=99999999999
+v=DMARC1;p=none;pct=1000
+V=DMARC1;p=none
+v=dmarc1;p=none
+v=DMARC1;	p=none	
+v=DMARC1;p=none;sp=none;
+v=DMARC1;p=none;rua=mailto:a@b.com!1k,mailto:c@d.com!2m,mailto:e@f.com!3g,mailto:g@h.com!4t
+v=DMARC1;p=none;rua=mailto:a@b.com!1K
+v=DMARC1; p=none; rua=mailto:a@b.com!1k,mailto:c@d.com!2m,mailto:e@f.com!3g,mailto:g@h.com!4t
+v=DMARC1; p=none; ri=4294967295
+v=DMARC1; p=none; ri=4294967296
+v=DMARC1; p=none; pct=0
+v=DMARC1; p=none; pct=000
+v=DMARC1; p=none; pct=100; sp=reject; adkim=r; aspf=s; fo=0:d; rf=afrf; ri=86400
+v=DMARC1; p=none; ruf=mailto:a@b.com,mailto:c@d.com!10m
+v=DMARC1; p=none; rua=MAILTO:A@B.COM,mailto:c@d.com
+v=DMARC1;p=none;rua=mailto:a@b.com,
+v=DMARC1;p=none;rua=mailto:a@b.com!10
+v=DMARC1;p=none;rua=mailto:a@b.com!11
+v=DMARC1;p=none;rua=mailto:a@b.com!!
+v=DMARC1;p=none;fo=0
+v=DMARC1;p=none;fo=d
+v=DMARC1;p=none;fo=0:d:s
+v=DMARC1;p=none;fo=0:
+v=DMARC1;p=none;adkim=s
+v=DMARC1;p=none;aspf=s
+v=DMARC1; p=none; sp=none
+v=DMARC1; p=reject ; sp=reject ; pct=100 ;
+v=DMARC1;p=none;pct=99;ri=1

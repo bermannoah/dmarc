@@ -1,0 +1,7717 @@
+[
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:mailauth-reports@google.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; pct=100; rua=mailto:d@rua.agari.com,mailto:postmaster@facebook.com; ruf=mailto:d@ruf.agari.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:postmaster@facebook.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:postmaster@facebook.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; sp=none; pct=100; rua=mailto:dmarc-yahoo-rua@yahoo-inc.com, mailto:dmarc_y_rua@yahoo.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-yahoo-rua@yahoo-inc.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_y_rua@yahoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-yahoo-rua@yahoo-inc.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_y_rua@yahoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarc-reports@bounces.amazon.com; ruf=mailto:dmarc-reports@bounces.amazon.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com,mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:d@ruf.agari.com,mailto:dmarc_afrf@auth.returnpath.net; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:dmarc-tb@service.alibaba.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-tb@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-tb@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:dmarc-tm@service.alibaba.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-tm@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-tm@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-rua@yandex.ru",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@yandex.ru",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@yandex.ru",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; pct=10; rua=mailto:dmarc-reports@pinterest.com,mailto:gdx8h9rd@ag.dmarcian.com; ruf=mailto:dmarc-failures@pinterest.com,mailto:gdx8h9rd@fr.dmarcian.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          10
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@pinterest.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:gdx8h9rd@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-failures@pinterest.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:gdx8h9rd@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          10
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@pinterest.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:gdx8h9rd@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-failures@pinterest.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:gdx8h9rd@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net; rf=afrf; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:dk@bounce.paypal.com,mailto:d@ruf.agari.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dk@bounce.paypal.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dk@bounce.paypal.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:d@rua.agari.com,mailto:dmarc_rua@corp.mail.ru;ruf=mailto:d@ruf.agari.com;fo=1;",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_rua@corp.mail.ru",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_rua@corp.mail.ru",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;ruf=mailto:d@ruf.agari.com;rua=mailto:d@rua.agari.com;fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-ap@service.alibaba.com; ruf=mailto:dmarc-ap@service.alibaba.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-ap@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ap@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-ap@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ap@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc_icbu@service.alibaba.com; ruf=mailto:dmarc_icbu@service.alibaba.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_icbu@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_icbu@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_icbu@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_icbu@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=0;rua=mailto:dmarcreports@godaddy.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcreports@godaddy.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcreports@godaddy.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:dmarc-reports@bounces.amazon.com; ruf=mailto:dmarc-reports@bounces.amazon.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@bounces.amazon.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; fo=1; pct=100; rua=mailto:dropbox@rua.agari.com,mailto:dmarc@dropbox.com; ruf=mailto:dropbox@ruf.agari.com",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dropbox@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@dropbox.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dropbox@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dropbox@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@dropbox.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dropbox@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=reject;pct=100;ruf=mailto:d@ruf.agari.com,mailto:netflix@ruf.netcraft.com;rua=mailto:d@rua.agari.com,mailto:netflix@rua.netcraft.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:netflix@rua.netcraft.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:netflix@ruf.netcraft.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:netflix@rua.netcraft.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:netflix@ruf.netcraft.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com,mailto:dmarc_agg@auth.returnpath.net,mailto:dmarc@booking.com; ruf=mailto:d@ruf.agari.com,mailto:dmarc_afrf@auth.returnpath.net,mailto:dmarc@booking.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@booking.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@booking.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@booking.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@booking.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-report-a@rx.rakuten.co.jp",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-report-a@rx.rakuten.co.jp",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-report-a@rx.rakuten.co.jp",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:dmarc-yahoo-rua@yahoo-inc.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-yahoo-rua@yahoo-inc.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-yahoo-rua@yahoo-inc.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc@github.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@github.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@github.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=100;fo=1;ruf=mailto:d@ruf.agari.com;rua=mailto:d@rua.agari.com",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:dmarc@service.alibaba.com; ruf=mailto:dmarc@service.alibaba.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@service.alibaba.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=0; rua=mailto:dmarc-reports@vubeis.net; aspf=r; adkim=r; sp=none; ruf=mailto:dmarc-abuse-reports@vubeis.net;",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@vubeis.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-abuse-reports@vubeis.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@vubeis.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-abuse-reports@vubeis.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:paperboydmarcrua@lga2.nytimes.com; ruf=mailto:paperboydmarcruf@lga2.nytimes.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:paperboydmarcrua@lga2.nytimes.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:paperboydmarcruf@lga2.nytimes.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:paperboydmarcrua@lga2.nytimes.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:paperboydmarcruf@lga2.nytimes.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc@yelp.com; ruf=mailto:dmarc@yelp.com; ri=43200;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          43200
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@yelp.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@yelp.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          43200
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@yelp.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@yelp.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:19ezfriw@ag.dmarcian.com; ruf=mailto:19ezfriw@fr.dmarcian.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:19ezfriw@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:19ezfriw@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:19ezfriw@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:19ezfriw@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:mailauth-reports@google.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:mailauth-reports@google.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:auth.report_ns@bankofamerica.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:auth.report_ns@bankofamerica.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:auth.report_ns@bankofamerica.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:dmarc@mashable.com; ruf=mailto:dmarc@mashable.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@mashable.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@mashable.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@mashable.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@mashable.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-feedback@etsy.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-feedback@etsy.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-feedback@etsy.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; pct=100; adkim=r; aspf=r; rua=mailto:dmarc@indeed.com;",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@indeed.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@indeed.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net,mailto:d@rua.agari.com,mailto:dmarc-rua@corp.badoo.com; ruf=mailto:dmarc_afrf@auth.returnpath.net,mailto:d@ruf.agari.com,mailto:dmarc-ruf@corp.badoo.com",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-rua@corp.badoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-ruf@corp.badoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-rua@corp.badoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-ruf@corp.badoo.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc@dmarc.aweber.com; ruf=mailto:dmarc@dmarc.aweber.com; rf=afrf; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@dmarc.aweber.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@dmarc.aweber.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@dmarc.aweber.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@dmarc.aweber.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-reports@addthis.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@addthis.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@addthis.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net, mailto:wells-fargo@rua.agari.com; ruf=mailto:dmarc_afrf@auth.returnpath.net, mailto:wells-fargo@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:wells-fargo@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:wells-fargo@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:wells-fargo@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:wells-fargo@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-reports@avg.com; ruf=mailto:dmarc-forensic@avg.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@avg.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-forensic@avg.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@avg.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-forensic@avg.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; sp=none; rua=mailto:dmarc-rua@wikimedia.org; ruf=mailto:dmarc-ruf@wikimedia.org;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@wikimedia.org",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ruf@wikimedia.org",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@wikimedia.org",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ruf@wikimedia.org",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=quarantine;pct=75;rua=mailto:dmarcaggregate@bet365.com;ruf=mailto:dmarcforensic@bet365.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          75
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcaggregate@bet365.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarcforensic@bet365.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          75
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcaggregate@bet365.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarcforensic@bet365.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc@zeobit.com; ruf=mailto:dmarc@zeobit.com; rf=afrf; pct=0;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@zeobit.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@zeobit.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@zeobit.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@zeobit.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:dmarc@bitly.com; ruf=mailto:ruf@dmarc.bitly.net; fo=1;",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@bitly.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ruf@dmarc.bitly.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@bitly.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ruf@dmarc.bitly.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine;rua=mailto:0skcd1oz@ag.dmarcian.com; ruf=mailto:0skcd1oz@fr.dmarcian.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:0skcd1oz@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:0skcd1oz@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:0skcd1oz@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:0skcd1oz@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:jpzegiki@ag.dmarcian.com; ruf=mailto:jpzegiki@fr.dmarcian.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:jpzegiki@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:jpzegiki@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:jpzegiki@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:jpzegiki@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; rua=mailto:ups@rua.agari.com; ruf=mailto:ups@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:ups@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ups@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:ups@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ups@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc@disqus.com; ruf=mailto:dmarc@disqus.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@disqus.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@disqus.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@disqus.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc@disqus.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; pct=100; rua=mailto:d0sya9cf@ag.dmarcian.com; ruf=mailto:d0sya9cf@fr.dmarcian.com; adkim=s; aspf=s;",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d0sya9cf@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d0sya9cf@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d0sya9cf@ag.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d0sya9cf@fr.dmarcian.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:infdmarcaggr@infusionmail.com; ruf=mailto:infdmarcforensics@infusionmail.com; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:infdmarcaggr@infusionmail.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:infdmarcforensics@infusionmail.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:infdmarcaggr@infusionmail.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:infdmarcforensics@infusionmail.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=1; rua=mailto:rua@zendesk.com; ruf=mailto:ruf@zendesk.com",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:rua@zendesk.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ruf@zendesk.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:rua@zendesk.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:ruf@zendesk.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; adkim=s; aspf=r; rf=afrf; pct=100;",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine; rua=mailto:newsletter@bongacams.com; ruf=mailto:newsletter@bongacams.com; adkim=s; aspf=s; pct=100; rf=afrf; ri=14400; sp=quarantine",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "ri",
+          14400
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:newsletter@bongacams.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:newsletter@bongacams.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "quarantine"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "ri",
+          14400
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:newsletter@bongacams.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:newsletter@bongacams.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "quarantine"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=1; rua=mailto:u-s-postal-service@rua.agari.com; ruf=mailto:u-s-postal-service@ruf.agari.com",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:u-s-postal-service@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:u-s-postal-service@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:u-s-postal-service@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:u-s-postal-service@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-rua@dmarctest.comcast.net;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@dmarctest.comcast.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-rua@dmarctest.comcast.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; pct=100; rua=mailto:dmarc_agg@auth.returnpath.net,mailto:dmarc@fedex.com; ruf=mailto:dmarc_afrf@auth.returnpath.net,mailto:dmarc@fedex.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@fedex.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@fedex.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@fedex.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc@fedex.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-reports@ign.com; ruf=mailto:dmarc-reports@ign.com; rf=afrf; pct=100;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@ign.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@ign.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-reports@ign.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-reports@ign.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none;fo=1; rua=mailto:icici-bank@rua.agari.com,mailto:dmarc-rua@icicibank.com,mailto:dmarc_agg@auth.returnpath.net;ruf=mailto:icici-bank@ruf.agari.com,mailto:dmarc-ruf@icicibank.com,mailto:dmarc_afrf@auth.returnpath.net",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:icici-bank@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-rua@icicibank.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:icici-bank@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-ruf@icicibank.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:icici-bank@rua.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-rua@icicibank.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:icici-bank@ruf.agari.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc-ruf@icicibank.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=reject;sp=none;fo=1;rua=mailto:dmarc_agg@auth.returnpath.net;ruf=mailto:dmarc_afrf@auth.returnpath.net",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=1; rua=mailto:dmarc_rua@groupon.com,mailto:d@rua.agari.com; ruf=mailto:dmarc_ruf@groupon.com,mailto:d@ruf.agari.com; rf=afrf; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_rua@groupon.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_ruf@groupon.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_rua@groupon.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_ruf@groupon.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarcreports@constantcontact.com; ruf=mailto:dmarcreports@constantcontact.com; rf=afrf; pct=100;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcreports@constantcontact.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarcreports@constantcontact.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarcreports@constantcontact.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarcreports@constantcontact.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; sp=none; pct=100; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:d@rua.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:d@ruf.agari.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=quarantine",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; pct=100; rua=mailto:dmarc@evernote.com; ruf=mailto:dmarc-ruf@evernote.com; fo=0:s",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@evernote.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ruf@evernote.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc@evernote.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-ruf@evernote.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc-dell-rua@sonicwall.com; ruf=mailto:dmarc-dell-ruf@sonicwall.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-dell-rua@sonicwall.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-dell-ruf@sonicwall.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc-dell-rua@sonicwall.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc-dell-ruf@sonicwall.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:dmarc_agg@auth.returnpath.net, mailto:mailadmin@surveymonkey.com; ruf=mailto:dmarc_afrf@auth.returnpath.net, mailto:mailadmin@surveymonkey.com; rf=afrf; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:mailadmin@surveymonkey.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:mailadmin@surveymonkey.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:mailadmin@surveymonkey.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:mailadmin@surveymonkey.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net; rf=afrf; pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=1; rua=mailto:dmarc_agg@auth.returnpath.net; ruf=mailto:dmarc_afrf@auth.returnpath.net",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:dmarc_agg@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:dmarc_afrf@auth.returnpath.net",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; sp=reject; adkim=r; aspf=r",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v = DMARC1 ; p = none ; sp = reject",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; ",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none ",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;foo=xxx;sp=reject;bar=xxx;adkim=r;aspf=r",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "r"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;sp;adkim=X;aspf=",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=quarantine;rua=mailto:foo@example.com,mailto:bar@example.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:foo@example.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:bar@example.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "quarantine"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:foo@example.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:bar@example.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "rua = mailto:user1@example.org, mailto:user2@example.org",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "rua = mailto:user1@example.com!20m",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=MAILTO:a@b.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com,http://evil",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "b@example.com",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=999",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;p=reject",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=0:1:d:s",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "1",
+            "d",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "1",
+            "d",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;ri=86400",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          86400
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          86400
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=100",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=XXXXXXXXXX",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": ";v=DMARC1",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;;sp=reject",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none; v=DMARC1",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;sp=REJECT",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!20x",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!20",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 20,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 20,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;fo=",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "DMARC1;p=none",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; unknown",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;ruf=mailto:a@b.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; fo=1",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "1"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;adkim=s;aspf=s",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rf=iodef",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rf",
+          "iodef"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rf",
+          "iodef"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rf=afrf",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;ri=99999999999",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=1000",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "V=DMARC1;p=none",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=dmarc1;p=none",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;\tp=none\t",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;sp=none;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!1k,mailto:c@d.com!2m,mailto:e@f.com!3g,mailto:g@h.com!4t",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 1,
+              "unit": "k"
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 2,
+              "unit": "m"
+            },
+            {
+              "uri": "mailto:e@f.com",
+              "size": 3,
+              "unit": "g"
+            },
+            {
+              "uri": "mailto:g@h.com",
+              "size": 4,
+              "unit": "t"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 1,
+              "unit": "k"
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 2,
+              "unit": "m"
+            },
+            {
+              "uri": "mailto:e@f.com",
+              "size": 3,
+              "unit": "g"
+            },
+            {
+              "uri": "mailto:g@h.com",
+              "size": 4,
+              "unit": "t"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!1K",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=mailto:a@b.com!1k,mailto:c@d.com!2m,mailto:e@f.com!3g,mailto:g@h.com!4t",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 1,
+              "unit": "k"
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 2,
+              "unit": "m"
+            },
+            {
+              "uri": "mailto:e@f.com",
+              "size": 3,
+              "unit": "g"
+            },
+            {
+              "uri": "mailto:g@h.com",
+              "size": 4,
+              "unit": "t"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 1,
+              "unit": "k"
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 2,
+              "unit": "m"
+            },
+            {
+              "uri": "mailto:e@f.com",
+              "size": 3,
+              "unit": "g"
+            },
+            {
+              "uri": "mailto:g@h.com",
+              "size": 4,
+              "unit": "t"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; ri=4294967295",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          4294967295
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ri",
+          4294967295
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; ri=4294967296",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=0",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=000",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          0
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; pct=100; sp=reject; adkim=r; aspf=s; fo=0:d; rf=afrf; ri=86400",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "fo",
+          [
+            "0",
+            "d"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "ri",
+          86400
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "r"
+        ],
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "fo",
+          [
+            "0",
+            "d"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "rf",
+          "afrf"
+        ],
+        [
+          "ri",
+          86400
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; ruf=mailto:a@b.com,mailto:c@d.com!10m",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 10,
+              "unit": "m"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "ruf",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": 10,
+              "unit": "m"
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; rua=MAILTO:A@B.COM,mailto:c@d.com",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:A@B.COM",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:A@B.COM",
+              "size": null,
+              "unit": null
+            },
+            {
+              "uri": "mailto:c@d.com",
+              "size": null,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com,",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!10",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 10,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 10,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!11",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 11,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "rua",
+          [
+            {
+              "uri": "mailto:a@b.com",
+              "size": 11,
+              "unit": null
+            }
+          ]
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;rua=mailto:a@b.com!!",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;fo=0",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;fo=d",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "d"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "d"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;fo=0:d:s",
+    "lenient": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "d",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "fo",
+          [
+            "0",
+            "d",
+            "s"
+          ]
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;fo=0:",
+    "lenient": {
+      "error": "DMARCator::InvalidRecord"
+    },
+    "strict": {
+      "error": "DMARCator::InvalidRecord"
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;adkim=s",
+    "lenient": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "adkim",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;aspf=s",
+    "lenient": {
+      "ok": [
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "aspf",
+          "s"
+        ],
+        [
+          "p",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=none; sp=none",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "sp",
+          "none"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1; p=reject ; sp=reject ; pct=100 ;",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "reject"
+        ],
+        [
+          "pct",
+          100
+        ],
+        [
+          "sp",
+          "reject"
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  },
+  {
+    "record": "v=DMARC1;p=none;pct=99;ri=1",
+    "lenient": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          99
+        ],
+        [
+          "ri",
+          1
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    },
+    "strict": {
+      "ok": [
+        [
+          "p",
+          "none"
+        ],
+        [
+          "pct",
+          99
+        ],
+        [
+          "ri",
+          1
+        ],
+        [
+          "v",
+          "DMARC1"
+        ]
+      ]
+    }
+  }
+]

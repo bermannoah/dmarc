@@ -367,6 +367,21 @@ To run the RSpec tests:
 rake spec
 ```
 
+### Record parser corpus
+
+`spec/support/record_corpus.txt` holds representative records — real-world
+published records and edge cases — and `spec/support/record_corpus.json` the
+outcomes they produced when the corpus was last accepted. The suite replays both
+in lenient and strict mode, so a parser change that alters how any of them parses
+fails with a diff.
+
+If such a change is intentional, regenerate the file and review the JSON diff in
+the commit:
+
+```sh
+ruby -Ilib script/generate_record_corpus.rb
+```
+
 ## Releasing
 
 Every published version must have an annotated tag pointing at the commit that
