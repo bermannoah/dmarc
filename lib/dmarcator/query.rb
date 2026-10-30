@@ -18,8 +18,9 @@ module DMARCator
   #
   # DNS query timeouts in seconds, tried in order.
   #
-  # Applied when the library builds a plaintext resolver. Timeouts on an
-  # injected resolver are left alone.
+  # @deprecated No longer used. Plaintext lookups use a single timeout
+  #   ({Resolver::Plain}), configurable with `DMARCATOR_DNS_TIMEOUT`.
+  #   Removed in 2.0.
   #
   DNS_TIMEOUTS = [2, 4, 8].freeze
 

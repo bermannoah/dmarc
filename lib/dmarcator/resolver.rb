@@ -4,6 +4,7 @@ require 'resolv'
 
 require_relative 'exceptions'
 require_relative 'resolver/encrypted'
+require_relative 'resolver/plain'
 require_relative 'resolver/doh'
 require_relative 'resolver/dot'
 
@@ -14,7 +15,7 @@ module DMARCator
   # The transport is chosen with the `DMARCATOR_DNS` environment variable, or
   # explicitly via {.build}:
   #
-  #   DMARCATOR_DNS=plaintext          # default: Resolv::DNS (UDP/TCP)
+  #   DMARCATOR_DNS=plaintext          # default: TCP (Resolver::Plain)
   #   DMARCATOR_DNS=doh                # requires DMARCATOR_DOH_URL
   #   DMARCATOR_DNS=dot                # requires DMARCATOR_DOT_SERVER
   #
@@ -61,9 +62,7 @@ module DMARCator
 
       case name
       when 'plaintext'
-        resolver = Resolv::DNS.new
-        resolver.timeouts = DNS_TIMEOUTS
-        resolver
+        Plain.from_env(env)
       when 'doh'
         DoH.from_env(env)
       when 'dot'

@@ -24,15 +24,14 @@ RSpec.describe DMARCator::Resolver do
 
   describe '.build' do
     it 'builds a plaintext resolver by default' do
-      expect(described_class.build(env: {})).to be_a(Resolv::DNS)
+      expect(described_class.build(env: {})).to be_a(DMARCator::Resolver::Plain)
     end
 
-    it 'applies the plaintext timeouts to a resolver it builds' do
-      dns = instance_double(Resolv::DNS)
-      allow(Resolv::DNS).to receive(:new).and_return(dns)
-      expect(dns).to receive(:timeouts=).with(DMARCator::DNS_TIMEOUTS)
+    it 'passes the timeout to the plaintext resolver' do
+      resolver = described_class.build(env: { 'DMARCATOR_DNS_TIMEOUT' => '2' })
 
-      expect(described_class.build(env: {})).to be(dns)
+      expect(resolver).to be_a(DMARCator::Resolver::Plain)
+      expect(resolver.timeout).to eq(2)
     end
 
     it 'builds a DoH resolver' do
@@ -52,7 +51,7 @@ RSpec.describe DMARCator::Resolver do
     end
 
     it 'accepts an explicit mode' do
-      expect(described_class.build(mode: 'plaintext', env: {})).to be_a(Resolv::DNS)
+      expect(described_class.build(mode: 'plaintext', env: {})).to be_a(DMARCator::Resolver::Plain)
     end
 
     it 'rejects an unknown mode' do
@@ -203,6 +202,134 @@ RSpec.describe 'encrypted DNS transports' do
 
       expect(resolver.getresources(name, txt_class)).to eq([])
       expect(calls).to be <= DMARCator::Resolver::Encrypted::MAX_CNAME_DEPTH + 1
+    end
+  end
+
+  describe DMARCator::Resolver::Plain do
+    # Serves one DNS-over-TCP exchange on a loopback socket.
+    def with_tcp_server(responder)
+      server = TCPServer.new('127.0.0.1', 0)
+      port = server.addr[1]
+
+      thread = Thread.new do
+        client = server.accept
+
+        begin
+          length = client.read(2).unpack1('n')
+          query = Resolv::DNS::Message.decode(client.read(length))
+          wire = responder.call(query).encode
+
+          client.write([wire.bytesize].pack('n') + wire)
+        ensure
+          client.close
+        end
+      end
+
+      yield port
+    ensure
+      thread&.join(5)
+      server&.close
+    end
+
+    def answer_with(query, texts)
+      response = Resolv::DNS::Message.new(query.id)
+      response.qr = 1
+      response.rd = 1
+      name, type = query.question.first
+      response.add_question(name, type)
+
+      texts.each do |text|
+        response.add_answer(name, 300, Resolv::DNS::Resource::IN::TXT.new(text))
+      end
+
+      response
+    end
+
+    it 'returns TXT records over TCP' do
+      with_tcp_server(->(query) { answer_with(query, ['v=DMARC1; p=none']) }) do |port|
+        resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 5)
+
+        expect(resolver.getresources(name, txt_class).map(&:strings)).to eq(
+          [['v=DMARC1; p=none']]
+        )
+      end
+    end
+
+    it 'returns answers larger than the 512-byte UDP limit' do
+      texts = Array.new(10) { |i| "v=spf1 include:host#{i}.example.com -all" }
+
+      with_tcp_server(->(query) { answer_with(query, texts) }) do |port|
+        resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 5)
+        records = resolver.getresources(name, txt_class)
+
+        expect(records.size).to eq(10)
+        expect(records.map(&:strings).flatten).to eq(texts)
+      end
+    end
+
+    it 'raises ResolutionError when no nameserver answers' do
+      # A port nothing is listening on.
+      server = TCPServer.new('127.0.0.1', 0)
+      port = server.addr[1]
+      server.close
+
+      resolver = described_class.new(nameservers: [['127.0.0.1', port]], timeout: 1)
+
+      expect {
+        resolver.getresources(name, txt_class)
+      }.to raise_error(DMARCator::ResolutionError, /DNS lookup failed/)
+    end
+
+    it 'tries the next nameserver when the first fails' do
+      with_tcp_server(->(query) { answer_with(query, ['v=DMARC1; p=reject']) }) do |port|
+        closed = TCPServer.new('127.0.0.1', 0)
+        dead_port = closed.addr[1]
+        closed.close
+
+        resolver = described_class.new(
+          nameservers: [['127.0.0.1', dead_port], ['127.0.0.1', port]], timeout: 2
+        )
+
+        expect(resolver.getresources(name, txt_class).map(&:strings)).to eq(
+          [['v=DMARC1; p=reject']]
+        )
+      end
+    end
+
+    describe '.system_nameservers' do
+      it 'uses the configured nameserver ports' do
+        allow(Resolv::DNS::Config).to receive(:default_config_hash)
+          .and_return(nameserver_port: [['192.0.2.1', 5353]])
+
+        expect(described_class.system_nameservers).to eq([['192.0.2.1', 5353]])
+      end
+
+      it 'falls back to the default port' do
+        allow(Resolv::DNS::Config).to receive(:default_config_hash)
+          .and_return(nameserver: ['192.0.2.1'], search: [], ndots: 1)
+
+        expect(described_class.system_nameservers).to eq([['192.0.2.1', 53]])
+      end
+    end
+
+    describe '.from_env' do
+      it 'uses the default timeout' do
+        expect(described_class.from_env({}).timeout).to eq(described_class::DEFAULT_TIMEOUT)
+      end
+
+      it 'reads DMARCATOR_DNS_TIMEOUT' do
+        expect(described_class.from_env('DMARCATOR_DNS_TIMEOUT' => '3').timeout).to eq(3)
+      end
+
+      it 'rejects a non-numeric timeout' do
+        expect {
+          described_class.from_env('DMARCATOR_DNS_TIMEOUT' => 'soon')
+        }.to raise_error(ArgumentError)
+      end
+    end
+
+    it 'rejects an empty nameserver list' do
+      expect { described_class.new(nameservers: []) }.to raise_error(ArgumentError)
     end
   end
 
