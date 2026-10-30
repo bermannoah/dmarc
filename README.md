@@ -348,7 +348,6 @@ for the reporting policy and scope.
 ## Requirements
 
 * [Ruby] >= 3.3.13
-* [parslet] >= 1.0.0, < 3.0.0
 * [nokogiri] >= 1.10
 
 ## Testing
@@ -417,6 +416,5 @@ created by D Salko and released under the MIT License.
 [dmarc-parser-gem]: https://rubygems.org/gems/dmarc_parser
 [Trail of Bits]: https://www.trailofbits.com
 [Ruby]: https://www.ruby-lang.org
-[parslet]: https://kschiess.github.io/parslet/
 [nokogiri]: https://nokogiri.org
 [LICENSE.txt]: LICENSE.txt

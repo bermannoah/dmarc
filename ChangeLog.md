@@ -1,3 +1,10 @@
+### 1.1.0 / 2026-10-30
+
+* Replace the Parslet grammar with a hand-written parser in `DMARCator::Internal`. Parsing behaviour is unchanged, verified differentially against the previous parser over 128 real-world and 47 edge-case records in both lenient and strict modes; record parsing is roughly 30x faster (0.84 ms to 0.03 ms per record).
+* Remove the `parslet` runtime dependency. `nokogiri` is now the only runtime dependency.
+* Messages for structurally malformed records now come from the parser itself (for example `invalid DMARC record: "..."`) and are truncated to 300 characters.
+* `DMARCator::Internal::Parser::Transform` no longer exists. It was internal, so this is not covered by the compatibility promise.
+
 ### 1.0.0 / 2026-10-30
 
 The public API is now frozen.
