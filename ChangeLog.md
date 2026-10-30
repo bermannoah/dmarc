@@ -4,6 +4,7 @@
 * Remove the `parslet` runtime dependency. `nokogiri` is now the only runtime dependency.
 * Messages for structurally malformed records now come from the parser itself (for example `invalid DMARC record: "..."`) and are truncated to 300 characters.
 * `DMARCator::Internal::Parser::Transform` no longer exists. It was internal, so this is not covered by the compatibility promise.
+* Reject records whose string encoding is invalid or not ASCII-compatible with `InvalidRecord`. Previously `Record.parse` could raise `ArgumentError` (invalid UTF-8) or `Encoding::CompatibilityError` (for example UTF-16), which escaped `rescue DMARCator::Error`. Binary strings from a DNS resolver, and other ASCII-compatible encodings such as ISO-8859-1, are unaffected.
 
 ### 1.0.0 / 2026-10-30
 
