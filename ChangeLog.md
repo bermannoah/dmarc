@@ -1,3 +1,10 @@
+### 1.2.1 / 2026-10-30
+
+* Add a record-parser corpus regression net: 143 records (published real-world records plus edge cases) with their accepted outcomes in lenient and strict mode, replayed by the test suite. A parser change that alters how any record parses now fails with a diff. Regenerate with `script/generate_record_corpus.rb`.
+* Report a TCP response body shorter than its declared length as `short DNS response (expected N bytes, got M)`, instead of the opaque `malformed DNS response: limit exceeded`.
+
+No public API changes.
+
 ### 1.2.0 / 2026-10-30
 
 * Plaintext lookups now use DNS over TCP (`DMARCator::Resolver::Plain`) instead of `Resolv::DNS`. `Resolv` reads UDP replies into a 512-byte buffer, so a larger answer cannot be decoded, is discarded, and the resulting timeout is swallowed. Any TXT set over 512 bytes — common for SPF and for domains with several DKIM keys — was therefore returned as an empty array, which is indistinguishable from "no records published". TCP has no such limit, and failures raise `ResolutionError`.
