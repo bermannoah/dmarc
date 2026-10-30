@@ -118,6 +118,21 @@ RSpec.describe DMARCator::Report do
     expect(report.records.first.count).to eq(96)
   end
 
+  it 'exposes parsed values and collections frozen' do
+    report = described_class.new(xml_report)
+    row = report.records.first
+
+    expect(report.records).to be_frozen
+    expect(report.version).to be_frozen
+    expect(report.metadata.errors).to be_frozen
+    expect(row.source_ip).to be_frozen
+    expect(row.reasons).to be_frozen
+    expect(row.auth_results).to be_frozen
+
+    expect { row.source_ip << 'x' }.to raise_error(FrozenError)
+    expect { report.metadata.errors << 'x' }.to raise_error(FrozenError)
+  end
+
   it 'exposes parsed values as read-only' do
     report = described_class.new(xml_report)
 

@@ -102,7 +102,7 @@ module DMARCator
         value = get_text('feedback/version')
         value = value.strip if value
 
-        value if value && value.match?(/\A\d+(?:\.\d+)*\z/)
+        value.freeze if value && value.match?(/\A\d+(?:\.\d+)*\z/)
       end
     end
 
@@ -132,7 +132,7 @@ module DMARCator
     def records
       @records ||= @node.xpath('feedback/record').map do |node|
         Row.new(node)
-      end
+      end.freeze
     end
   end
 end

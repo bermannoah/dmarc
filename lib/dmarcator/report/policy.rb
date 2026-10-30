@@ -38,19 +38,19 @@ module DMARCator
         policy.element_children.each do |element|
           case element.name
           when 'pct'
-            @pct ||= parse_integer(element.text)
+            @pct ||= parse_integer(element.text.freeze)
           when 'domain'
-            @domain ||= element.text
+            @domain ||= element.text.freeze
           when 'adkim'
-            @adkim ||= element.text
+            @adkim ||= element.text.freeze
           when 'aspf'
-            @aspf ||= element.text
+            @aspf ||= element.text.freeze
           when 'p'
-            @p ||= element.text
+            @p ||= element.text.freeze
           when 'sp'
-            @sp ||= element.text
+            @sp ||= element.text.freeze
           when 'fo'
-            @fo ||= element.text
+            @fo ||= element.text.freeze
           end
         end
       end

@@ -66,13 +66,13 @@ module DMARCator
       @v     = attributes.fetch(:v)
       @adkim = attributes[:adkim]
       @aspf  = attributes[:aspf]
-      @fo    = attributes[:fo]
+      @fo    = attributes[:fo]&.freeze
       @p     = attributes[:p]
       @pct   = attributes[:pct]
       @rf    = attributes[:rf]
       @ri    = attributes[:ri]
-      @rua   = attributes[:rua]
-      @ruf   = attributes[:ruf]
+      @rua   = attributes[:rua]&.freeze
+      @ruf   = attributes[:ruf]&.freeze
       @sp    = attributes[:sp]
     end
 

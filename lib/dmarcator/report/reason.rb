@@ -25,9 +25,9 @@ module DMARCator
         node.element_children.each do |element|
           case element.name
           when 'type'
-            @type ||= element.text
+            @type ||= element.text.freeze
           when 'comment'
-            @comment ||= element.text
+            @comment ||= element.text.freeze
           end
         end
       end

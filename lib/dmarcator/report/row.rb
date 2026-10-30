@@ -64,7 +64,7 @@ module DMARCator
       def reasons
         return @reasons if defined?(@reasons)
 
-        @reasons = @reason_nodes.map { |reason_node| Reason.new(reason_node) }
+        @reasons = @reason_nodes.map { |reason_node| Reason.new(reason_node) }.freeze
       end
 
       #
@@ -77,7 +77,7 @@ module DMARCator
 
         @auth_results = @auth_result_nodes.map do |auth_result_node|
           AuthResult.new(auth_result_node)
-        end
+        end.freeze
       end
 
       private
@@ -86,9 +86,9 @@ module DMARCator
         row.element_children.each do |element|
           case element.name
           when 'source_ip'
-            @source_ip ||= element.text
+            @source_ip ||= element.text.freeze
           when 'count'
-            @count ||= parse_integer(element.text)
+            @count ||= parse_integer(element.text.freeze)
           when 'policy_evaluated'
             parse_policy_evaluated(element)
           end
@@ -99,11 +99,11 @@ module DMARCator
         policy_evaluated.element_children.each do |element|
           case element.name
           when 'disposition'
-            @disposition ||= element.text
+            @disposition ||= element.text.freeze
           when 'dkim'
-            @dkim ||= element.text
+            @dkim ||= element.text.freeze
           when 'spf'
-            @spf ||= element.text
+            @spf ||= element.text.freeze
           when 'reason'
             @reason_nodes << element
           end
@@ -114,11 +114,11 @@ module DMARCator
         identifiers.element_children.each do |element|
           case element.name
           when 'envelope_to'
-            @envelope_to ||= element.text
+            @envelope_to ||= element.text.freeze
           when 'envelope_from'
-            @envelope_from ||= element.text
+            @envelope_from ||= element.text.freeze
           when 'header_from'
-            @header_from ||= element.text
+            @header_from ||= element.text.freeze
           end
         end
       end

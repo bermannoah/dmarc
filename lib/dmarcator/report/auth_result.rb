@@ -27,18 +27,18 @@ module DMARCator
 
       def initialize(node)
         @node = node
-        @type = node.name
+        @type = node.name.freeze
 
         node.element_children.each do |element|
           case element.name
           when 'domain'
-            @domain ||= element.text
+            @domain ||= element.text.freeze
           when 'result'
-            @result ||= element.text
+            @result ||= element.text.freeze
           when 'selector'
-            @selector ||= element.text
+            @selector ||= element.text.freeze
           when 'scope'
-            @scope ||= element.text
+            @scope ||= element.text.freeze
           end
         end
       end

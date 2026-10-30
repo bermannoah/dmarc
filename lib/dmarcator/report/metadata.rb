@@ -37,24 +37,25 @@ module DMARCator
         @errors = []
 
         metadata = node.at_xpath('feedback/report_metadata')
-        return unless metadata
 
         metadata.element_children.each do |element|
           case element.name
           when 'org_name'
-            @org_name ||= element.text
+            @org_name ||= element.text.freeze
           when 'email'
-            @email ||= element.text
+            @email ||= element.text.freeze
           when 'extra_contact_info'
-            @extra_contact_info ||= element.text
+            @extra_contact_info ||= element.text.freeze
           when 'report_id'
-            @report_id ||= element.text
+            @report_id ||= element.text.freeze
           when 'error'
-            errors << element.text
+            errors << element.text.freeze
           when 'date_range'
             parse_date_range(element)
           end
         end
+      ensure
+        @errors.freeze
       end
 
       private
@@ -63,9 +64,9 @@ module DMARCator
         date_range.element_children.each do |element|
           case element.name
           when 'begin'
-            @begin_at ||= parse_timestamp(element.text)
+            @begin_at ||= parse_timestamp(element.text.freeze)
           when 'end'
-            @end_at ||= parse_timestamp(element.text)
+            @end_at ||= parse_timestamp(element.text.freeze)
           end
         end
       end

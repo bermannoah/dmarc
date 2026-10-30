@@ -98,6 +98,14 @@ describe DMARCator::Record do
       end
     end
 
+    it 'exposes its list attributes frozen' do
+      rec = subject.parse('v=DMARC1; p=none; rua=mailto:a@b.com; fo=0:1')
+
+      expect(rec.rua).to be_frozen
+      expect(rec.fo).to be_frozen
+      expect { rec.rua << :extra }.to raise_error(FrozenError)
+    end
+
     context 'with an invalid record' do
       it 'raises an DMARCator::InvalidRecord error' do
         expect {
